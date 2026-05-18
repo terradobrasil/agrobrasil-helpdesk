@@ -1826,18 +1826,36 @@ function renderMeusChamados() {
 
 // ===================== NOVO CHAMADO =====================
 function carregarSetoresNC() {
-  const setores = (window._fbCache&&window._fbCache.setores) || DB.get('setores') || [];
-  const sel = document.getElementById('nc-setor');
-  sel.innerHTML = '<option value="">Selecione o setor...</option>' + setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
-  document.getElementById('nc-area').innerHTML = '<option value="">Selecione o setor primeiro...</option>';
+  var setores=(window._fbCache&&window._fbCache.setores)||[];
+  if(!setores.length){
+    fbDB.ref('setores').once('value',function(snap){
+      var v=snap.val();
+      var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
+      if(window._fbCache) window._fbCache.setores=arr;
+      var sel=document.getElementById('nc-setor'); if(!sel) return;
+      sel.innerHTML='<option value="">Selecione o setor...</option>'+arr.map(function(s){return '<option value="'+s.id+'">'+s.nome+'</option>';}).join('');
+      document.getElementById('nc-area').innerHTML='<option value="">Selecione o setor primeiro...</option>';
+    }); return;
+  }
+  var sel=document.getElementById('nc-setor'); if(!sel) return;
+  sel.innerHTML='<option value="">Selecione o setor...</option>'+setores.map(function(s){return '<option value="'+s.id+'">'+s.nome+'</option>';}).join('');
+  document.getElementById('nc-area').innerHTML='<option value="">Selecione o setor primeiro...</option>';
 }
 
 function carregarAreasNC() {
-  const setorId = document.getElementById('nc-setor').value;
-  const areas = ((window._fbCache&&window._fbCache.areas)||DB.get('areas')||[]).filter(a=>a.setorId===setorId);
-  document.getElementById('nc-area').innerHTML = areas.length
-    ? '<option value="">Selecione a área...</option>' + areas.map(a=>`<option value="${a.id}">${a.nome}</option>`).join('')
-    : '<option value="">Nenhuma área cadastrada para este setor</option>';
+  var setorId=document.getElementById('nc-setor').value; if(!setorId) return;
+  var areas=(window._fbCache&&window._fbCache.areas)||[];
+  if(!areas.length){
+    fbDB.ref('areas').once('value',function(snap){
+      var v=snap.val();
+      var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
+      if(window._fbCache) window._fbCache.areas=arr;
+      var f=arr.filter(function(a){return a&&a.setorId===setorId;});
+      document.getElementById('nc-area').innerHTML=f.length?'<option value="">Selecione a área...</option>'+f.map(function(a){return '<option value="'+a.id+'">'+a.nome+'</option>';}).join(''):'<option value="">Nenhuma área neste setor</option>';
+    }); return;
+  }
+  var f=areas.filter(function(a){return a&&a.setorId===setorId;});
+  document.getElementById('nc-area').innerHTML=f.length?'<option value="">Selecione a área...</option>'+f.map(function(a){return '<option value="'+a.id+'">'+a.nome+'</option>';}).join(''):'<option value="">Nenhuma área neste setor</option>';
 }
 
 function abrirChamado() {
