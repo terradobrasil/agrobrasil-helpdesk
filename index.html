@@ -1826,22 +1826,37 @@ function renderMeusChamados() {
 
 // ===================== NOVO CHAMADO =====================
 function carregarSetoresNC() {
-  var setores=(window._fbCache&&window._fbCache.setores)||[];
-  if(!setores.length){fbDB.ref('setores').once('value',function(s2){var v=s2.val();var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);if(window._fbCache)window._fbCache.setores=arr;var sel2=document.getElementById('nc-setor');if(!sel2)return;sel2.innerHTML='<option value="">Selecione o setor...</option>';arr.forEach(function(s){var o=document.createElement('option');o.value=s.id;o.textContent=s.nome;sel2.appendChild(o);});document.getElementById('nc-area').innerHTML='<option value="">Selecione o setor primeiro...</option>';});return;}
-  const setores = (window._fbCache&&window._fbCache.setores) || DB.get('setores') || [];
-  const sel = document.getElementById('nc-setor');
-  sel.innerHTML = '<option value="">Selecione o setor...</option>' + setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
-  document.getElementById('nc-area').innerHTML = '<option value="">Selecione o setor primeiro...</option>';
+  var _setArr=(window._fbCache&&window._fbCache.setores)||[];
+  if(!_setArr.length){
+    fbDB.ref("setores").once("value",function(sn){
+      var v=sn.val();
+      var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
+      if(window._fbCache) window._fbCache.setores=arr;
+      var el=document.getElementById("nc-setor"); if(!el) return;
+      el.innerHTML="<option value=\"\">Selecione o setor...</option>";
+      arr.forEach(function(s){var o=document.createElement("option");o.value=s.id;o.textContent=s.nome;el.appendChild(o);});
+      document.getElementById("nc-area").innerHTML="<option value=\"\">Selecione o setor primeiro...</option>";
+    }); return;
+  }
+  var el=document.getElementById("nc-setor"); if(!el) return;
+  el.innerHTML="<option value=\"\">Selecione o setor...</option>"+_setArr.map(function(s){return "<option value=\""+s.id+"\">"+s.nome+"</option>";}).join("");
+  document.getElementById("nc-area").innerHTML="<option value=\"\">Selecione o setor primeiro...</option>";
 }
 
 function carregarAreasNC() {
-  const setorId = document.getElementById('nc-setor').value;
-  var _areas2=(window._fbCache&&window._fbCache.areas)||[];
-  if(!_areas2.length){fbDB.ref('areas').once('value',function(s2){var v=s2.val();var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);if(window._fbCache)window._fbCache.areas=arr;var f=arr.filter(function(a){return a&&a.setorId===setorId;});document.getElementById('nc-area').innerHTML=f.length?'<option value="">Selecione a área...</option>'+f.map(function(a){return '<option value="'+a.id+'">'+a.nome+'</option>';}).join(''):'<option value="">Nenhuma área neste setor</option>';});return;}
-  const areas = ((window._fbCache&&window._fbCache.areas)||DB.get('areas')||[]).filter(a=>a.setorId===setorId);
-  document.getElementById('nc-area').innerHTML = areas.length
-    ? '<option value="">Selecione a área...</option>' + areas.map(a=>`<option value="${a.id}">${a.nome}</option>`).join('')
-    : '<option value="">Nenhuma área cadastrada para este setor</option>';
+  var setorId=document.getElementById("nc-setor").value; if(!setorId) return;
+  var _areaArr=(window._fbCache&&window._fbCache.areas)||[];
+  if(!_areaArr.length){
+    fbDB.ref("areas").once("value",function(sn){
+      var v=sn.val();
+      var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
+      if(window._fbCache) window._fbCache.areas=arr;
+      var f=arr.filter(function(a){return a&&a.setorId===setorId;});
+      document.getElementById("nc-area").innerHTML=f.length?"<option value=\"\">Selecione a area...</option>"+f.map(function(a){return "<option value=\""+a.id+"\">"+a.nome+"</option>";}).join(""):"<option value=\"\">Nenhuma area neste setor</option>";
+    }); return;
+  }
+  var f=_areaArr.filter(function(a){return a&&a.setorId===setorId;});
+  document.getElementById("nc-area").innerHTML=f.length?"<option value=\"\">Selecione a area...</option>"+f.map(function(a){return "<option value=\""+a.id+"\">"+a.nome+"</option>";}).join(""):"<option value=\"\">Nenhuma area neste setor</option>";
 }
 
 function abrirChamado() {
