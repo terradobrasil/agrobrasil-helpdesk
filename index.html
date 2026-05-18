@@ -1826,40 +1826,59 @@ function renderMeusChamados() {
 
 // ===================== NOVO CHAMADO =====================
 function carregarSetoresNC() {
-  // Se cache não tiver setores, buscar do Firebase
-  if(!window._fbCache||!window._fbCache.setores||!window._fbCache.setores.length){
+  var setores=(window._fbCache&&window._fbCache.setores)||[];
+  if(!setores.length){
     fbDB.ref('setores').once('value',function(snap){
       var v=snap.val();
       var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
       if(window._fbCache) window._fbCache.setores=arr;
-      _populaSetoresNC(arr);
+      var sel=document.getElementById('nc-setor');
+      if(!sel) return;
+      sel.innerHTML='<option value="">Selecione o setor...</option>';
+      arr.forEach(function(s){if(!s)return;var o=document.createElement('option');o.value=s.id;o.textContent=s.nome;sel.appendChild(o);});
+      document.getElementById('nc-area').innerHTML='<option value="">Selecione o setor primeiro...</option>';
     });
     return;
   }
-  _populaSetoresNC((window._fbCache&&window._fbCache.setores)||[]);
-}
-function _populaSetoresNC(setores) {
-  const sel = document.getElementById('nc-setor');
-  sel.innerHTML = '<option value="">Selecione o setor...</option>' + setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
-  document.getElementById('nc-area').innerHTML = '<option value="">Selecione o setor primeiro...</option>';
-}
+  var sel=document.getElementById('nc-setor');
+  if(!sel) return;
+  sel.innerHTML='<option value="">Selecione o setor...</option>';
+  setores.forEach(function(s){if(!s)return;var o=document.createElement('option');o.value=s.id;o.textContent=s.nome;sel.appendChild(o);});
+  document.getElementById('nc-area').innerHTML='<option value="">Selecione o setor primeiro...</option>';
 }
 
 function carregarAreasNC() {
-  const setorId = document.getElementById('nc-setor').value;
+  var setorId=document.getElementById('nc-setor').value;
   if(!setorId) return;
-  const _areas=(window._fbCache&&window._fbCache.areas)||DB.get('areas')||[];
-  if(!_areas.length){
+  var areas=(window._fbCache&&window._fbCache.areas)||[];
+  if(!areas.length){
     fbDB.ref('areas').once('value',function(snap){
       var v=snap.val();
       var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
       if(window._fbCache) window._fbCache.areas=arr;
-      _populaAreasNC(setorId,arr);
+      var filtradas=arr.filter(function(a){return a&&a.setorId===setorId;});
+      var selA=document.getElementById('nc-area');
+      if(!selA) return;
+      if(filtradas.length){
+        selA.innerHTML='<option value="">Selecione a área...</option>';
+        filtradas.forEach(function(a){var o=document.createElement('option');o.value=a.id;o.textContent=a.nome;selA.appendChild(o);});
+      } else {
+        selA.innerHTML='<option value="">Nenhuma área neste setor</option>';
+      }
     });
     return;
   }
-  _populaAreasNC(setorId,_areas);
+  var filtradas=areas.filter(function(a){return a&&a.setorId===setorId;});
+  var selA=document.getElementById('nc-area');
+  if(!selA) return;
+  if(filtradas.length){
+    selA.innerHTML='<option value="">Selecione a área...</option>';
+    filtradas.forEach(function(a){var o=document.createElement('option');o.value=a.id;o.textContent=a.nome;selA.appendChild(o);});
+  } else {
+    selA.innerHTML='<option value="">Nenhuma área neste setor</option>';
+  }
 }
+
 function _populaAreasNC(setorId,allAreas) {
   const areas = allAreas.filter(a=>a.setorId===setorId);
   document.getElementById('nc-area').innerHTML = areas.length
