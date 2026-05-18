@@ -1,5 +1,8 @@
 <html lang="pt-BR"><head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AgroBrasil HelpDesk</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&amp;display=swap" rel="stylesheet">
@@ -1394,6 +1397,9 @@ const DB = {
   // Carrega dados do Firebase e chama callback quando pronto
   ghLoad: function(callback) {
     if(!window._fbCache) window._fbCache={};
+    // Sempre limpar setores/areas do localStorage para garantir dados frescos do Firebase
+    localStorage.removeItem('agro_hd_setores');
+    localStorage.removeItem('agro_hd_areas');
     var loaded={chamados:false,contador:false,usuarios:false,setores:false,areas:false};
     function done(){ if(loaded.chamados&&loaded.contador&&loaded.usuarios&&loaded.setores&&loaded.areas&&callback) callback(); }
     fbDB.ref('chamados').once('value',function(s){
