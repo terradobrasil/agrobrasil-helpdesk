@@ -2592,10 +2592,19 @@ function salvarSetor() {
   const nome=document.getElementById('setor-nome').value.trim();
   if(!nome){toast('Nome obrigatório!','error');return;}
   const obj={nome,sigla:document.getElementById('setor-sigla').value.trim().toUpperCase(),email:document.getElementById('setor-email').value.trim(),responsavel:document.getElementById('setor-responsavel').value.trim()};
-  const setores=DB.get('setores')||[];
-  if(!id){setores.push({id:uid(),...obj,criadoEm:new Date().toISOString()});toast('Setor criado!','success');}
-  else{const idx=setores.findIndex(s=>s.id===id);if(idx>=0)setores[idx]={...setores[idx],...obj};toast('Setor atualizado!','success');}
-  DB.set('setores',setores); if(window._fbCache) window._fbCache.setores=setores; fbDB.ref('setores').set(setores);fecharModal('modal-setor');renderSetores();
+  // Usar sempre o Firebase como base para não sobrescrever dados de outros usuários
+  fbDB.ref('setores').once('value',function(snap){
+    var v=snap.val();
+    var setores=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
+    if(!id){setores.push({id:uid(),...obj,criadoEm:new Date().toISOString()});toast('Setor criado!','success');}
+    else{const idx=setores.findIndex(s=>s.id===id);if(idx>=0)setores[idx]={...setores[idx],...obj};toast('Setor atualizado!','success');}
+    fbDB.ref('setores').set(setores,function(){
+      if(window._fbCache) window._fbCache.setores=setores;
+      DB.set('setores',setores);
+      fecharModal('modal-setor');
+      renderSetores();
+    });
+  });
 }
 function excluirSetor(id) {
   const areas=(DB.get('areas')||[]).filter(a=>a.setorId===id);
@@ -2627,10 +2636,19 @@ function salvarArea() {
   const nome=document.getElementById('area-nome').value.trim();
   if(!setorId||!nome){toast('Setor e nome são obrigatórios!','error');return;}
   const obj={setorId,nome,descricao:document.getElementById('area-descricao').value.trim()};
-  const areas=DB.get('areas')||[];
-  if(!id){areas.push({id:uid(),...obj,criadoEm:new Date().toISOString()});toast('Área criada!','success');}
-  else{const idx=areas.findIndex(a=>a.id===id);if(idx>=0)areas[idx]={...areas[idx],...obj};toast('Área atualizada!','success');}
-  DB.set('areas',areas); if(window._fbCache) window._fbCache.areas=areas; fbDB.ref('areas').set(areas);fecharModal('modal-area');renderSetores();
+  // Usar sempre o Firebase como base
+  fbDB.ref('areas').once('value',function(snap){
+    var v=snap.val();
+    var areas=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
+    if(!id){areas.push({id:uid(),...obj,criadoEm:new Date().toISOString()});toast('Área criada!','success');}
+    else{const idx=areas.findIndex(a=>a.id===id);if(idx>=0)areas[idx]={...areas[idx],...obj};toast('Área atualizada!','success');}
+    fbDB.ref('areas').set(areas,function(){
+      if(window._fbCache) window._fbCache.areas=areas;
+      DB.set('areas',areas);
+      fecharModal('modal-area');
+      renderSetores();
+    });
+  });
 }
 function excluirArea(id) {
   if(!confirm('Excluir esta área?'))return;
