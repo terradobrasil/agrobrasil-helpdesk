@@ -2607,13 +2607,18 @@ function salvarSetor() {
   });
 }
 function excluirSetor(id) {
-  const areas=(DB.get('areas')||[]).filter(a=>a.setorId===id);
-  if(areas.length>0){toast('Remova as áreas deste setor primeiro!','error');return;}
-  if(!confirm('Excluir este setor?'))return;
-  DB.set('setores',(DB.get('setores')||[]).filter(s=>s.id!==id));
-  toast('Setor excluído.','warning');renderSetores();
+  if(!confirm('Excluir setor?')) return;
+  fbDB.ref('setores').once('value',function(snap){
+    var v=snap.val();
+    var setores=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
+    var novo=setores.filter(function(s){return s.id!==id;});
+    fbDB.ref('setores').set(novo,function(){
+      if(window._fbCache) window._fbCache.setores=novo;
+      DB.set('setores',novo);
+      renderSetores();
+    });
+  });
 }
-
 function abrirModalArea() {
   const setores=DB.get('setores')||[];
   document.getElementById('area-setor').innerHTML='<option value="">Selecione o setor...</option>'+setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
@@ -2651,47 +2656,18 @@ function salvarArea() {
   });
 }
 function excluirArea(id) {
-  if(!confirm('Excluir esta área?'))return;
-  DB.set('areas',(DB.get('areas')||[]).filter(a=>a.id!==id));
-  toast('Área excluída.','warning');renderSetores();
-}
-
-
-// Cria usuário administrador Warley se não existir
-(function() {
-  var usuarios = JSON.parse(localStorage.getItem('agro_hd_usuarios') || '[]');
-  var existe = usuarios.find(function(u) { return u.email === 'warley.tavares@terradobrasil.com.br'; });
-  if (!existe) {
-    usuarios.push({
-      id: 'warley_admin_001',
-      nome: 'Warley Fernandes Tavares',
-      email: 'warley.tavares@terradobrasil.com.br',
-      senha: 'Terra@123',
-      perfil: 'admin',
-      setor: '',
-      cargo: 'PMO / Administrador do Sistema',
-      status: 'ativo',
-      criadoEm: new Date().toISOString()
+  if(!confirm('Excluir área?')) return;
+  fbDB.ref('areas').once('value',function(snap){
+    var v=snap.val();
+    var areas=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
+    var novo=areas.filter(function(a){return a.id!==id;});
+    fbDB.ref('areas').set(novo,function(){
+      if(window._fbCache) window._fbCache.areas=novo;
+      DB.set('areas',novo);
+      renderSetores();
     });
-    localStorage.setItem('agro_hd_usuarios', JSON.stringify(usuarios));
-    console.log('[HelpDesk] Usuário administrador Warley criado com sucesso.');
-  }
-})();
-
-
-// ===================== FORÇA LOGIN =====================
-window.addEventListener('DOMContentLoaded', function() {
-  usuarioAtual = null;
-  var t = document.getElementById('tela-login');
-  var a = document.getElementById('app');
-  if (t) t.style.display = 'flex';
-  if (a) a.style.display = 'none';
-});
-// Fechar modal clicando fora
-document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', function(e) { if(e.target===this) fecharModal(this.id); });
-});
-
+  });
+}
 function previewAnexosNC() {
   var input = document.getElementById('nc-arquivos');
   var preview = document.getElementById('nc-preview');
