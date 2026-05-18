@@ -1397,9 +1397,6 @@ const DB = {
   // Carrega dados do Firebase e chama callback quando pronto
   ghLoad: function(callback) {
     if(!window._fbCache) window._fbCache={};
-    // Sempre limpar setores/areas do localStorage para garantir dados frescos do Firebase
-    localStorage.removeItem('agro_hd_setores');
-    localStorage.removeItem('agro_hd_areas');
     var loaded={chamados:false,contador:false,usuarios:false,setores:false,areas:false};
     function done(){ if(loaded.chamados&&loaded.contador&&loaded.usuarios&&loaded.setores&&loaded.areas&&callback) callback(); }
     fbDB.ref('chamados').once('value',function(s){
