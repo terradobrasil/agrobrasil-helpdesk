@@ -1410,16 +1410,12 @@ const DB = {
     fbDB.ref('setores').once('value',function(s){
       var v=s.val();
       var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
-      if(!arr.length) arr=JSON.parse(localStorage.getItem('agro_hd_setores')||'[]');
-      if(arr.length) fbDB.ref('setores').set(arr);
       window._fbCache.setores=arr;
       loaded.setores=true; done();
     });
     fbDB.ref('areas').once('value',function(s){
       var v=s.val();
       var arr=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
-      if(!arr.length) arr=JSON.parse(localStorage.getItem('agro_hd_areas')||'[]');
-      if(arr.length) fbDB.ref('areas').set(arr);
       window._fbCache.areas=arr;
       loaded.areas=true; done();
     });
