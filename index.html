@@ -1395,7 +1395,7 @@ const DB = {
   ghLoad: function(callback) {
     if(!window._fbCache) window._fbCache={};
     var loaded={chamados:false,contador:false,usuarios:false,setores:false,areas:false};
-    function done(){ if(loaded.chamados&&loaded.contador&&loaded.usuarios&&callback) callback(); }
+    function done(){ if(loaded.chamados&&loaded.contador&&loaded.usuarios&&loaded.setores&&loaded.areas&&callback) callback(); }
     fbDB.ref('chamados').once('value',function(s){
       var v=s.val();
       window._fbCache.chamados=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
