@@ -1062,7 +1062,7 @@ const fbDB = firebase.database();
           </div>
           <table>
             <thead><tr>
-              <th>Nº</th><th>Assunto</th><th>Setor</th><th>Área</th><th>Prioridade</th><th>Status</th><th>Solicitante</th><th>Atendente</th><th>Data</th><th>Ações</th>
+              <th>Nº</th><th>Assunto</th><th>Setor</th><th>Área</th><th>Prioridade</th><th>Status</th><th>Prazo</th><th>Solicitante</th><th>Atendente</th><th>Data</th><th>Ações</th>
             </tr></thead>
             <tbody id="todos-tabela"></tbody>
           </table>
@@ -1579,6 +1579,7 @@ function fazerLogin() {
           window._loginFeito2=true;
           renderSidebar();
           irPara('dashboard');
+          setTimeout(iniciarVerificacaoPrazos,3000);
         } else {
           if(typeof renderDashboard==='function') renderDashboard();
           renderSidebar();
@@ -1588,6 +1589,53 @@ function fazerLogin() {
   });
 }
 
+
+function verificarPrazos(){
+  if(!usuarioAtual) return;
+  var chamados=getChamados();
+  var agora=new Date();
+  var alertas=[];
+  chamados.forEach(function(c){
+    if(!c||!c.prazoVencimento) return;
+    if(c.status==='Resolvido'||c.status==='Cancelado') return;
+    // Só alertar se o usuário é atendente ou dono do chamado
+    var ehAtendente=usuarioAtual.perfil==='admin'||usuarioAtual.perfil==='atendente'||c.atendenteId===usuarioAtual.id;
+    var ehDono=c.usuarioId===usuarioAtual.id;
+    if(!ehAtendente&&!ehDono) return;
+    var venc=new Date(c.prazoVencimento);
+    var diffH=Math.floor((venc-agora)/3600000);
+    var diffD=Math.floor(diffH/24);
+    if(diffH<0){
+      alertas.push({cor:'#e74c3c',msg:'🚨 PRAZO VENCIDO: Chamado #'+c.numero+' ('+c.assunto+') está '+Math.abs(diffD)+'d '+Math.abs(diffH%24)+'h em atraso!'});
+    } else if(diffH<=24){
+      alertas.push({cor:'#e74c3c',msg:'⚠️ URGENTE: Chamado #'+c.numero+' ('+c.assunto+') vence em '+diffH+'h!'});
+    } else if(diffH<=48){
+      alertas.push({cor:'#e67e22',msg:'⏰ ATENÇÃO: Chamado #'+c.numero+' ('+c.assunto+') vence em '+diffD+'d '+( diffH%24)+'h.'});
+    }
+  });
+  // Mostrar alertas um a um com delay
+  alertas.forEach(function(a,i){
+    setTimeout(function(){
+      var c2=document.getElementById('toasts');
+      if(!c2) return;
+      var el=document.createElement('div');
+      el.className='toast';
+      el.style.cssText='background:'+a.cor+';color:white;padding:14px 18px;border-radius:8px;margin-bottom:8px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);max-width:400px;cursor:pointer';
+      el.textContent=a.msg;
+      el.onclick=function(){el.remove();};
+      c2.appendChild(el);
+      setTimeout(function(){el.remove();},8000);
+    },i*2000);
+  });
+}
+
+// Rodar verificarPrazos ao logar e a cada 30 minutos
+function iniciarVerificacaoPrazos(){
+  verificarPrazos();
+  // Alertar a cada 30 minutos (1800000ms)
+  if(window._prazoInterval) clearInterval(window._prazoInterval);
+  window._prazoInterval=setInterval(verificarPrazos,1800000);
+}
 function sair() {
   usuarioAtual = null;
   window._loginFeito=false;
@@ -1865,6 +1913,8 @@ function abrirChamado() {
     atendenteId: null, // auto-assign abaixo
     criadoEm: agora,
     atualizadoEm: agora,
+    prazoHoras: {Baixa:168,Media:120,Alta:72,Urgente:24,Critica:24}[prioridade]||168,
+    prazoVencimento: new Date(new Date(agora).getTime()+({Baixa:168,Media:120,Alta:72,Urgente:24,Critica:24}[prioridade]||168)*3600000).toISOString(),
     mensagens: [{
       id: uid(),
       autorId: usuarioAtual.id,
