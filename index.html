@@ -2219,7 +2219,7 @@ function abrirTicket(id) {
     var txt=dh<0?('VENCIDO '+Math.abs(dd)+'d'):dh<=24?(dh+'h restantes'):(dd+'d '+(dh%24)+'h restantes');
     pb.innerHTML='<div style="background:'+cor+';color:white;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;text-align:center">'+String.fromCharCode(9200)+' '+txt+'</div>';
     pb.style.display='block';
-  })(););
+  })();
   // Scroll para última mensagem
   setTimeout(() => {
     const ml = document.getElementById('msg-list');
