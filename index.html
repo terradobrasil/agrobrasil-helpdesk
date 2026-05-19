@@ -1399,9 +1399,10 @@ const DB = {
   ghLoad: function(callback) {
     if(!window._fbCache) window._fbCache={};
     var loaded={chamados:false,contador:false,usuarios:false,setores:false,areas:false};
-    function done(){ if(loaded.chamados&&loaded.contador&&loaded.usuarios&&loaded.setores&&loaded.areas&&callback) callback(); }
-    // Timeout de segurança — se Firebase demorar, libera após 8s
-    setTimeout(function(){ if(callback){ loaded.setores=true; loaded.areas=true; done(); } },8000);
+    function done(){
+      if(loaded.chamados&&loaded.contador&&loaded.usuarios&&loaded.setores&&loaded.areas&&callback){var cb=callback;callback=null;cb();}
+    }
+    setTimeout(function(){loaded.setores=true;loaded.areas=true;done();},6000);
     fbDB.ref('chamados').once('value',function(s){
       var v=s.val();
       window._fbCache.chamados=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
@@ -1592,33 +1593,8 @@ function fazerLogin() {
   });
 }
 
-function verificarPrazos(){
-  if(!usuarioAtual) return;
-  var chamados=getChamados();
-  chamados.forEach(function(c){
-    if(!c||!c.prazoVencimento) return;
-    if(c.status==='Resolvido'||c.status==='Cancelado') return;
-    var isAtend=usuarioAtual.perfil==='admin'||usuarioAtual.perfil==='atendente'||c.atendenteId===usuarioAtual.id;
-    if(!isAtend&&c.usuarioId!==usuarioAtual.id) return;
-    var ag=new Date(),vc=new Date(c.prazoVencimento),dh=Math.floor((vc-ag)/3600000),dd=Math.floor(dh/24);
-    var cor,msg;
-    if(dh<0){cor='#e74c3c';msg='PRAZO VENCIDO: #'+c.numero+' - '+c.assunto+' - '+Math.abs(dd)+'d '+Math.abs(dh%24)+'h em atraso!';}
-    else if(dh<=24){cor='#e74c3c';msg='URGENTE: #'+c.numero+' - '+c.assunto+' - vence em '+dh+'h!';}
-    else if(dh<=48){cor='#e67e22';msg='ATENCAO: #'+c.numero+' - '+c.assunto+' - vence em '+dd+'d '+(dh%24)+'h.';}
-    else return;
-    var ct=document.getElementById('toasts'); if(!ct) return;
-    var el=document.createElement('div');
-    el.style.cssText='background:'+cor+';color:white;padding:12px 18px;border-radius:8px;margin-bottom:8px;font-size:13px;font-weight:600;cursor:pointer;max-width:400px;box-shadow:0 4px 12px rgba(0,0,0,.25)';
-    el.textContent=msg; el.onclick=function(){el.remove();};
-    ct.appendChild(el);
-    setTimeout(function(){if(el.parentNode)el.remove();},8000);
-  });
-}
-function iniciarVerificacaoPrazos(){
-  setTimeout(verificarPrazos,4000);
-  if(window._prazoInterval) clearInterval(window._prazoInterval);
-  window._prazoInterval=setInterval(verificarPrazos,1800000);
-}
+function verificarPrazos(){if(!usuarioAtual)return;var ch=getChamados();ch.forEach(function(c){if(!c||!c.prazoVencimento)return;if(c.status==='Resolvido'||c.status==='Cancelado')return;var isA=usuarioAtual.perfil==='admin'||usuarioAtual.perfil==='atendente'||c.atendenteId===usuarioAtual.id;var isD=c.usuarioId===usuarioAtual.id;if(!isA&&!isD)return;var ag=new Date(),vc=new Date(c.prazoVencimento),dh=Math.floor((vc-ag)/3600000),dd=Math.floor(dh/24);var cor,msg;if(dh<0){cor='#e74c3c';msg='PRAZO VENCIDO: #'+c.numero+' ('+c.assunto+') - '+Math.abs(dd)+'d '+Math.abs(dh%24)+'h em atraso!';}else if(dh<=24){cor='#e74c3c';msg='URGENTE: #'+c.numero+' ('+c.assunto+') - vence em '+dh+'h!';}else if(dh<=48){cor='#e67e22';msg='ATENCAO: #'+c.numero+' ('+c.assunto+') - vence em '+dd+'d '+(dh%24)+'h.';}else return;var ct=document.getElementById('toasts');if(!ct)return;var el=document.createElement('div');el.style.cssText='background:'+cor+';color:white;padding:12px 18px;border-radius:8px;margin-bottom:8px;font-size:13px;font-weight:600;cursor:pointer;max-width:400px;box-shadow:0 4px 12px rgba(0,0,0,.25)';el.textContent=msg;el.onclick=function(){el.remove();};ct.appendChild(el);setTimeout(function(){if(el.parentNode)el.remove();},8000);});}
+function iniciarVerificacaoPrazos(){setTimeout(verificarPrazos,5000);if(window._prazoInt)clearInterval(window._prazoInt);window._prazoInt=setInterval(verificarPrazos,1800000);}
 function sair() {
   usuarioAtual = null;
   window._loginFeito=false;
@@ -2191,17 +2167,7 @@ function abrirTicket(id) {
   var btnEditBox=document.getElementById('btn-editar-box');
   if(btnEditBox) btnEditBox.style.display=(usuarioAtual&&usuarioAtual.perfil==='admin')?'block':'none';
   abrirModal('modal-ticket');
-  // Badge prazo
-  (function(){
-    var pb=document.getElementById('ticket-prazo-badge');
-    if(!pb) return;
-    if(!c.prazoVencimento||c.status==='Resolvido'||c.status==='Cancelado'){pb.style.display='none';return;}
-    var ag=new Date(),vc=new Date(c.prazoVencimento),dh=Math.floor((vc-ag)/3600000),dd=Math.floor(dh/24);
-    var cor=dh<0?'#e74c3c':dh<=24?'#e74c3c':dh<=48?'#e67e22':'#27ae60';
-    var txt=dh<0?('VENCIDO '+Math.abs(dd)+'d '+Math.abs(dh%24)+'h atraso'):dh<=24?(dh+'h restantes'):(dd+'d '+(dh%24)+'h restantes');
-    pb.innerHTML='<div style="background:'+cor+';color:white;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;text-align:center">Prazo: '+txt+'<\/div>';
-    pb.style.display='block';
-  })();
+  (function(){var pb=document.getElementById('ticket-prazo-badge');if(!pb)return;if(!c.prazoVencimento||c.status==='Resolvido'||c.status==='Cancelado'){pb.style.display='none';return;}var ag=new Date(),vc=new Date(c.prazoVencimento),dh=Math.floor((vc-ag)/3600000),dd=Math.floor(dh/24);var cor=dh<0?'#e74c3c':dh<=24?'#e74c3c':dh<=48?'#e67e22':'#27ae60';var txt=dh<0?('VENCIDO '+Math.abs(dd)+'d '+Math.abs(dh%24)+'h'):dh<=24?(dh+'h restantes'):(dd+'d '+(dh%24)+'h restantes');pb.innerHTML='<div style="background:'+cor+';color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;text-align:center">Prazo: '+txt+'<\/div>';pb.style.display='block';})();
   // Scroll para última mensagem
   setTimeout(() => {
     const ml = document.getElementById('msg-list');
