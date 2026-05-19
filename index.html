@@ -1178,6 +1178,7 @@ const fbDB = firebase.database();
       <button class="close-btn" onclick="fecharModal('modal-ticket')">✕</button>
     </div>
     <div class="modal-body">
+      <div id="ticket-prazo-badge" style="display:none;margin:0 0 12px 0"></div>
       <div class="ticket-info-grid" id="ticket-info-grid">
     <div class="ticket-info-item"><div class="tit">Número</div><div class="val">#0002</div></div>
     <div class="ticket-info-item"><div class="tit">Status</div><div class="val"><span class="badge badge-aberto">Aberto</span></div></div>
@@ -2207,7 +2208,18 @@ function abrirTicket(id) {
   // Mostrar botão editar só para admin
   var btnEditBox=document.getElementById('btn-editar-box');
   if(btnEditBox) btnEditBox.style.display=(usuarioAtual&&usuarioAtual.perfil==='admin')?'block':'none';
-  abrirModal('modal-ticket');
+  abrirModal('modal-ticket'
+  // Badge prazo
+  (function(){
+    var pb=document.getElementById('ticket-prazo-badge');
+    if(!pb) return;
+    if(!c.prazoVencimento||c.status==='Resolvido'||c.status==='Cancelado'){pb.style.display='none';return;}
+    var ag=new Date(),vc=new Date(c.prazoVencimento),dh=Math.floor((vc-ag)/3600000),dd=Math.floor(dh/24);
+    var cor=dh<0?'#e74c3c':dh<=24?'#e74c3c':dh<=48?'#e67e22':'#27ae60';
+    var txt=dh<0?('VENCIDO '+Math.abs(dd)+'d'):dh<=24?(dh+'h restantes'):(dd+'d '+(dh%24)+'h restantes');
+    pb.innerHTML='<div style="background:'+cor+';color:white;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;text-align:center">'+String.fromCharCode(9200)+' '+txt+'</div>';
+    pb.style.display='block';
+  })(););
   // Scroll para última mensagem
   setTimeout(() => {
     const ml = document.getElementById('msg-list');
