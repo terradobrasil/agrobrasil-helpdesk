@@ -1911,7 +1911,7 @@ function abrirChamado() {
 
 // ===================== TODOS OS CHAMADOS =====================
 function carregarFiltroSetor() {
-  const setores = DB.get('setores') || [];
+  const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
   const sel = document.getElementById('filtro-todos-setor');
   if (sel) sel.innerHTML = '<option value="">Todos os setores</option>' + setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
 }
@@ -2350,7 +2350,7 @@ function renderRelatorios() {
   });
 }
 function carregarFiltroSetorRel() {
-  const setores = DB.get('setores') || [];
+  const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
   const sel = document.getElementById('rel-setor');
   if (sel) sel.innerHTML = '<option value="">Todos</option>' + setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
 }
@@ -2387,7 +2387,7 @@ function renderRelatorio() {
     {label:'Urgentes', value:chamados.filter(c=>c.prioridade==='Urgente').length, sub:'prioridade máxima', cls:'vermelho'},
   ].map(c=>`<div class="stat-card ${c.cls}"><div class="label">${c.label}</div><div class="value">${c.value}</div><div class="sub">${c.sub}</div></div>`).join('');
   // Por setor
-  const setores = DB.get('setores') || [];
+  const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
   const porSetor = setores.map(s=>({nome:s.nome, count:chamados.filter(c=>c.setorId===s.id).length})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,8);
   const maxS = Math.max(...porSetor.map(x=>x.count),1);
   document.getElementById('chart-setores').innerHTML = porSetor.length ? porSetor.map(x=>`
@@ -2397,7 +2397,7 @@ function renderRelatorio() {
     </div>
   `).join('') : '<div style="color:var(--cinza3);text-align:center;padding:20px">Sem dados</div>';
   // Por área
-  const areas = DB.get('areas') || [];
+  const areas = (window._fbCache&&window._fbCache.areas)||DB.get('areas')||[];
   const porArea = areas.map(a=>({nome:a.nome, count:chamados.filter(c=>c.areaId===a.id).length})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,8);
   const maxA = Math.max(...porArea.map(x=>x.count),1);
   document.getElementById('chart-areas').innerHTML = porArea.length ? porArea.map(x=>`
@@ -2461,7 +2461,7 @@ function exportarCSV() {
 // ===================== USUÁRIOS =====================
 function renderUsuarios() {
   const usuarios = getUsuarios();
-  const setores = DB.get('setores') || [];
+  const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
   document.getElementById('lista-usuarios').innerHTML = usuarios.map(u=>`
     <div class="settings-item">
       <div style="display:flex;align-items:center;gap:12px">
@@ -2480,7 +2480,7 @@ function renderUsuarios() {
 }
 
 function abrirModalUsuario(id) {
-  const setores = DB.get('setores') || [];
+  const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
   document.getElementById('usuario-setor').innerHTML = '<option value="">Selecione...</option>' + setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
   document.getElementById('usuario-id').value = '';
   document.getElementById('usuario-nome').value = '';
@@ -2497,7 +2497,7 @@ function abrirModalUsuario(id) {
 function editarUsuario(id) {
   const u = getUsuarios().find(x=>x.id===id);
   if (!u) return;
-  const setores = DB.get('setores') || [];
+  const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
   document.getElementById('usuario-setor').innerHTML = '<option value="">Selecione...</option>' + setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
   document.getElementById('usuario-id').value = u.id;
   document.getElementById('usuario-nome').value = u.nome;
@@ -2553,7 +2553,7 @@ function excluirUsuario(id) {
 // ===================== SETORES & ÁREAS =====================
 function renderSetores() {
   const setores = DB.get('setores') || [];
-  const areas = DB.get('areas') || [];
+  const areas = (window._fbCache&&window._fbCache.areas)||DB.get('areas')||[];
   document.getElementById('lista-setores').innerHTML = setores.map(s=>`
     <div class="settings-item">
       <div class="info">
