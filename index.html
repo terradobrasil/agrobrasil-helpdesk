@@ -1887,10 +1887,36 @@ function abrirChamado() {
   // Auto-assign
   var atAuto=atribuirAtendente(setorId);
   if(atAuto){chamado.atendenteId=atAuto.id;chamado.mensagens.push({id:uid(),autorId:'sistema',autorNome:'Sistema',tipo:'sistema',texto:'👤 Atribuído para: '+atAuto.nome,criadoEm:new Date().toISOString()});}
-  chamados.unshift(chamado);
-  DB.set('chamados', chamados);
-  toast(`✅ Chamado ${chamado.numero} aberto com sucesso!`, 'success');
-  setTimeout(function(){irPara('todos-chamados');renderDashboard();},300);
+  // Ler anexos antes de salvar
+  var inputArq=document.getElementById('nc-arquivos');
+  var files=inputArq?Array.from(inputArq.files):[];
+  if(files.length===0){
+    chamados.unshift(chamado);
+    DB.set('chamados',chamados);
+    toast('Chamado '+chamado.numero+' aberto com sucesso!','success');
+    setTimeout(function(){irPara('todos-chamados');renderDashboard();},300);
+  } else {
+    var anexosList=[];
+    var pendentes=files.length;
+    files.forEach(function(f){
+      if(f.size>10*1024*1024){toast('Arquivo '+f.name+' excede 10MB e foi ignorado.','error');pendentes--;if(pendentes===0){_salvarComAnexos();} return;}
+      var rd=new FileReader();
+      rd.onload=function(e){
+        anexosList.push({nome:f.name,tipo:f.type,dados:e.target.result});
+        pendentes--;
+        if(pendentes===0) _salvarComAnexos();
+      };
+      rd.onerror=function(){pendentes--;if(pendentes===0)_salvarComAnexos();};
+      rd.readAsDataURL(f);
+    });
+    function _salvarComAnexos(){
+      chamado.anexos=anexosList;
+      chamados.unshift(chamado);
+      DB.set('chamados',chamados);
+      toast('Chamado '+chamado.numero+' aberto com sucesso'+(anexosList.length>0?' ('+anexosList.length+' anexo(s))':'')+'!','success');
+      setTimeout(function(){irPara('todos-chamados');renderDashboard();},300);
+    }
+  }
   // Email solicitante
   var uSol=getUsuarios().find(function(u){return u.id===chamado.usuarioId;});
   if(uSol&&uSol.email)enviarEmail(uSol.email,'[HelpDesk] Chamado '+chamado.numero+' aberto - '+chamado.assunto,'Olá '+uSol.nome+',\n\nSeu chamado foi registrado!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nPrioridade: '+chamado.prioridade+'\n'+(atAuto?'Atendente: '+atAuto.nome+'\n':'')+'\nAcompanhe em: https://warleytavares.github.io/agrobrasil-helpdesk/');
