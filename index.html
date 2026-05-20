@@ -2293,61 +2293,271 @@ function enviarMensagem() {
 }
 
 // ===================== RELATÓRIOS =====================
+
+function imprimirRelatorio(){
+  window.print();
+}
 function renderRelatorios() {
-  DB.ghLoad(function(){
-    var chamados = getChamados();
-    var total = chamados.length;
-    var abertos = chamados.filter(function(c){return c.status==='Aberto';}).length;
-    var andamento = chamados.filter(function(c){return c.status==='Em andamento';}).length;
-    var resolvidos = chamados.filter(function(c){return c.status==='Resolvido';}).length;
-    var cancelados = chamados.filter(function(c){return c.status==='Cancelado';}).length;
-    var urgentes = chamados.filter(function(c){return c.prioridade==='Urgente'||c.prioridade==='Crítica';}).length;
+  var el=document.getElementById('page-relatorios');
+  if(!el) return;
+  var chamados=getChamados();
+  var setores=(window._fbCache&&window._fbCache.setores)||[];
+  var areas=(window._fbCache&&window._fbCache.areas)||[];
 
-    // Calcular TMA (tempo médio de atendimento)
-    var temposRes=[];
-    chamados.filter(function(c){return c.status==='Resolvido'&&c.criadoEm&&c.atualizadoEm;}).forEach(function(c){
-      var diff=(new Date(c.atualizadoEm)-new Date(c.criadoEm))/(1000*60*60);
-      temposRes.push(diff);
-    });
-    var tma = temposRes.length>0 ? (temposRes.reduce(function(a,b){return a+b;},0)/temposRes.length).toFixed(1)+'h' : 'N/A';
+  // Filtros
+  var periodo=document.getElementById('rel-periodo')?document.getElementById('rel-periodo').value:'mes';
+  var filtroSetor=document.getElementById('rel-setor')?document.getElementById('rel-setor').value:'';
+  var filtroStatus=document.getElementById('rel-status-f')?document.getElementById('rel-status-f').value:'';
+  var de=document.getElementById('rel-de')?document.getElementById('rel-de').value:'';
+  var ate=document.getElementById('rel-ate')?document.getElementById('rel-ate').value:'';
 
-    // Por setor
-    var porSetor={};
-    chamados.forEach(function(c){
-      var _setList=JSON.parse(localStorage.getItem('agro_hd_setores')||'[]');
-      var _setObj=_setList.find(function(x){return x.id===c.setorId||x.id===c.setor;});
-      var s=c.setorNome||(_setObj?_setObj.nome:null)||c.setor||'Outros';
-      porSetor[s]=(porSetor[s]||0)+1;
-    });
+  // Aplicar filtro de período
+  var agora=new Date(); var ini=new Date();
+  if(periodo==='dia'){ini=new Date(agora.toDateString());}
+  else if(periodo==='semana'){ini=new Date(agora);ini.setDate(agora.getDate()-7);}
+  else if(periodo==='mes'){ini=new Date(agora.getFullYear(),agora.getMonth(),1);}
+  else if(periodo==='ano'){ini=new Date(agora.getFullYear(),0,1);}
+  else if(periodo==='custom'&&de){ini=new Date(de);}
+  var fimCustom=periodo==='custom'&&ate?new Date(ate+'T23:59:59'):null;
 
-    var el=document.getElementById('page-relatorios');
-    if(!el) return;
-    el.innerHTML=`<div class="page-header"><h2>📊 Relatórios</h2></div>
-    <div class="cards-grid">
-      <div class="card"><div class="card-label">TOTAL DE CHAMADOS</div><div class="card-value">${total}</div></div>
-      <div class="card" style="border-left:4px solid var(--amarelo)"><div class="card-label">ABERTOS</div><div class="card-value">${abertos}</div></div>
-      <div class="card" style="border-left:4px solid var(--azul)"><div class="card-label">EM ANDAMENTO</div><div class="card-value">${andamento}</div></div>
-      <div class="card" style="border-left:4px solid var(--verde)"><div class="card-label">RESOLVIDOS</div><div class="card-value">${resolvidos}</div></div>
-      <div class="card" style="border-left:4px solid var(--vermelho)"><div class="card-label">URGENTES</div><div class="card-value">${urgentes}</div></div>
-      <div class="card"><div class="card-label">TEMPO MÉDIO ATEND.</div><div class="card-value">${tma}</div></div>
-    </div>
-    <div class="card" style="margin-top:24px">
-      <h3 style="margin-bottom:16px">📋 Chamados por Setor</h3>
-      ${Object.keys(porSetor).length===0?'<p style="color:var(--cinza3)">Nenhum dado disponível</p>':
-        Object.entries(porSetor).sort(function(a,b){return b[1]-a[1];}).map(function(e){
-          var pct=total>0?Math.round(e[1]/total*100):0;
-          return '<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>'+e[0]+'</span><span><b>'+e[1]+'</b> ('+pct+'%)</span></div><div style="background:#eee;border-radius:4px;height:8px"><div style="background:var(--verde);width:'+pct+'%;height:8px;border-radius:4px"></div></div></div>';
-        }).join('')
-      }
-    </div>
-    <div class="card" style="margin-top:16px">
-      <h3 style="margin-bottom:16px">📅 Chamados Recentes</h3>
-      <table class="tabela-chamados" style="width:100%">
-        <thead><tr><th>Nº</th><th>Assunto</th><th>Status</th><th>Prioridade</th><th>Data</th></tr></thead>
-        <tbody>${chamados.slice(0,10).map(function(c){return '<tr><td>'+c.numero+'</td><td>'+c.assunto+'</td><td>'+badgeStatus(c.status)+'</td><td>'+c.prioridade+'</td><td>'+fmtDataCurta(c.criadoEm)+'</td></tr>';}).join('')||'<tr><td colspan="5" style="text-align:center;color:var(--cinza3)">Nenhum chamado</td></tr>'}</tbody>
-      </table>
-    </div>`;
+  var filtrados=chamados.filter(function(c){
+    if(!c) return false;
+    var d=new Date(c.criadoEm);
+    if(isNaN(d)) return false;
+    if(d<ini) return false;
+    if(fimCustom&&d>fimCustom) return false;
+    if(filtroSetor&&c.setorId!==filtroSetor) return false;
+    if(filtroStatus&&c.status!==filtroStatus) return false;
+    return true;
   });
+
+  var total=filtrados.length;
+  var abertos=filtrados.filter(function(c){return c.status==='Aberto';}).length;
+  var andamento=filtrados.filter(function(c){return c.status==='Em andamento';}).length;
+  var resolvidos=filtrados.filter(function(c){return c.status==='Resolvido';}).length;
+  var cancelados=filtrados.filter(function(c){return c.status==='Cancelado';}).length;
+  var urgentes=filtrados.filter(function(c){return c.prioridade==='Urgente';}).length;
+  var vencidos=filtrados.filter(function(c){return c.prazoVencimento&&new Date(c.prazoVencimento)<agora&&c.status!=='Resolvido'&&c.status!=='Cancelado';}).length;
+
+  var temposRes=[];
+  filtrados.filter(function(c){return c.status==='Resolvido'&&c.criadoEm&&c.atualizadoEm;}).forEach(function(c){
+    var diff=(new Date(c.atualizadoEm)-new Date(c.criadoEm))/(1000*60*60);
+    temposRes.push(diff);
+  });
+  var tma=temposRes.length>0?(temposRes.reduce(function(a,b){return a+b;},0)/temposRes.length).toFixed(1)+'h':'N/A';
+
+  // Agrupamentos
+  function agrupar(lista,keyFn){
+    var obj={};
+    lista.forEach(function(c){var k=keyFn(c)||'Outros';obj[k]=(obj[k]||0)+1;});
+    return Object.entries(obj).sort(function(a,b){return b[1]-a[1];});
+  }
+  var porSetor=agrupar(filtrados,function(c){return c.setorNome||'Outros';});
+  var porArea=agrupar(filtrados,function(c){return c.areaNome||'Sem área';});
+  var porPrio=agrupar(filtrados,function(c){return c.prioridade||'N/D';});
+  var porStatus=agrupar(filtrados,function(c){return c.status||'N/D';});
+  var porTecnico=agrupar(filtrados,function(c){
+    if(!c.atendenteId) return 'Não atribuído';
+    var users=(window._fbCache&&window._fbCache.usuarios)||[];
+    var u=users.find(function(x){return x&&x.id===c.atendenteId;});
+    return u?u.nome:'Não atribuído';
+  });
+
+  // Evolução diária (últimos 14 dias)
+  var diasMap={};
+  for(var i=13;i>=0;i--){
+    var d=new Date(agora); d.setDate(agora.getDate()-i);
+    diasMap[d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})]=0;
+  }
+  filtrados.forEach(function(c){
+    var d=new Date(c.criadoEm);
+    var k=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+    if(diasMap[k]!==undefined) diasMap[k]++;
+  });
+  var diasArr=Object.entries(diasMap);
+
+  // Gráfico de barras SVG horizontal
+  function barrasH(dados,cores,max){
+    if(!dados||dados.length===0) return '<p style="color:#999;padding:16px">Sem dados</p>';
+    var mval=Math.max.apply(null,dados.map(function(d){return d[1];}),1)||1;
+    return dados.map(function(d,i){
+      var pct=Math.round(d[1]/mval*100);
+      var cor=Array.isArray(cores)?cores[i%cores.length]:cores;
+      return '<div style="margin-bottom:10px">'+
+        '<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px">'+
+        '<span style="font-weight:500;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+d[0]+'</span>'+
+        '<span style="font-weight:700;color:#333">'+d[1]+'</span></div>'+
+        '<div style="background:#eee;border-radius:6px;height:22px;overflow:hidden">'+
+        '<div style="background:'+cor+';width:'+pct+'%;height:22px;border-radius:6px;transition:width .4s;display:flex;align-items:center;padding-left:8px">'+
+        '<span style="color:white;font-size:11px;font-weight:700">'+d[1]+'</span></div></div></div>';
+    }).join('');
+  }
+
+  // Gráfico de pizza SVG
+  function pizzaSVG(dados,cores){
+    if(!dados||dados.length===0) return '<p style="color:#999;padding:16px">Sem dados</p>';
+    var tot=dados.reduce(function(s,d){return s+d[1];},0)||1;
+    var r=80,cx=100,cy=100,ang=-Math.PI/2;
+    var paths='';
+    dados.forEach(function(d,i){
+      var theta=d[1]/tot*2*Math.PI;
+      var x1=cx+r*Math.cos(ang), y1=cy+r*Math.sin(ang);
+      var x2=cx+r*Math.cos(ang+theta), y2=cy+r*Math.sin(ang+theta);
+      var large=theta>Math.PI?1:0;
+      var cor=cores[i%cores.length];
+      paths+='<path d="M'+cx+','+cy+' L'+x1.toFixed(1)+','+y1.toFixed(1)+' A'+r+','+r+' 0 '+large+',1 '+x2.toFixed(1)+','+y2.toFixed(1)+' Z" fill="'+cor+'" stroke="white" stroke-width="2"/>';
+      var lx=cx+(r+18)*Math.cos(ang+theta/2), ly=cy+(r+18)*Math.sin(ang+theta/2);
+      if(d[1]>0) paths+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">'+Math.round(d[1]/tot*100)+'%</text>';
+      ang+=theta;
+    });
+    var legenda=dados.map(function(d,i){
+      return '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:12px">'+
+        '<div style="width:12px;height:12px;border-radius:2px;background:'+cores[i%cores.length]+';flex-shrink:0"></div>'+
+        '<span>'+d[0]+' ('+d[1]+')</span></div>';
+    }).join('');
+    return '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">'+
+      '<svg width="200" height="200" viewBox="0 0 200 200">'+paths+'</svg>'+
+      '<div>'+legenda+'</div></div>';
+  }
+
+  // Opções de cores
+  var coresSetor=['#2d7a4f','#3498db','#e67e22','#9b59b6','#e74c3c','#1abc9c','#f39c12','#2ecc71'];
+  var coresPrio={Urgente:'#e74c3c',Alta:'#e67e22',Media:'#f39c12',Baixa:'#27ae60','N/D':'#95a5a6'};
+  var coresStatus={Aberto:'#3498db','Em andamento':'#f39c12',Resolvido:'#27ae60',Cancelado:'#95a5a6'};
+
+  // Opções do select de setor para filtro
+  var setOpts=setores.map(function(s){return '<option value="'+s.id+'"'+(filtroSetor===s.id?' selected':'')+'>'+s.nome+'</option>';}).join('');
+
+  // HTML da página
+  el.innerHTML=
+    '<style>'+
+    '@media print{.no-print{display:none!important}.print-only{display:block!important}.rel-section{page-break-inside:avoid}}'+
+    '.print-only{display:none}'+
+    '.rel-filtros{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:white;padding:16px;border-radius:10px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.08)}'+
+    '.rel-filtros select,.rel-filtros input{padding:8px 10px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;outline:none}'+
+    '.rel-filtros label{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;display:block;margin-bottom:3px}'+
+    '.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}'+
+    '.kpi{background:white;border-radius:10px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:4px solid #ddd}'+
+    '.kpi-val{font-size:36px;font-weight:800;line-height:1}'+
+    '.kpi-lbl{font-size:11px;color:#888;text-transform:uppercase;margin-top:4px;font-weight:600}'+
+    '.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}'+
+    '.chart-card{background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08)}'+
+    '.chart-card h3{font-size:14px;font-weight:700;color:#1a2540;margin-bottom:16px}'+
+    '.chart-full{background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:16px}'+
+    '.chart-full h3{font-size:14px;font-weight:700;color:#1a2540;margin-bottom:16px}'+
+    '.rel-table{width:100%;border-collapse:collapse;font-size:13px}'+
+    '.rel-table th{background:#f5f6fa;padding:8px 12px;text-align:left;font-size:11px;text-transform:uppercase;color:#888;font-weight:700}'+
+    '.rel-table td{padding:8px 12px;border-bottom:1px solid #f0f0f0}'+
+    '.rel-table tr:hover td{background:#fafafa}'+
+    '@media(max-width:700px){.charts-grid{grid-template-columns:1fr}}'+
+    '</style>'+
+
+    '<div class="page-header no-print" style="display:flex;justify-content:space-between;align-items:center">'+
+    '<h2>📊 Relatórios</h2>'+
+    '<button onclick="imprimirRelatorio()" style="background:#1a2540;color:white;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px">🖨️ Imprimir / Exportar PDF</button>'+
+    '</div>'+
+
+    // Título para impressão
+    '<div class="print-only" style="text-align:center;margin-bottom:24px">'+
+    '<h2 style="font-size:22px;font-weight:800;color:#1a2540">AgroBrasil HelpDesk — Relatório Gerencial</h2>'+
+    '<p style="color:#666;font-size:13px">Gerado em '+new Date().toLocaleString('pt-BR')+'</p>'+
+    '</div>'+
+
+    // Filtros
+    '<div class="rel-filtros no-print">'+
+    '<div><label>Período</label>'+
+    '<select id="rel-periodo" onchange="renderRelatorios()">'+
+    '<option value="dia"'+(periodo==='dia'?' selected':'')+'>Hoje</option>'+
+    '<option value="semana"'+(periodo==='semana'?' selected':'')+'>Esta semana</option>'+
+    '<option value="mes"'+(periodo==='mes'?' selected':'')+'>Este mês</option>'+
+    '<option value="ano"'+(periodo==='ano'?' selected':'')+'>Este ano</option>'+
+    '<option value="todos"'+(periodo==='todos'?' selected':'')+'>Todos</option>'+
+    '<option value="custom"'+(periodo==='custom'?' selected':'')+'>Personalizado</option>'+
+    '</select></div>'+
+    '<div id="rel-custom-div" style="display:'+(periodo==='custom'?'flex':'none')+';gap:8px">'+
+    '<div><label>De</label><input type="date" id="rel-de" value="'+de+'"></div>'+
+    '<div><label>Até</label><input type="date" id="rel-ate" value="'+ate+'"></div>'+
+    '<div style="display:flex;align-items:flex-end"><button onclick="renderRelatorios()" style="padding:8px 14px;background:#2d7a4f;color:white;border:none;border-radius:7px;cursor:pointer;font-weight:600">Aplicar</button></div>'+
+    '</div>'+
+    '<div><label>Setor</label>'+
+    '<select id="rel-setor" onchange="renderRelatorios()"><option value="">Todos os setores</option>'+setOpts+'</select></div>'+
+    '<div><label>Status</label>'+
+    '<select id="rel-status-f" onchange="renderRelatorios()">'+
+    '<option value="">Todos</option>'+
+    ['Aberto','Em andamento','Resolvido','Cancelado'].map(function(s){return '<option value="'+s+'"'+(filtroStatus===s?' selected':'')+'>'+s+'</option>';}).join('')+
+    '</select></div>'+
+    '</div>'+
+
+    // KPIs
+    '<div class="kpi-grid">'+
+    '<div class="kpi" style="border-left-color:#1a2540"><div class="kpi-val">'+total+'</div><div class="kpi-lbl">Total</div></div>'+
+    '<div class="kpi" style="border-left-color:#3498db"><div class="kpi-val" style="color:#3498db">'+abertos+'</div><div class="kpi-lbl">Abertos</div></div>'+
+    '<div class="kpi" style="border-left-color:#f39c12"><div class="kpi-val" style="color:#f39c12">'+andamento+'</div><div class="kpi-lbl">Em andamento</div></div>'+
+    '<div class="kpi" style="border-left-color:#27ae60"><div class="kpi-val" style="color:#27ae60">'+resolvidos+'</div><div class="kpi-lbl">Resolvidos</div></div>'+
+    '<div class="kpi" style="border-left-color:#e74c3c"><div class="kpi-val" style="color:#e74c3c">'+urgentes+'</div><div class="kpi-lbl">Urgentes</div></div>'+
+    '<div class="kpi" style="border-left-color:#e74c3c"><div class="kpi-val" style="color:#e74c3c">'+vencidos+'</div><div class="kpi-lbl">Prazo Vencido</div></div>'+
+    '<div class="kpi" style="border-left-color:#2d7a4f"><div class="kpi-val" style="color:#2d7a4f">'+tma+'</div><div class="kpi-lbl">Tempo Médio</div></div>'+
+    '</div>'+
+
+    // Gráficos linha 1: Setor e Área
+    '<div class="charts-grid rel-section">'+
+    '<div class="chart-card"><h3>🏢 Chamados por Setor</h3>'+barrasH(porSetor,coresSetor)+'</div>'+
+    '<div class="chart-card"><h3>🏷️ Chamados por Área</h3>'+barrasH(porArea,['#3498db','#2980b9','#1abc9c','#16a085','#2ecc71'])+'</div>'+
+    '</div>'+
+
+    // Gráficos linha 2: Status (pizza) e Prioridade (barras)
+    '<div class="charts-grid rel-section">'+
+    '<div class="chart-card"><h3>📊 Distribuição por Status</h3>'+pizzaSVG(porStatus,['#3498db','#f39c12','#27ae60','#95a5a6'])+'</div>'+
+    '<div class="chart-card"><h3>🎯 Distribuição por Prioridade</h3>'+pizzaSVG(porPrio,['#e74c3c','#e67e22','#f39c12','#27ae60','#95a5a6'])+'</div>'+
+    '</div>'+
+
+    // Técnicos e evolução
+    '<div class="charts-grid rel-section">'+
+    '<div class="chart-card"><h3>👤 Chamados por Técnico</h3>'+barrasH(porTecnico,['#9b59b6','#8e44ad','#7f3fbf'])+'</div>'+
+    '<div class="chart-card"><h3>📅 Evolução (últimos 14 dias)</h3>'+
+    '<div style="display:flex;align-items:flex-end;gap:4px;height:100px;padding-top:8px">'+
+    (function(){
+      var mx=Math.max.apply(null,diasArr.map(function(d){return d[1];}),1)||1;
+      return diasArr.map(function(d){
+        var h2=mx>0?Math.max(Math.round(d[1]/mx*80),2):2;
+        return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">'+
+          '<span style="font-size:9px;font-weight:700;color:#333">'+d[1]+'</span>'+
+          '<div style="width:100%;background:#2d7a4f;border-radius:3px 3px 0 0;height:'+h2+'px"></div>'+
+          '<span style="font-size:8px;color:#888;transform:rotate(-45deg);transform-origin:top left;white-space:nowrap;margin-top:4px">'+d[0]+'</span>'+
+          '</div>';
+      }).join('');
+    })()+'</div></div>'+
+    '</div>'+
+
+    // Tabela detalhada
+    '<div class="chart-full rel-section">'+
+    '<h3>📋 Listagem Detalhada</h3>'+
+    '<table class="rel-table">'+
+    '<thead><tr><th>Nº</th><th>Assunto</th><th>Setor</th><th>Área</th><th>Prioridade</th><th>Status</th><th>Técnico</th><th>Prazo</th><th>Data Abertura</th></tr></thead>'+
+    '<tbody>'+
+    (filtrados.length===0?'<tr><td colspan="9" style="text-align:center;color:#999;padding:24px">Nenhum chamado no período</td></tr>':
+    filtrados.slice().reverse().map(function(c){
+      var prazoTxt='—';
+      if(c.prazoVencimento&&c.status!=='Resolvido'&&c.status!=='Cancelado'){
+        var dh=Math.floor((new Date(c.prazoVencimento)-agora)/3600000);
+        var dd=Math.floor(dh/24);
+        var cor2=dh<0?'#e74c3c':dh<=24?'#e74c3c':dh<=48?'#e67e22':'#27ae60';
+        prazoTxt='<span style="color:'+cor2+';font-weight:700">'+(dh<0?'VENCIDO':dh<=24?dh+'h':dd+'d')+'</span>';
+      } else if(c.status==='Resolvido'){prazoTxt='<span style="color:#27ae60">✓</span>';}
+      var users=(window._fbCache&&window._fbCache.usuarios)||[];
+      var tec=c.atendenteId?(users.find(function(x){return x&&x.id===c.atendenteId;})||{nome:'—'}).nome:'—';
+      return '<tr><td><b>'+c.numero+'</b></td><td>'+c.assunto+'</td><td>'+
+        (c.setorNome||'—')+'</td><td>'+(c.areaNome||'—')+'</td><td>'+
+        '<span style="font-size:11px;font-weight:700;color:'+(c.prioridade==='Urgente'?'#e74c3c':c.prioridade==='Alta'?'#e67e22':c.prioridade==='Média'?'#f39c12':'#27ae60')+'">'+c.prioridade+'</span></td><td>'+
+        '<span style="font-size:11px;font-weight:700;color:'+(c.status==='Resolvido'?'#27ae60':c.status==='Em andamento'?'#f39c12':c.status==='Cancelado'?'#95a5a6':'#3498db')+'">'+c.status+'</span></td><td>'+
+        tec+'</td><td>'+prazoTxt+'</td><td>'+fmtDataCurta(c.criadoEm)+'</td></tr>';
+    }).join(''))+
+    '</tbody></table></div>';
+
+  // Ativar/desativar período customizado
+  var cd=document.getElementById('rel-custom-div');
+  var rp=document.getElementById('rel-periodo');
+  if(cd&&rp) rp.addEventListener('change',function(){cd.style.display=this.value==='custom'?'flex':'none';});
 }
 function carregarFiltroSetorRel() {
   const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
