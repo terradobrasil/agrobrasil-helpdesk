@@ -1200,6 +1200,7 @@ const fbDB = firebase.database();
           <button class="btn btn-primary btn-sm" onclick="alterarStatus('Resolvido')">✅ Resolvido</button>
           <button class="btn btn-outline btn-sm" onclick="alterarStatus('Cancelado')">❌ Cancelado</button>
         </div>
+        <div id='ticket-prio-box' style='margin-top:10px'><label>Alterar Prioridade</label><div style='display:flex;gap:8px;flex-wrap:wrap;margin-top:4px'><button class='btn btn-sm' style='background:#dc3545;color:#fff;border:none' onclick="alterarPrioridade('Urgente')">🔴 Urgente</button><button class='btn btn-sm' style='background:#e67e22;color:#fff;border:none' onclick="alterarPrioridade('Alta')">🟠 Alta</button><button class='btn btn-sm' style='background:#856404;color:#fff;border:none' onclick="alterarPrioridade('Média')">🟡 Média</button><button class='btn btn-sm' style='background:#1A5C2A;color:#fff;border:none' onclick="alterarPrioridade('Baixa')">🟢 Baixa</button></div></div>
         <div id="btn-editar-box" style="margin-top:8px;display:none">
           <button class="btn" onclick="editarChamado(ticketAtivo)" style="background:#e67e22;color:white;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600">✏️ Editar Chamado</button>
         </div>
@@ -1314,10 +1315,6 @@ const fbDB = firebase.database();
         <input type="text" id="setor-sigla" placeholder="Ex: TI, RH, FIN" maxlength="6">
       </div>
       <div class="form-group">
-        <label>E-mail do Setor (para notificações)</label>
-        <input type="email" id="setor-email" placeholder="setor@agrobrasil.com.br">
-      </div>
-      <div class="form-group">
         <label>Responsável pelo Setor</label>
         <input type="text" id="setor-responsavel" placeholder="Nome do responsável">
       </div>
@@ -1348,6 +1345,7 @@ const fbDB = firebase.database();
         <label>Nome da Área / Categoria *</label>
         <input type="text" id="area-nome" placeholder="Ex: Sistema, Impressora, Redes">
       </div>
+      <div class="form-group"><label>E-mail da Área (notificações)</label><input type="email" id="area-email" placeholder=""></div>
       <div class="form-group">
         <label>Descrição</label>
         <textarea id="area-descricao" rows="2" placeholder="Descreva quando usar esta categoria..."></textarea>
@@ -2206,6 +2204,23 @@ function abrirTicket(id) {
   }, 100);
 }
 
+function alterarPrioridade(novaPrio){
+  if(!ticketAtivo)return;
+  const chamados=getChamados();
+  const idx=chamados.findIndex(c=>c&&c.id===ticketAtivo);
+  if(idx<0)return;
+  const agora=new Date().toISOString();
+  const prioAnterior=chamados[idx].prioridade||'Média';
+  chamados[idx].prioridade=novaPrio;
+  chamados[idx].atualizadoEm=agora;
+  chamados[idx].mensagens=chamados[idx].mensagens||[];
+  chamados[idx].mensagens.push({id:uid(),autorId:usuarioAtual.id,autorNome:usuarioAtual.nome,tipo:'sistema',texto:'🎯 Prioridade alterada de "'+prioAnterior+'" para "'+novaPrio+'" por '+usuarioAtual.nome+'.',criadoEm:agora});
+  DB.set('chamados',chamados);
+  fbDB.ref('chamados').set(chamados);
+  toast('Prioridade alterada para "'+novaPrio+'"!','success');
+  renderDashboard();
+  abrirTicket(ticketAtivo);
+}
 function alterarStatus(novoStatus) {
   if (!ticketAtivo) return;
   const chamados = getChamados();
@@ -2275,6 +2290,8 @@ function enviarMensagem() {
   const files = inputArq ? Array.from(inputArq.files) : [];
   if (!texto && files.length === 0) { toast('Digite uma mensagem ou anexe um arquivo.', 'error'); return; }
   if (!ticketAtivo) return;
+  var _enc=getChamados().find(x=>x&&x.id===ticketAtivo);
+  if(_enc&&(_enc.status==='Resolvido'||_enc.status==='Cancelado')){toast('Chamado encerrado. Reabra-o para interagir.','error');return;}
   var chamados = getChamados();
   if(!Array.isArray(chamados)) chamados=Object.values(chamados).filter(Boolean);
   var idx = chamados.findIndex(function(c){return c&&c.id===ticketAtivo;});
@@ -2841,7 +2858,7 @@ function salvarSetor() {
   const id=document.getElementById('setor-id').value;
   const nome=document.getElementById('setor-nome').value.trim();
   if(!nome){toast('Nome obrigatório!','error');return;}
-  const obj={nome,sigla:document.getElementById('setor-sigla').value.trim().toUpperCase(),email:document.getElementById('setor-email').value.trim(),responsavel:document.getElementById('setor-responsavel').value.trim()};
+  const obj={nome,sigla:document.getElementById('setor-sigla').value.trim().toUpperCase(),responsavel:document.getElementById('setor-responsavel').value.trim()};
   // Usar sempre o Firebase como base para não sobrescrever dados de outros usuários
   fbDB.ref('setores').once('value',function(snap){
     var v=snap.val();
@@ -2872,7 +2889,7 @@ function excluirSetor(id) {
 function abrirModalArea() {
   const setores=DB.get('setores')||[];
   document.getElementById('area-setor').innerHTML='<option value="">Selecione o setor...</option>'+setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
-  document.getElementById('area-id').value='';document.getElementById('area-nome').value='';document.getElementById('area-descricao').value='';
+  document.getElementById('area-id').value='';document.getElementById('area-nome').value='';document.getElementById('area-email').value='';document.getElementById('area-descricao').value='';
   document.getElementById('modal-area-titulo').textContent='Nova Área / Categoria';
   abrirModal('modal-area');
 }
@@ -2881,7 +2898,7 @@ function editarArea(id) {
   const setores=DB.get('setores')||[];
   document.getElementById('area-setor').innerHTML='<option value="">Selecione...</option>'+setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
   document.getElementById('area-id').value=a.id;document.getElementById('area-setor').value=a.setorId;
-  document.getElementById('area-nome').value=a.nome;document.getElementById('area-descricao').value=a.descricao||'';
+  document.getElementById('area-nome').value=a.nome;document.getElementById('area-email').value=a.email||'';document.getElementById('area-descricao').value=a.descricao||'';
   document.getElementById('modal-area-titulo').textContent='Editar Área';
   abrirModal('modal-area');
 }
@@ -2890,7 +2907,7 @@ function salvarArea() {
   const setorId=document.getElementById('area-setor').value;
   const nome=document.getElementById('area-nome').value.trim();
   if(!setorId||!nome){toast('Setor e nome são obrigatórios!','error');return;}
-  const obj={setorId,nome,descricao:document.getElementById('area-descricao').value.trim()};
+  const obj={setorId,nome,email:document.getElementById('area-email').value.trim(),descricao:document.getElementById('area-descricao').value.trim()};
   // Usar sempre o Firebase como base
   fbDB.ref('areas').once('value',function(snap){
     var v=snap.val();
