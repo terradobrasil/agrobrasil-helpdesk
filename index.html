@@ -2816,7 +2816,7 @@ function renderSetores() {
     <div class="settings-item">
       <div class="info">
         <div class="name">${s.sigla ? `<span style="background:var(--azul);color:white;padding:1px 8px;border-radius:4px;font-size:11px;margin-right:6px">${s.sigla}</span>`:''} ${s.nome}</div>
-        <div class="sub">${s.email||'sem e-mail'} · ${areas.filter(a=>a.setorId===s.id).length} área(s) ${s.responsavel?'· '+s.responsavel:''}</div>
+        <div class="sub">${areas.filter(a=>a.setorId===s.id).length} área(s) ${s.responsavel?'· '+s.responsavel:''}</div>
       </div>
       <div class="actions">
         <button class="btn btn-outline btn-sm" onclick="editarSetor('${s.id}')">✏️</button>
