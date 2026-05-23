@@ -1922,9 +1922,9 @@ function abrirChamado() {
   // Email atendente
   if(atAuto&&atAuto.email)enviarEmail(atAuto.email,'[HelpDesk] Chamado atribuído - '+chamado.numero,'Olá '+atAuto.nome+',\n\nNovo chamado atribuído para você!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nSolicitante: '+usuarioAtual.nome+'\nPrioridade: '+chamado.prioridade+'\n\nAtender em: https://warleytavares.github.io/agrobrasil-helpdesk/');
   // Simula notificação por e-mail
-  const setor = (DB.get('setores')||[]).find(s=>s.id===setorId);
-  if (setor && setor.email) {
-    console.log(`📧 NOTIFICAÇÃO: E-mail enviado para ${setor.email} sobre novo chamado ${chamado.numero}`);
+  const _area = (DB.get('areas')||[]).find(a=>a.id===chamado.areaId);
+  if (_area && _area.email) {
+    enviarEmail(_area.email,'[HelpDesk] Novo Chamado #'+chamado.numero+' - '+chamado.assunto,'Área: '+(_area.nome||'')+'\nSolicitante: '+usuarioAtual.nome+'\nDescrição: '+chamado.descricao);
   }
   document.getElementById('nc-assunto').value = '';
   document.getElementById('nc-descricao').value = '';
@@ -2841,7 +2841,7 @@ function renderSetores() {
 
 function abrirModalSetor() {
   document.getElementById('setor-id').value=''; document.getElementById('setor-nome').value='';
-  document.getElementById('setor-sigla').value=''; document.getElementById('setor-email').value='';
+  document.getElementById('setor-sigla').value='';
   document.getElementById('setor-responsavel').value='';
   document.getElementById('modal-setor-titulo').textContent='Novo Setor';
   abrirModal('modal-setor');
@@ -2849,7 +2849,7 @@ function abrirModalSetor() {
 function editarSetor(id) {
   const s = (DB.get('setores')||[]).find(x=>x.id===id); if(!s)return;
   document.getElementById('setor-id').value=s.id; document.getElementById('setor-nome').value=s.nome;
-  document.getElementById('setor-sigla').value=s.sigla||''; document.getElementById('setor-email').value=s.email||'';
+  document.getElementById('setor-sigla').value=s.sigla||'';
   document.getElementById('setor-responsavel').value=s.responsavel||'';
   document.getElementById('modal-setor-titulo').textContent='Editar Setor';
   abrirModal('modal-setor');
