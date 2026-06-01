@@ -699,12 +699,28 @@ tbody td { padding: 12px 16px; font-size: 13px; }
   window._ejsTplId="template_7sy35z6";
 })();
 function enviarEmail(para, assunto, corpo) {
-  emailjs.send(window._ejsSvcId, window._ejsTplId, {
-    to_email: para,
-    subject: assunto,
-    mensagem: corpo
-  }).then(function(r){ console.log("Email OK", r); })
-    .catch(function(e){ console.warn("Email erro", e); });
+  if (!para) { console.warn('[Email] Sem destinatário'); return; }
+  var _envJS = function() {
+    emailjs.send(window._ejsSvcId, window._ejsTplId, {
+      to_email: para, subject: assunto, mensagem: corpo
+    }).then(function(r){ console.log('[Email] EmailJS OK:', r.status); })
+     .catch(function(e){ console.warn('[Email] EmailJS erro:', e); });
+  };
+  if (typeof Email !== 'undefined') {
+    Email.send({
+      Host: 'smtp.office365.com',
+      Username: 'helpdesck@terradobrasil.com.br',
+      Password: 'Agrob@2026',
+      To: para,
+      From: 'helpdesck@terradobrasil.com.br',
+      Subject: assunto,
+      Body: corpo.replace(/\n/g,'<br>'),
+      Port: 587
+    }).then(function(msg){
+      if (msg === 'OK') { console.log('[Email] SMTP OK para: ' + para); }
+      else { console.warn('[Email] SMTP falhou: ' + msg); _envJS(); }
+    }).catch(function(e){ console.warn('[Email] SMTP erro:', e); _envJS(); });
+  } else { _envJS(); }
 }
 </script><script>window._smtpConfig={Host:"smtp.office365.com",Username:"helpdesck@terradobrasil.com.br",Password:"Agrob@2026",Port:587,From:"helpdesck@terradobrasil.com.br"};</script>
 <style>
@@ -741,6 +757,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const fbDB = firebase.database();
 </script>
+<script src="https://smtpjs.com/v3/smtp.js"></script>
 </head>
 <body>
 
@@ -1918,9 +1935,9 @@ function abrirChamado() {
   }
   // Email solicitante
   var uSol=getUsuarios().find(function(u){return u.id===chamado.usuarioId;});
-  if(uSol&&uSol.email)enviarEmail(uSol.email,'[HelpDesk] Chamado '+chamado.numero+' aberto - '+chamado.assunto,'Olá '+uSol.nome+',\n\nSeu chamado foi registrado!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nPrioridade: '+chamado.prioridade+'\n'+(atAuto?'Atendente: '+atAuto.nome+'\n':'')+'\nAcompanhe em: https://warleytavares.github.io/agrobrasil-helpdesk/');
+  if(uSol&&uSol.email)enviarEmail(uSol.email,'[HelpDesk] Chamado '+chamado.numero+' aberto - '+chamado.assunto,'Olá '+uSol.nome+',\n\nSeu chamado foi registrado!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nPrioridade: '+chamado.prioridade+'\n'+(atAuto?'Atendente: '+atAuto.nome+'\n':'')+'\nAcompanhe em: https://terradobrasil.github.io/agrobrasil-helpdesk/');
   // Email atendente
-  if(atAuto&&atAuto.email)enviarEmail(atAuto.email,'[HelpDesk] Chamado atribuído - '+chamado.numero,'Olá '+atAuto.nome+',\n\nNovo chamado atribuído para você!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nSolicitante: '+usuarioAtual.nome+'\nPrioridade: '+chamado.prioridade+'\n\nAtender em: https://warleytavares.github.io/agrobrasil-helpdesk/');
+  if(atAuto&&atAuto.email)enviarEmail(atAuto.email,'[HelpDesk] Chamado atribuído - '+chamado.numero,'Olá '+atAuto.nome+',\n\nNovo chamado atribuído para você!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nSolicitante: '+usuarioAtual.nome+'\nPrioridade: '+chamado.prioridade+'\n\nAtender em: https://terradobrasil.github.io/agrobrasil-helpdesk/');
   // Simula notificação por e-mail
   const _area = (DB.get('areas')||[]).find(a=>a.id===chamado.areaId);
   if (_area && _area.email) {
@@ -2247,7 +2264,7 @@ function alterarStatus(novoStatus) {
   var _c=chamados[idx];
   var _sol=_usu.find(function(u){return u.id===_c.usuarioId;});
   var _atd=_usu.find(function(u){return u.id===_c.atendenteId;});
-  var _link='https://warleytavares.github.io/agrobrasil-helpdesk/';
+  var _link='https://terradobrasil.github.io/agrobrasil-helpdesk/';
   var _corpo='Chamado: #'+_c.numero+'\nAssunto: '+_c.assunto+'\nNovo status: '+novoStatus+'\nAlterado por: '+usuarioAtual.nome+'\n\nAcesse: '+_link;
   if(_sol&&_sol.email) enviarEmail(_sol.email,'[HelpDesk] Chamado #'+_c.numero+' - Status: '+novoStatus,_corpo);
   if(_atd&&_atd.email&&_atd.id!==_sol.id) enviarEmail(_atd.email,'[HelpDesk] Chamado #'+_c.numero+' - Status: '+novoStatus,_corpo);
@@ -2275,7 +2292,7 @@ function atribuirAtendente() {
     if(!Array.isArray(_usuA)) _usuA=Object.values(_usuA).filter(Boolean);
     var _atd=_usuA.find(function(u){return u&&u.id===atendenteId;});
     var _sol=_usuA.find(function(u){return u&&u.id===chamados[idx].usuarioId;});
-    var _link='https://warleytavares.github.io/agrobrasil-helpdesk/';
+    var _link='https://terradobrasil.github.io/agrobrasil-helpdesk/';
     var _corpo='Olá '+(_atd?_atd.nome:'')+ ',\n\nUm chamado foi atribuído a você!\n\nNúmero: '+chamados[idx].numero+'\nAssunto: '+chamados[idx].assunto+'\nSolicitante: '+ (_sol?_sol.nome:'')+'\n\nAcesse: '+_link;
     if(_atd&&_atd.email) enviarEmail(_atd.email,'[HelpDesk] Chamado #'+chamados[idx].numero+' atribuído a você',_corpo);
   }
@@ -2316,7 +2333,7 @@ function enviarMensagem() {
   var _c2=chamados[idx];
   var _sol2=_usu2.find(function(u){return u.id===_c2.usuarioId;});
   var _atd2=_usu2.find(function(u){return u.id===_c2.atendenteId;});
-  var _link2='https://warleytavares.github.io/agrobrasil-helpdesk/';
+  var _link2='https://terradobrasil.github.io/agrobrasil-helpdesk/';
   var _corpo2='Nova mensagem no chamado #'+_c2.numero+'\nAssunto: '+_c2.assunto+'\n\nMensagem de '+usuarioAtual.nome+':\n'+texto+'\n\nAcesse: '+_link2;
   var _assunto2='[HelpDesk] Nova mensagem - Chamado #'+_c2.numero;
   // Se quem enviou é o solicitante, notifica o atendente e vice-versa
