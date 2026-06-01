@@ -525,7 +525,7 @@ tbody td { padding: 12px 16px; font-size: 13px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
 
-/* RELATÓRIO */
+/* RELATÃRIO */
 .relatorio-filtros {
   background: white;
   border-radius: var(--radius);
@@ -630,7 +630,7 @@ tbody td { padding: 12px 16px; font-size: 13px; }
 .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
 .empty-state h3 { font-family: 'Syne', sans-serif; font-size: 16px; color: var(--preto); margin-bottom: 6px; }
 
-/* NOTIFICAÇÃO */
+/* NOTIFICAÃÃO */
 .notif-dot {
   width: 8px; height: 8px;
   background: var(--amarelo);
@@ -749,20 +749,20 @@ const fbDB = firebase.database();
   <div class="login-card">
     <div class="login-logo">
       <img src="Logo.png" alt="AgroBrasil" style="height:56px;object-fit:contain;mix-blend-mode:multiply;filter:contrast(1.05);">
-      <div class="sub" style="margin-top:8px">Terra do Brasil Produtos Agropecuários</div>
+      <div class="sub" style="margin-top:8px">Terra do Brasil Produtos AgropecuÃ¡rios</div>
     </div>
-    <div class="login-title">🎫 Central de Chamados</div>
+    <div class="login-title">ð« Central de Chamados</div>
     <div class="form-group">
       <label>E-mail</label>
       <input type="email" id="login-email" placeholder="seu@agrobrasil.com.br">
     </div>
     <div class="form-group">
       <label>Senha</label>
-      <input type="password" id="login-senha" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLogin()">
+      <input type="password" id="login-senha" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢" onkeydown="if(event.key==='Enter')fazerLogin()">
     </div>
     <div id="login-erro" style="color:#c0392b;font-size:13px;margin-bottom:12px;display:none"></div>
     <button class="btn btn-primary btn-full" onclick="fazerLogin()">Entrar no Sistema</button>
-    <p style="text-align:center;font-size:12px;color:#aaa;margin-top:16px">AgroBrasil HelpDesk v1.0 — Uso interno</p>
+    <p style="text-align:center;font-size:12px;color:#aaa;margin-top:16px">AgroBrasil HelpDesk v1.0 â Uso interno</p>
   </div>
 </div>
 
@@ -785,34 +785,34 @@ const fbDB = firebase.database();
     <nav class="sidebar-nav">
       <div class="nav-section">Principal</div>
       <div class="nav-item" onclick="irPara('dashboard')" id="nav-dashboard">
-        <span class="icon">📊</span> Dashboard
+        <span class="icon">ð</span> Dashboard
       </div>
       <div class="nav-item" onclick="irPara('meus-chamados')" id="nav-meus-chamados">
-        <span class="icon">🎫</span> Meus Chamados
+        <span class="icon">ð«</span> Meus Chamados
         <span class="badge" id="badge-meus" style="">3</span>
       </div>
       <div class="nav-item active" onclick="irPara('novo-chamado')" id="nav-novo-chamado">
-        <span class="icon">➕</span> Novo Chamado
+        <span class="icon">â</span> Novo Chamado
       </div>
 
-      <div class="nav-section" id="nav-section-admin" style="">Administração</div>
+      <div class="nav-section" id="nav-section-admin" style="">AdministraÃ§Ã£o</div>
       <div class="nav-item" onclick="irPara('todos-chamados')" id="nav-todos-chamados" style="display:flex">
-        <span class="icon">📋</span> Todos os Chamados
+        <span class="icon">ð</span> Todos os Chamados
         <span class="badge" id="badge-todos" style="">3</span>
       </div>
       <div class="nav-item" onclick="irPara('relatorios')" id="nav-relatorios">
-        <span class="icon">📈</span> Relatórios
+        <span class="icon">ð</span> RelatÃ³rios
       </div>
       <div class="nav-item" onclick="irPara('usuarios')" id="nav-usuarios">
-        <span class="icon">👥</span> Usuários
+        <span class="icon">ð¥</span> UsuÃ¡rios
       </div>
       <div class="nav-item" onclick="irPara('setores')" id="nav-setores">
-        <span class="icon">🏢</span> Setores &amp; Áreas
+        <span class="icon">ð¢</span> Setores &amp; Ãreas
       </div>
     </nav>
     <div class="sidebar-footer">
       <div class="nav-item" onclick="sair()">
-        <span class="icon">🚪</span> Sair
+        <span class="icon">ðª</span> Sair
       </div>
     </div>
   </div>
@@ -822,10 +822,10 @@ const fbDB = firebase.database();
     <div class="topbar">
       <div class="topbar-left">
         <h2 id="page-title">Novo Chamado</h2>
-        <div class="breadcrumb" id="page-breadcrumb">AgroBrasil › Abrir uma nova solicitação</div>
+        <div class="breadcrumb" id="page-breadcrumb">AgroBrasil âº Abrir uma nova solicitaÃ§Ã£o</div>
       </div>
       <div style="display:flex;gap:10px;align-items:center">
-        <button class="btn btn-primary btn-sm" onclick="irPara('novo-chamado')">➕ Novo Chamado</button>
+        <button class="btn btn-primary btn-sm" onclick="irPara('novo-chamado')">â Novo Chamado</button>
       </div>
     </div>
 
@@ -855,13 +855,13 @@ const fbDB = firebase.database();
     <div class="stat-card ">
       <div class="label">Resolvidos</div>
       <div class="value">0</div>
-      <div class="sub">Concluídos</div>
+      <div class="sub">ConcluÃ­dos</div>
     </div>
   
     <div class="stat-card vermelho">
-      <div class="label">🔴 Urgentes</div>
+      <div class="label">ð´ Urgentes</div>
       <div class="value">0</div>
-      <div class="sub">Requerem atenção imediata</div>
+      <div class="sub">Requerem atenÃ§Ã£o imediata</div>
     </div>
   
     <div class="stat-card ">
@@ -872,20 +872,20 @@ const fbDB = firebase.database();
   </div>
         <div class="table-card">
           <div class="table-header">
-            <h3>🎫 Chamados Recentes</h3>
-            <span id="btn-ver-todos"><button class="btn btn-outline btn-sm" onclick="irPara('todos-chamados')">Ver todos →</button></span>
+            <h3>ð« Chamados Recentes</h3>
+            <span id="btn-ver-todos"><button class="btn btn-outline btn-sm" onclick="irPara('todos-chamados')">Ver todos â</button></span>
           </div>
           <table>
             <thead><tr>
-              <th>Nº</th><th>Assunto</th><th>Setor</th><th>Área</th><th>Prioridade</th><th>Status</th><th>Aberto por</th><th>Data</th>
+              <th>NÂº</th><th>Assunto</th><th>Setor</th><th>Ãrea</th><th>Prioridade</th><th>Status</th><th>Aberto por</th><th>Data</th>
             </tr></thead>
             <tbody id="dash-tabela">
     <tr onclick="abrirTicket('moryxd83az5pz')">
       <td><span class="ticket-num">#0002</span></td>
       <td>testestestes</td>
-      <td>Tecnologia da Informação</td>
+      <td>Tecnologia da InformaÃ§Ã£o</td>
       <td>Impressora</td>
-      <td><span class="badge badge-media">🟡 Média</span></td>
+      <td><span class="badge badge-media">ð¡ MÃ©dia</span></td>
       <td><span class="badge badge-aberto">Aberto</span></td>
       <td>Warley Fernandes Tavares</td>
       <td>04/05/2026</td>
@@ -894,9 +894,9 @@ const fbDB = firebase.database();
     <tr onclick="abrirTicket('morylte4safxy')">
       <td><span class="ticket-num">#0002</span></td>
       <td>Teste v3 - auto-assign e email</td>
-      <td>Tecnologia da Informação</td>
+      <td>Tecnologia da InformaÃ§Ã£o</td>
       <td>Sistema / ERP</td>
-      <td><span class="badge badge-alta">🟠 Alta</span></td>
+      <td><span class="badge badge-alta">ð  Alta</span></td>
       <td><span class="badge badge-aberto">Aberto</span></td>
       <td>Warley Fernandes Tavares</td>
       <td>04/05/2026</td>
@@ -905,9 +905,9 @@ const fbDB = firebase.database();
     <tr onclick="abrirTicket('morxcjdkyhuni')">
       <td><span class="ticket-num">#0001</span></td>
       <td>teste de email</td>
-      <td>Tecnologia da Informação</td>
+      <td>Tecnologia da InformaÃ§Ã£o</td>
       <td>Impressora</td>
-      <td><span class="badge badge-media">🟡 Média</span></td>
+      <td><span class="badge badge-media">ð¡ MÃ©dia</span></td>
       <td><span class="badge badge-aberto">Aberto</span></td>
       <td>Warley Fernandes Tavares</td>
       <td>04/05/2026</td>
@@ -921,7 +921,7 @@ const fbDB = firebase.database();
       <div id="page-meus-chamados" class="tab-content">
         <div class="table-card">
           <div class="table-header">
-            <h3>🎫 Meus Chamados</h3>
+            <h3>ð« Meus Chamados</h3>
             <div class="table-filters">
               <input type="text" placeholder="Buscar..." id="filtro-meus" oninput="renderMeusChamados()">
               <select id="filtro-meus-status" onchange="renderMeusChamados()">
@@ -935,40 +935,40 @@ const fbDB = firebase.database();
           </div>
           <table>
             <thead><tr>
-              <th>Nº</th><th>Assunto</th><th>Setor</th><th>Área</th><th>Prioridade</th><th>Status</th><th>Atualizado</th><th>Ações</th>
+              <th>NÂº</th><th>Assunto</th><th>Setor</th><th>Ãrea</th><th>Prioridade</th><th>Status</th><th>Atualizado</th><th>AÃ§Ãµes</th>
             </tr></thead>
             <tbody id="meus-tabela">
     <tr onclick="abrirTicket('moryxd83az5pz')">
       <td><span class="ticket-num">#0002</span></td>
       <td>testestestes</td>
-      <td>Tecnologia da Informação</td>
+      <td>Tecnologia da InformaÃ§Ã£o</td>
       <td>Impressora</td>
-      <td><span class="badge badge-media">🟡 Média</span></td>
+      <td><span class="badge badge-media">ð¡ MÃ©dia</span></td>
       <td><span class="badge badge-aberto">Aberto</span></td>
       <td>04/05/2026 22:47</td>
-      <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('moryxd83az5pz')">Ver →</button></td>
+      <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('moryxd83az5pz')">Ver â</button></td>
     </tr>
   
     <tr onclick="abrirTicket('morylte4safxy')">
       <td><span class="ticket-num">#0002</span></td>
       <td>Teste v3 - auto-assign e email</td>
-      <td>Tecnologia da Informação</td>
+      <td>Tecnologia da InformaÃ§Ã£o</td>
       <td>Sistema / ERP</td>
-      <td><span class="badge badge-alta">🟠 Alta</span></td>
+      <td><span class="badge badge-alta">ð  Alta</span></td>
       <td><span class="badge badge-aberto">Aberto</span></td>
       <td>04/05/2026 22:38</td>
-      <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('morylte4safxy')">Ver →</button></td>
+      <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('morylte4safxy')">Ver â</button></td>
     </tr>
   
     <tr onclick="abrirTicket('morxcjdkyhuni')">
       <td><span class="ticket-num">#0001</span></td>
       <td>teste de email</td>
-      <td>Tecnologia da Informação</td>
+      <td>Tecnologia da InformaÃ§Ã£o</td>
       <td>Impressora</td>
-      <td><span class="badge badge-media">🟡 Média</span></td>
+      <td><span class="badge badge-media">ð¡ MÃ©dia</span></td>
       <td><span class="badge badge-aberto">Aberto</span></td>
       <td>04/05/2026 22:03</td>
-      <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('morxcjdkyhuni')">Ver →</button></td>
+      <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('morxcjdkyhuni')">Ver â</button></td>
     </tr>
   </tbody>
           </table>
@@ -979,39 +979,39 @@ const fbDB = firebase.database();
       <div id="page-novo-chamado" class="tab-content active">
         <div class="table-card">
           <div class="modal-header" style="border-radius:var(--radius) var(--radius) 0 0;position:relative">
-            <h3>➕ Abrir Novo Chamado</h3>
+            <h3>â Abrir Novo Chamado</h3>
           </div>
           <div class="modal-body">
             <div class="aviso-box info">
-              <span>ℹ️</span>
-              <span>Preencha todos os campos obrigatórios (*). Você receberá atualizações sobre seu chamado por e-mail e poderá acompanhar o andamento neste sistema.</span>
+              <span>â¹ï¸</span>
+              <span>Preencha todos os campos obrigatÃ³rios (*). VocÃª receberÃ¡ atualizaÃ§Ãµes sobre seu chamado por e-mail e poderÃ¡ acompanhar o andamento neste sistema.</span>
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label>Setor Destinatário *</label>
+                <label>Setor DestinatÃ¡rio *</label>
                 <select id="nc-setor" onchange="carregarAreasNC()"><option value="">Selecione o setor...</option></select>
               </div>
               <div class="form-group">
-                <label>Área / Categoria *</label>
+                <label>Ãrea / Categoria *</label>
                 <select id="nc-area"><option value="">Selecione o setor primeiro...</option></select>
               </div>
             </div>
             <div class="form-group">
               <label>Assunto *</label>
-              <input type="text" id="nc-assunto" placeholder="Descreva brevemente o problema ou solicitação">
+              <input type="text" id="nc-assunto" placeholder="Descreva brevemente o problema ou solicitaÃ§Ã£o">
             </div>
             <div class="form-group">
-              <label>Descrição Detalhada *</label>
-              <textarea id="nc-descricao" rows="5" placeholder="Descreva com o máximo de detalhes possível. Inclua: o que aconteceu, quando começou, o que já tentou fazer..."></textarea>
+              <label>DescriÃ§Ã£o Detalhada *</label>
+              <textarea id="nc-descricao" rows="5" placeholder="Descreva com o mÃ¡ximo de detalhes possÃ­vel. Inclua: o que aconteceu, quando comeÃ§ou, o que jÃ¡ tentou fazer..."></textarea>
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label>Prioridade *</label>
                 <select id="nc-prioridade">
-                  <option value="Baixa">🟢 Baixa — Não urgente</option>
-                  <option value="Média" selected="">🟡 Média — Impacta o trabalho</option>
-                  <option value="Alta">🟠 Alta — Impacta muito</option>
-                  <option value="Urgente">🔴 Urgente — Paralisa o trabalho</option>
+                  <option value="Baixa">ð¢ Baixa â NÃ£o urgente</option>
+                  <option value="MÃ©dia" selected="">ð¡ MÃ©dia â Impacta o trabalho</option>
+                  <option value="Alta">ð  Alta â Impacta muito</option>
+                  <option value="Urgente">ð´ Urgente â Paralisa o trabalho</option>
                 </select>
               </div>
               <div class="form-group">
@@ -1020,14 +1020,14 @@ const fbDB = firebase.database();
               </div>
             </div>
             <div class="form-group" style="margin-top: 8px;">
-    <label>📎 Anexos — Fotos, prints de tela ou vídeos (opcional)</label>
+    <label>ð Anexos â Fotos, prints de tela ou vÃ­deos (opcional)</label>
     <div class="anexos-area" id="nc-anexos-area">
       <input type="file" id="nc-arquivos" multiple="" accept="image/*,video/*,.pdf" onchange="previewAnexosNC()">
-      <div class="icon">📷</div>
-      <div class="txt">Clique ou arraste aqui<br><strong>Fotos, prints, vídeos ou PDF</strong> · Máx 10MB por arquivo</div>
+      <div class="icon">ð·</div>
+      <div class="txt">Clique ou arraste aqui<br><strong>Fotos, prints, vÃ­deos ou PDF</strong> Â· MÃ¡x 10MB por arquivo</div>
     </div>
     <div class="anexos-preview" id="nc-preview"></div></div><button class="btn btn-primary" onclick="abrirChamado()" style="margin-top:8px">
-              🎫 Abrir Chamado
+              ð« Abrir Chamado
             </button>
           </div>
         </div>
@@ -1037,7 +1037,7 @@ const fbDB = firebase.database();
       <div id="page-todos-chamados" class="tab-content">
         <div class="table-card">
           <div class="table-header">
-            <h3>📋 Todos os Chamados</h3>
+            <h3>ð Todos os Chamados</h3>
             <div class="table-filters">
               <input type="text" placeholder="Buscar..." id="filtro-todos" oninput="renderTodosChamados()">
               <select id="filtro-todos-status" onchange="renderTodosChamados()">
@@ -1052,32 +1052,32 @@ const fbDB = firebase.database();
               </select>
               <select id="filtro-todos-prio" onchange="renderTodosChamados()">
                 <option value="">Todas as prioridades</option>
-                <option value="Urgente">🔴 Urgente</option>
-                <option value="Alta">🟠 Alta</option>
-                <option value="Média">🟡 Média</option>
-                <option value="Baixa">🟢 Baixa</option>
+                <option value="Urgente">ð´ Urgente</option>
+                <option value="Alta">ð  Alta</option>
+                <option value="MÃ©dia">ð¡ MÃ©dia</option>
+                <option value="Baixa">ð¢ Baixa</option>
               </select>
-              <button class="btn btn-primary btn-sm" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+              <button class="btn btn-primary btn-sm" onclick="exportarCSV()">â¬ï¸ Exportar CSV</button>
             </div>
           </div>
           <table>
             <thead><tr>
-              <th>Nº</th><th>Assunto</th><th>Setor</th><th>Área</th><th>Prioridade</th><th>Status</th><th>Prazo</th><th>Solicitante</th><th>Atendente</th><th>Data</th><th>Ações</th>
+              <th>NÂº</th><th>Assunto</th><th>Setor</th><th>Ãrea</th><th>Prioridade</th><th>Status</th><th>Prazo</th><th>Solicitante</th><th>Atendente</th><th>Data</th><th>AÃ§Ãµes</th>
             </tr></thead>
             <tbody id="todos-tabela"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- ===== RELATÓRIOS ===== -->
+      <!-- ===== RELATÃRIOS ===== -->
       <div id="page-relatorios" class="tab-content">
         <div class="relatorio-filtros">
           <div class="form-group" style="margin:0">
-            <label>Período</label>
+            <label>PerÃ­odo</label>
             <select id="rel-periodo" onchange="renderRelatorio()">
               <option value="dia">Hoje</option>
               <option value="semana">Esta semana</option>
-              <option value="mes" selected="">Este mês</option>
+              <option value="mes" selected="">Este mÃªs</option>
               <option value="ano">Este ano</option>
               <option value="custom">Personalizado</option>
             </select>
@@ -1088,7 +1088,7 @@ const fbDB = firebase.database();
               <input type="date" id="rel-de">
             </div>
             <div class="form-group" style="margin:0">
-              <label>Até</label>
+              <label>AtÃ©</label>
               <input type="date" id="rel-ate">
             </div>
             <div style="display:flex;align-items:flex-end">
@@ -1107,57 +1107,57 @@ const fbDB = firebase.database();
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
           <div class="chart-container">
-            <h3>🏢 Chamados por Setor</h3>
+            <h3>ð¢ Chamados por Setor</h3>
             <div class="bar-chart" id="chart-setores"></div>
           </div>
           <div class="chart-container">
-            <h3>🏷️ Chamados por Área</h3>
+            <h3>ð·ï¸ Chamados por Ãrea</h3>
             <div class="bar-chart" id="chart-areas"></div>
           </div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
           <div class="chart-container">
-            <h3>📊 Chamados por Status</h3>
+            <h3>ð Chamados por Status</h3>
             <div class="bar-chart" id="chart-status"></div>
           </div>
           <div class="chart-container">
-            <h3>🎯 Chamados por Prioridade</h3>
+            <h3>ð¯ Chamados por Prioridade</h3>
             <div class="bar-chart" id="chart-prioridade"></div>
           </div>
         </div>
 
         <div class="table-card">
-          <div class="table-header"><h3>📅 Evolução Diária</h3></div>
+          <div class="table-header"><h3>ð EvoluÃ§Ã£o DiÃ¡ria</h3></div>
           <div class="bar-chart" id="chart-diario" style="padding:16px"></div>
         </div>
       </div>
 
-      <!-- ===== USUÁRIOS ===== -->
+      <!-- ===== USUÃRIOS ===== -->
       <div id="page-usuarios" class="tab-content">
         <div class="settings-section">
           <div class="settings-header">
-            <h3>👥 Usuários do Sistema</h3>
-            <button class="btn btn-primary btn-sm" onclick="abrirModalUsuario()">➕ Novo Usuário</button>
+            <h3>ð¥ UsuÃ¡rios do Sistema</h3>
+            <button class="btn btn-primary btn-sm" onclick="abrirModalUsuario()">â Novo UsuÃ¡rio</button>
           </div>
           <div class="settings-list" id="lista-usuarios"></div>
         </div>
       </div>
 
-      <!-- ===== SETORES & ÁREAS ===== -->
+      <!-- ===== SETORES & ÃREAS ===== -->
       <div id="page-setores" class="tab-content">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
           <div class="settings-section">
             <div class="settings-header">
-              <h3>🏢 Setores da Empresa</h3>
-              <button class="btn btn-primary btn-sm" onclick="abrirModalSetor()">➕ Novo Setor</button>
+              <h3>ð¢ Setores da Empresa</h3>
+              <button class="btn btn-primary btn-sm" onclick="abrirModalSetor()">â Novo Setor</button>
             </div>
             <div class="settings-list" id="lista-setores"></div>
           </div>
           <div class="settings-section">
             <div class="settings-header">
-              <h3>🏷️ Áreas / Categorias</h3>
-              <button class="btn btn-primary btn-sm" onclick="abrirModalArea()">➕ Nova Área</button>
+              <h3>ð·ï¸ Ãreas / Categorias</h3>
+              <button class="btn btn-primary btn-sm" onclick="abrirModalArea()">â Nova Ãrea</button>
             </div>
             <div class="settings-list" id="lista-areas"></div>
           </div>
@@ -1174,35 +1174,35 @@ const fbDB = firebase.database();
 <div class="modal-overlay" id="modal-ticket">
   <div class="modal modal-lg">
     <div class="modal-header">
-      <h3 id="modal-ticket-titulo">#0002 — testestestes</h3>
-      <button class="close-btn" onclick="fecharModal('modal-ticket')">✕</button>
+      <h3 id="modal-ticket-titulo">#0002 â testestestes</h3>
+      <button class="close-btn" onclick="fecharModal('modal-ticket')">â</button>
     </div>
     <div class="modal-body">
       <div id="ticket-anexos-panel" style="display:none"></div>
       <div id="ticket-prazo-badge" style="display:none;margin:0 0 12px 0"></div>
       <div class="ticket-info-grid" id="ticket-info-grid">
-    <div class="ticket-info-item"><div class="tit">Número</div><div class="val">#0002</div></div>
+    <div class="ticket-info-item"><div class="tit">NÃºmero</div><div class="val">#0002</div></div>
     <div class="ticket-info-item"><div class="tit">Status</div><div class="val"><span class="badge badge-aberto">Aberto</span></div></div>
-    <div class="ticket-info-item"><div class="tit">Prioridade</div><div class="val"><span class="badge badge-media">🟡 Média</span></div></div>
-    <div class="ticket-info-item"><div class="tit">Setor</div><div class="val">Tecnologia da Informação</div></div>
-    <div class="ticket-info-item"><div class="tit">Área / Categoria</div><div class="val">Impressora</div></div>
+    <div class="ticket-info-item"><div class="tit">Prioridade</div><div class="val"><span class="badge badge-media">ð¡ MÃ©dia</span></div></div>
+    <div class="ticket-info-item"><div class="tit">Setor</div><div class="val">Tecnologia da InformaÃ§Ã£o</div></div>
+    <div class="ticket-info-item"><div class="tit">Ãrea / Categoria</div><div class="val">Impressora</div></div>
     <div class="ticket-info-item"><div class="tit">Solicitante</div><div class="val">Warley Fernandes Tavares</div></div>
     <div class="ticket-info-item"><div class="tit">Atendente</div><div class="val">teste teste</div></div>
     <div class="ticket-info-item"><div class="tit">Aberto em</div><div class="val">04/05/2026 22:47</div></div>
-    <div class="ticket-info-item"><div class="tit">Última atualização</div><div class="val">04/05/2026 22:47</div></div>
+    <div class="ticket-info-item"><div class="tit">Ãltima atualizaÃ§Ã£o</div><div class="val">04/05/2026 22:47</div></div>
     
   </div>
       <div class="form-group" id="ticket-status-box">
         <label>Alterar Status</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-outline btn-sm" onclick="alterarStatus('Aberto')">📬 Aberto</button>
-          <button class="btn btn-azul btn-sm" onclick="alterarStatus('Em andamento')">⚙️ Em andamento</button>
-          <button class="btn btn-primary btn-sm" onclick="alterarStatus('Resolvido')">✅ Resolvido</button>
-          <button class="btn btn-outline btn-sm" onclick="alterarStatus('Cancelado')">❌ Cancelado</button>
+          <button class="btn btn-outline btn-sm" onclick="alterarStatus('Aberto')">ð¬ Aberto</button>
+          <button class="btn btn-azul btn-sm" onclick="alterarStatus('Em andamento')">âï¸ Em andamento</button>
+          <button class="btn btn-primary btn-sm" onclick="alterarStatus('Resolvido')">â Resolvido</button>
+          <button class="btn btn-outline btn-sm" onclick="alterarStatus('Cancelado')">â Cancelado</button>
         </div>
-        <div id='ticket-prio-box' style='margin-top:10px'><label>Alterar Prioridade</label><div style='display:flex;gap:8px;flex-wrap:wrap;margin-top:4px'><button class='btn btn-sm' style='background:#dc3545;color:#fff;border:none' onclick="alterarPrioridade('Urgente')">🔴 Urgente</button><button class='btn btn-sm' style='background:#e67e22;color:#fff;border:none' onclick="alterarPrioridade('Alta')">🟠 Alta</button><button class='btn btn-sm' style='background:#856404;color:#fff;border:none' onclick="alterarPrioridade('Média')">🟡 Média</button><button class='btn btn-sm' style='background:#1A5C2A;color:#fff;border:none' onclick="alterarPrioridade('Baixa')">🟢 Baixa</button></div></div>
+        <div id='ticket-prio-box' style='margin-top:10px'><label>Alterar Prioridade</label><div style='display:flex;gap:8px;flex-wrap:wrap;margin-top:4px'><button class='btn btn-sm' style='background:#dc3545;color:#fff;border:none' onclick="alterarPrioridade('Urgente')">ð´ Urgente</button><button class='btn btn-sm' style='background:#e67e22;color:#fff;border:none' onclick="alterarPrioridade('Alta')">ð  Alta</button><button class='btn btn-sm' style='background:#856404;color:#fff;border:none' onclick="alterarPrioridade('MÃ©dia')">ð¡ MÃ©dia</button><button class='btn btn-sm' style='background:#1A5C2A;color:#fff;border:none' onclick="alterarPrioridade('Baixa')">ð¢ Baixa</button></div></div>
         <div id="btn-editar-box" style="margin-top:8px;display:none">
-          <button class="btn" onclick="editarChamado(ticketAtivo)" style="background:#e67e22;color:white;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600">✏️ Editar Chamado</button>
+          <button class="btn" onclick="editarChamado(ticketAtivo)" style="background:#e67e22;color:white;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600">âï¸ Editar Chamado</button>
         </div>
       </div>
       <div class="form-group" id="atendente-box" style="">
@@ -1213,35 +1213,35 @@ const fbDB = firebase.database();
         </div>
       </div>
       <div class="mensagens">
-        <h4>💬 Histórico &amp; Mensagens</h4>
+        <h4>ð¬ HistÃ³rico &amp; Mensagens</h4>
         <div class="msg-list" id="msg-list">
     <div class="msg-item usuario">
-      <div class="msg-meta">Warley Fernandes Tavares · 04/05/2026 22:47</div>
-      <div style="white-space:pre-wrap">✅ Chamado aberto por Warley Fernandes Tavares em 04/05/2026 22:47.
+      <div class="msg-meta">Warley Fernandes Tavares Â· 04/05/2026 22:47</div>
+      <div style="white-space:pre-wrap">â Chamado aberto por Warley Fernandes Tavares em 04/05/2026 22:47.
 
-📋 Descrição: dgrfghstfzxfhsdtusd</div>
+ð DescriÃ§Ã£o: dgrfghstfzxfhsdtusd</div>
     </div>
   
     <div class="msg-item usuario">
-      <div class="msg-meta">Warley Fernandes Tavares · 04/05/2026 22:47</div>
-      <div style="white-space:pre-wrap">👤 Chamado atribuído a teste teste por Warley Fernandes Tavares.</div>
+      <div class="msg-meta">Warley Fernandes Tavares Â· 04/05/2026 22:47</div>
+      <div style="white-space:pre-wrap">ð¤ Chamado atribuÃ­do a teste teste por Warley Fernandes Tavares.</div>
     </div>
   </div>
         <div class="msg-send">
-          <textarea id="nova-msg" placeholder="Digite uma mensagem ou atualização..."></textarea>
-          <label title="Anexar foto, vídeo ou PDF" style="cursor: pointer; position: relative; display: inline-block;"><input type="file" id="msg-arquivos" multiple="" accept="image/*,video/*,.pdf" style="position:absolute;opacity:0;width:100%;height:100%;cursor:pointer" onchange="previewAnexosMSG()"><div class="btn btn-outline" style="pointer-events:none;padding:6px 10px;font-size:13px">📎 Anexar</div></label><button class="btn btn-primary" onclick="enviarMensagem()" style="align-self:flex-end">Enviar</button>
+          <textarea id="nova-msg" placeholder="Digite uma mensagem ou atualizaÃ§Ã£o..."></textarea>
+          <label title="Anexar foto, vÃ­deo ou PDF" style="cursor: pointer; position: relative; display: inline-block;"><input type="file" id="msg-arquivos" multiple="" accept="image/*,video/*,.pdf" style="position:absolute;opacity:0;width:100%;height:100%;cursor:pointer" onchange="previewAnexosMSG()"><div class="btn btn-outline" style="pointer-events:none;padding:6px 10px;font-size:13px">ð Anexar</div></label><button class="btn btn-primary" onclick="enviarMensagem()" style="align-self:flex-end">Enviar</button>
         </div><div class="anexos-preview" id="msg-preview" style="margin-top: 8px;"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal Usuário -->
+<!-- Modal UsuÃ¡rio -->
 <div class="modal-overlay" id="modal-usuario">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="modal-usuario-titulo">Novo Usuário</h3>
-      <button class="close-btn" onclick="fecharModal('modal-usuario')">✕</button>
+      <h3 id="modal-usuario-titulo">Novo UsuÃ¡rio</h3>
+      <button class="close-btn" onclick="fecharModal('modal-usuario')">â</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="usuario-id">
@@ -1258,7 +1258,7 @@ const fbDB = firebase.database();
       <div class="form-row">
         <div class="form-group">
           <label>Senha *</label>
-          <input type="password" id="usuario-senha" placeholder="Mínimo 6 caracteres">
+          <input type="password" id="usuario-senha" placeholder="MÃ­nimo 6 caracteres">
         </div>
         <div class="form-group">
           <label>Perfil *</label>
@@ -1292,7 +1292,7 @@ const fbDB = firebase.database();
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="fecharModal('modal-usuario')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarUsuario()">💾 Salvar</button>
+      <button class="btn btn-primary" onclick="salvarUsuario()">ð¾ Salvar</button>
     </div>
   </div>
 </div>
@@ -1302,36 +1302,36 @@ const fbDB = firebase.database();
   <div class="modal">
     <div class="modal-header">
       <h3 id="modal-setor-titulo">Novo Setor</h3>
-      <button class="close-btn" onclick="fecharModal('modal-setor')">✕</button>
+      <button class="close-btn" onclick="fecharModal('modal-setor')">â</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="setor-id">
       <div class="form-group">
         <label>Nome do Setor *</label>
-        <input type="text" id="setor-nome" placeholder="Ex: Tecnologia da Informação">
+        <input type="text" id="setor-nome" placeholder="Ex: Tecnologia da InformaÃ§Ã£o">
       </div>
       <div class="form-group">
         <label>Sigla</label>
         <input type="text" id="setor-sigla" placeholder="Ex: TI, RH, FIN" maxlength="6">
       </div>
       <div class="form-group">
-        <label>Responsável pelo Setor</label>
-        <input type="text" id="setor-responsavel" placeholder="Nome do responsável">
+        <label>ResponsÃ¡vel pelo Setor</label>
+        <input type="text" id="setor-responsavel" placeholder="Nome do responsÃ¡vel">
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="fecharModal('modal-setor')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarSetor()">💾 Salvar</button>
+      <button class="btn btn-primary" onclick="salvarSetor()">ð¾ Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- Modal Área -->
+<!-- Modal Ãrea -->
 <div class="modal-overlay" id="modal-area">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="modal-area-titulo">Nova Área / Categoria</h3>
-      <button class="close-btn" onclick="fecharModal('modal-area')">✕</button>
+      <h3 id="modal-area-titulo">Nova Ãrea / Categoria</h3>
+      <button class="close-btn" onclick="fecharModal('modal-area')">â</button>
     </div>
     <div class="modal-body">
       <input type="hidden" id="area-id">
@@ -1342,18 +1342,18 @@ const fbDB = firebase.database();
         </select>
       </div>
       <div class="form-group">
-        <label>Nome da Área / Categoria *</label>
+        <label>Nome da Ãrea / Categoria *</label>
         <input type="text" id="area-nome" placeholder="Ex: Sistema, Impressora, Redes">
       </div>
-      <div class="form-group"><label>E-mail da Área (notificações)</label><input type="email" id="area-email" placeholder=""></div>
+      <div class="form-group"><label>E-mail da Ãrea (notificaÃ§Ãµes)</label><input type="email" id="area-email" placeholder=""></div>
       <div class="form-group">
-        <label>Descrição</label>
+        <label>DescriÃ§Ã£o</label>
         <textarea id="area-descricao" rows="2" placeholder="Descreva quando usar esta categoria..."></textarea>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="fecharModal('modal-area')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarArea()">💾 Salvar</button>
+      <button class="btn btn-primary" onclick="salvarArea()">ð¾ Salvar</button>
     </div>
   </div>
 </div>
@@ -1370,10 +1370,10 @@ const DB = {
   _fbKeys: ['chamados','contador','usuarios'],
 
   get: function(k) {
-    // Firebase é assíncrono — retorna do cache em memória
+    // Firebase Ã© assÃ­ncrono â retorna do cache em memÃ³ria
     if(this._fbKeys.includes(k)) {
       var val = window._fbCache ? window._fbCache[k] : null;
-      // Firebase converte arrays com null em objetos — normalizar para array
+      // Firebase converte arrays com null em objetos â normalizar para array
       if(val !== null && val !== undefined && !Array.isArray(val) && typeof val === 'object') {
         val = Object.values(val).filter(function(x){ return x !== null; });
       }
@@ -1427,7 +1427,7 @@ const DB = {
     });
   },
 
-  // Escuta mudanças em tempo real nos chamados
+  // Escuta mudanÃ§as em tempo real nos chamados
   listenChamados: function(callback) {
     fbDB.ref('chamados').on('value', function(snap) {
       if(!window._fbCache) window._fbCache = {};
@@ -1445,36 +1445,36 @@ const DB = {
     // Limpar chamados antigos do localStorage (agora no Firebase)
     localStorage.removeItem('agro_hd_chamados');
     localStorage.removeItem('agro_hd_contador');
-    // Setores e áreas ficam no localStorage
+    // Setores e Ã¡reas ficam no localStorage
     if(!localStorage.getItem('agro_hd_iniciado')) {
       localStorage.setItem('agro_hd_setores', JSON.stringify([
-        { id:'s1', nome:'Tecnologia da Informação', sigla:'TI', email:'ti@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
+        { id:'s1', nome:'Tecnologia da InformaÃ§Ã£o', sigla:'TI', email:'ti@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
         { id:'s2', nome:'Recursos Humanos', sigla:'RH', email:'rh@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
         { id:'s3', nome:'Financeiro', sigla:'FIN', email:'financeiro@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
         { id:'s4', nome:'Comercial', sigla:'COM', email:'comercial@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
-        { id:'s5', nome:'Contábil', sigla:'CON', email:'contabil@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
+        { id:'s5', nome:'ContÃ¡bil', sigla:'CON', email:'contabil@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
         { id:'s6', nome:'Fiscal', sigla:'FIS', email:'fiscal@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
-        { id:'s7', nome:'Logística', sigla:'LOG', email:'logistica@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
+        { id:'s7', nome:'LogÃ­stica', sigla:'LOG', email:'logistica@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
         { id:'s8', nome:'Estoque', sigla:'EST', email:'estoque@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
         { id:'s9', nome:'Faturamento', sigla:'FAT', email:'faturamento@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() },
         { id:'s10', nome:'Diretoria', sigla:'DIR', email:'diretoria@agrobrasil.com.br', responsavel:'', criadoEm: new Date().toISOString() }
       ]));
       localStorage.setItem('agro_hd_areas', JSON.stringify([
         { id:'a1', setorId:'s1', nome:'Sistema / ERP', descricao:'Problemas com sistemas e ERP', criadoEm: new Date().toISOString() },
-        { id:'a2', setorId:'s1', nome:'CRM', descricao:'Suporte ao módulo CRM', criadoEm: new Date().toISOString() },
-        { id:'a3', setorId:'s1', nome:'Impressora', descricao:'Impressoras e periféricos', criadoEm: new Date().toISOString() },
+        { id:'a2', setorId:'s1', nome:'CRM', descricao:'Suporte ao mÃ³dulo CRM', criadoEm: new Date().toISOString() },
+        { id:'a3', setorId:'s1', nome:'Impressora', descricao:'Impressoras e perifÃ©ricos', criadoEm: new Date().toISOString() },
         { id:'a4', setorId:'s1', nome:'Computador / Hardware', descricao:'Problemas com computadores', criadoEm: new Date().toISOString() },
         { id:'a5', setorId:'s1', nome:'Rede / Internet', descricao:'Conectividade e rede', criadoEm: new Date().toISOString() },
         { id:'a6', setorId:'s1', nome:'E-mail', descricao:'Problemas com e-mail corporativo', criadoEm: new Date().toISOString() },
-        { id:'a7', setorId:'s1', nome:'Acesso / Senha', descricao:'Redefinição de senhas e acessos', criadoEm: new Date().toISOString() },
-        { id:'a8', setorId:'s2', nome:'Admissão', descricao:'Processo de admissão', criadoEm: new Date().toISOString() },
-        { id:'a9', setorId:'s2', nome:'Folha de Pagamento', descricao:'Dúvidas sobre holerite', criadoEm: new Date().toISOString() },
-        { id:'a10', setorId:'s2', nome:'Férias / Licença', descricao:'Solicitação de férias', criadoEm: new Date().toISOString() },
-        { id:'a11', setorId:'s3', nome:'Reembolso', descricao:'Solicitação de reembolso', criadoEm: new Date().toISOString() },
+        { id:'a7', setorId:'s1', nome:'Acesso / Senha', descricao:'RedefiniÃ§Ã£o de senhas e acessos', criadoEm: new Date().toISOString() },
+        { id:'a8', setorId:'s2', nome:'AdmissÃ£o', descricao:'Processo de admissÃ£o', criadoEm: new Date().toISOString() },
+        { id:'a9', setorId:'s2', nome:'Folha de Pagamento', descricao:'DÃºvidas sobre holerite', criadoEm: new Date().toISOString() },
+        { id:'a10', setorId:'s2', nome:'FÃ©rias / LicenÃ§a', descricao:'SolicitaÃ§Ã£o de fÃ©rias', criadoEm: new Date().toISOString() },
+        { id:'a11', setorId:'s3', nome:'Reembolso', descricao:'SolicitaÃ§Ã£o de reembolso', criadoEm: new Date().toISOString() },
         { id:'a12', setorId:'s3', nome:'Pagamento a Fornecedor', descricao:'Pagamento de fornecedores', criadoEm: new Date().toISOString() },
         { id:'a13', setorId:'s4', nome:'Pedido de Venda', descricao:'Suporte a pedidos', criadoEm: new Date().toISOString() },
         { id:'a14', setorId:'s7', nome:'Entrega / Frete', descricao:'Acompanhamento de entregas', criadoEm: new Date().toISOString() },
-        { id:'a15', setorId:'s8', nome:'Inventário', descricao:'Controle de estoque', criadoEm: new Date().toISOString() }
+        { id:'a15', setorId:'s8', nome:'InventÃ¡rio', descricao:'Controle de estoque', criadoEm: new Date().toISOString() }
       ]));
       localStorage.setItem('agro_hd_iniciado','true');
     }
@@ -1504,12 +1504,12 @@ function renderSidebar() {
   // Controlar visibilidade dos menus por perfil
   var soAdmin=usuarioAtual.perfil==='admin';
   var adminOuAtend=usuarioAtual.perfil==='admin'||usuarioAtual.perfil==='atendente';
-  // Todos os Chamados e Relatórios: admin e atendente
+  // Todos os Chamados e RelatÃ³rios: admin e atendente
   var elTodos=document.getElementById('nav-todos-chamados');
   var elRel=document.getElementById('nav-relatorios');
   if(elTodos) elTodos.style.display=adminOuAtend?'flex':'none';
   if(elRel) elRel.style.display=adminOuAtend?'flex':'none';
-  // Usuários e Setores: só admin
+  // UsuÃ¡rios e Setores: sÃ³ admin
   var elUsu=document.getElementById('nav-usuarios');
   var elSet=document.getElementById('nav-setores');
   if(elUsu) elUsu.style.display=soAdmin?'flex':'none';
@@ -1549,15 +1549,15 @@ function fazerLogin() {
   const email = document.getElementById('login-email').value.trim().toLowerCase();
   const senha = document.getElementById('login-senha').value;
   if(!email || !senha){
-    document.getElementById('login-erro').textContent = '❌ Preencha e-mail e senha.';
+    document.getElementById('login-erro').textContent = 'â Preencha e-mail e senha.';
     document.getElementById('login-erro').style.display = 'block';
     return;
   }
   // Mostrar loading
   const btn = document.querySelector('#tela-login button[type=submit], #tela-login button');
   if(btn){ btn.disabled=true; btn.textContent='Carregando...'; }
-  // Forçar busca no Firebase (ignorar cache)
-  // Zerar cache completamente para não usar dados de sessão anterior
+  // ForÃ§ar busca no Firebase (ignorar cache)
+  // Zerar cache completamente para nÃ£o usar dados de sessÃ£o anterior
   window._fbCache = null;
   usuarioAtual = null;
   fbDB.ref('usuarios').once('value', function(snap){
@@ -1566,11 +1566,11 @@ function fazerLogin() {
     const u = lista.find(x => x && x.email && x.email.toLowerCase()===email && x.senha===senha && x.status==='ativo');
     if(btn){ btn.disabled=false; btn.textContent='Entrar no Sistema'; }
     if(!u){
-      document.getElementById('login-erro').textContent = '❌ E-mail ou senha incorretos.';
+      document.getElementById('login-erro').textContent = 'â E-mail ou senha incorretos.';
       document.getElementById('login-erro').style.display = 'block';
       return;
     }
-    // Login ok — carregar todos os dados
+    // Login ok â carregar todos os dados
     window._fbCache = { usuarios: lista };
     document.getElementById('login-erro').style.display = 'none';
     DB.ghLoad(function(){
@@ -1605,9 +1605,9 @@ function sair() {
   document.getElementById('login-erro').style.display = 'none';
 }
 
-// ===================== NAVEGAÇÃO =====================
+// ===================== NAVEGAÃÃO =====================
 function irPara(pagina) {
-  // Recarregar dados do Firebase para páginas com chamados
+  // Recarregar dados do Firebase para pÃ¡ginas com chamados
   if(['dashboard','todos-chamados','meus-chamados'].includes(pagina)){
     _renderPagina(pagina);
     return;
@@ -1630,18 +1630,18 @@ function _renderPagina(pagina) {
   const nav = document.getElementById('nav-'+pagina);
   if (nav) nav.classList.add('active');
   const titulos = {
-    'dashboard': ['Dashboard', 'Visão geral dos chamados'],
-    'meus-chamados': ['Meus Chamados', 'Chamados que você abriu'],
-    'novo-chamado': ['Novo Chamado', 'Abrir uma nova solicitação'],
+    'dashboard': ['Dashboard', 'VisÃ£o geral dos chamados'],
+    'meus-chamados': ['Meus Chamados', 'Chamados que vocÃª abriu'],
+    'novo-chamado': ['Novo Chamado', 'Abrir uma nova solicitaÃ§Ã£o'],
     'todos-chamados': ['Todos os Chamados', 'Gerenciamento geral de chamados'],
-    'relatorios': ['Relatórios', 'Análise e estatísticas'],
-    'usuarios': ['Usuários', 'Gerenciamento de usuários'],
-    'setores': ['Setores & Áreas', 'Configurar setores e categorias'],
+    'relatorios': ['RelatÃ³rios', 'AnÃ¡lise e estatÃ­sticas'],
+    'usuarios': ['UsuÃ¡rios', 'Gerenciamento de usuÃ¡rios'],
+    'setores': ['Setores & Ãreas', 'Configurar setores e categorias'],
   };
   const t = titulos[pagina] || ['', ''];
   document.getElementById('page-title').textContent = t[0];
-  document.getElementById('page-breadcrumb').textContent = 'AgroBrasil › ' + t[1];
-  // Segurança: bloqueia usuário comum de acessar páginas restritas
+  document.getElementById('page-breadcrumb').textContent = 'AgroBrasil âº ' + t[1];
+  // SeguranÃ§a: bloqueia usuÃ¡rio comum de acessar pÃ¡ginas restritas
   const paginasRestritas = ['todos-chamados','relatorios','usuarios','setores'];
   const isAdminNav = usuarioAtual && (usuarioAtual.perfil==='admin'||usuarioAtual.perfil==='atendente');
   if (paginasRestritas.includes(pagina) && !isAdminNav) {
@@ -1660,11 +1660,11 @@ function _renderPagina(pagina) {
   };
   if (renders[pagina]) renders[pagina]();
   atualizarBadges();
-  // Mostra botão "Ver todos" apenas para admin/atendente
+  // Mostra botÃ£o "Ver todos" apenas para admin/atendente
   var btnVerTodos = document.getElementById('btn-ver-todos');
   if (btnVerTodos) {
     if (usuarioAtual && (isAtendente(usuarioAtual))) {
-      btnVerTodos.innerHTML = '<button class="btn btn-outline btn-sm" onclick="irPara(\'todos-chamados\')">Ver todos →</button>';
+      btnVerTodos.innerHTML = '<button class="btn btn-outline btn-sm" onclick="irPara(\'todos-chamados\')">Ver todos â</button>';
     } else {
       btnVerTodos.innerHTML = '';
     }
@@ -1686,35 +1686,35 @@ function isAtendente(u){ return u && (u.perfil==='atendente'||u.perfil==='atende
 function isColaborador(u){ return u && (u.perfil==='colaborador'||u.perfil==='atendente_colaborador'); }
 function excluirChamado(id) {
   if(!usuarioAtual||usuarioAtual.perfil!=='admin'){toast('Apenas administradores podem excluir chamados.','error');return;}
-  if(!confirm('Tem certeza que deseja excluir este chamado? Esta ação não pode ser desfeita.')) return;
+  if(!confirm('Tem certeza que deseja excluir este chamado? Esta aÃ§Ã£o nÃ£o pode ser desfeita.')) return;
   var chamados=getChamados().filter(function(c){return c&&c.id!==id;});
   DB.set('chamados',chamados);
   fecharModal('modal-ticket');
-  toast('Chamado excluído com sucesso.','success');
+  toast('Chamado excluÃ­do com sucesso.','success');
   renderDashboard();
 }
 
 // ===================== HELPERS =====================
 function uid() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
 function fmtData(iso) {
-  if (!iso) return '—';
+  if (!iso) return 'â';
   const d = new Date(iso);
   return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
 }
 function fmtDataCurta(iso) {
-  if (!iso) return '—';
+  if (!iso) return 'â';
   return new Date(iso).toLocaleDateString('pt-BR');
 }
-function setorNome(id) { const s = (DB.get('setores')||[]).find(x=>x.id===id); return s?s.nome:'—'; }
-function areaNome(id) { const a = (DB.get('areas')||[]).find(x=>x.id===id); return a?a.nome:'—'; }
-function usuarioNome(id) { const u = getUsuarios().find(x=>x.id===id); return u?u.nome:'—'; }
+function setorNome(id) { const s = (DB.get('setores')||[]).find(x=>x.id===id); return s?s.nome:'â'; }
+function areaNome(id) { const a = (DB.get('areas')||[]).find(x=>x.id===id); return a?a.nome:'â'; }
+function usuarioNome(id) { const u = getUsuarios().find(x=>x.id===id); return u?u.nome:'â'; }
 function badgeStatus(s) {
   const m = {'Aberto':'badge-aberto','Em andamento':'badge-andamento','Resolvido':'badge-resolvido','Cancelado':'badge-cancelado'};
   return `<span class="badge ${m[s]||''}">${s}</span>`;
 }
 function badgePrio(p) {
-  const m = {'Urgente':'badge-urgente','Alta':'badge-alta','Média':'badge-media','Baixa':'badge-baixa'};
-  const icons = {'Urgente':'🔴','Alta':'🟠','Média':'🟡','Baixa':'🟢'};
+  const m = {'Urgente':'badge-urgente','Alta':'badge-alta','MÃ©dia':'badge-media','Baixa':'badge-baixa'};
+  const icons = {'Urgente':'ð´','Alta':'ð ','MÃ©dia':'ð¡','Baixa':'ð¢'};
   return `<span class="badge ${m[p]||''}">${icons[p]||''} ${p}</span>`;
 }
 function proxNum() {
@@ -1766,14 +1766,14 @@ function renderDashboard() {
     {label:'Total de Chamados', value:total, sub:'No sistema', cls:''},
     {label:'Abertos', value:abertos, sub:'Aguardando atendimento', cls:'amarelo'},
     {label:'Em Andamento', value:andamento, sub:'Sendo atendidos', cls:'azul'},
-    {label:'Resolvidos', value:resolvidos, sub:'Concluídos', cls:''},
-    {label:'🔴 Urgentes', value:urgentes, sub:'Requerem atenção imediata', cls:'vermelho'},
+    {label:'Resolvidos', value:resolvidos, sub:'ConcluÃ­dos', cls:''},
+    {label:'ð´ Urgentes', value:urgentes, sub:'Requerem atenÃ§Ã£o imediata', cls:'vermelho'},
     {label:'Abertos Hoje', value:hojeCount, sub:hojeStr, cls:''},
   ] : [
     {label:'Meus Chamados', value:meusCh.length, sub:'Total', cls:''},
     {label:'Abertos', value:meusCh.filter(c=>c.status==='Aberto').length, sub:'Aguardando', cls:'amarelo'},
     {label:'Em Andamento', value:meusCh.filter(c=>c.status==='Em andamento').length, sub:'Em atendimento', cls:'azul'},
-    {label:'Resolvidos', value:meusCh.filter(c=>c.status==='Resolvido').length, sub:'Concluídos', cls:''},
+    {label:'Resolvidos', value:meusCh.filter(c=>c.status==='Resolvido').length, sub:'ConcluÃ­dos', cls:''},
   ];
 
   document.getElementById('dash-cards').innerHTML = cards.map(c=>`
@@ -1784,7 +1784,7 @@ function renderDashboard() {
     </div>
   `).join('');
 
-  const lista = isAdmin ? chamados : meusCh; // Usuário só vê os seus
+  const lista = isAdmin ? chamados : meusCh; // UsuÃ¡rio sÃ³ vÃª os seus
   const recentes = [...lista].sort((a,b)=>new Date(b.criadoEm)-new Date(a.criadoEm)).slice(0,8);
   document.getElementById('dash-tabela').innerHTML = recentes.length ? recentes.map(c=>`
     <tr onclick="abrirTicket('${c.id}')">
@@ -1797,7 +1797,7 @@ function renderDashboard() {
       <td>${usuarioNome(c.usuarioId)}</td>
       <td>${fmtDataCurta(c.criadoEm)}</td>
     </tr>
-  `).join('') : '<tr><td colspan="8"><div class="empty-state"><div class="icon">🎫</div><h3>Nenhum chamado ainda</h3><p>Clique em "Novo Chamado" para abrir o primeiro.</p></div></td></tr>';
+  `).join('') : '<tr><td colspan="8"><div class="empty-state"><div class="icon">ð«</div><h3>Nenhum chamado ainda</h3><p>Clique em "Novo Chamado" para abrir o primeiro.</p></div></td></tr>';
 }
 
 // ===================== MEUS CHAMADOS =====================
@@ -1823,11 +1823,11 @@ function renderMeusChamados() {
       <td>${badgeStatus(c.status)}</td>
       <td>${fmtData(c.atualizadoEm||c.criadoEm)}</td>
       <td style="display:flex;gap:6px;align-items:center">
-        <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('${c.id}')">Ver →</button>
-        ${(usuarioAtual&&usuarioAtual.perfil==='admin')?('<button class="btn btn-sm" style="background:#c0392b;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer" onclick="event.stopPropagation();excluirChamado(\'' + c.id + '\')">🗑️</button>'):''}
+        <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('${c.id}')">Ver â</button>
+        ${(usuarioAtual&&usuarioAtual.perfil==='admin')?('<button class="btn btn-sm" style="background:#c0392b;color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer" onclick="event.stopPropagation();excluirChamado(\'' + c.id + '\')">ðï¸</button>'):''}
       </td>
     </tr>
-  `).join('') : '<tr><td colspan="8"><div class="empty-state"><div class="icon">🎉</div><h3>Nenhum chamado encontrado</h3></div></td></tr>';
+  `).join('') : '<tr><td colspan="8"><div class="empty-state"><div class="icon">ð</div><h3>Nenhum chamado encontrado</h3></div></td></tr>';
 }
 
 // ===================== NOVO CHAMADO =====================
@@ -1842,8 +1842,8 @@ function carregarAreasNC() {
   const setorId = document.getElementById('nc-setor').value;
   const areas = ((window._fbCache&&window._fbCache.areas)||DB.get('areas')||[]).filter(a=>a.setorId===setorId);
   document.getElementById('nc-area').innerHTML = areas.length
-    ? '<option value="">Selecione a área...</option>' + areas.map(a=>`<option value="${a.id}">${a.nome}</option>`).join('')
-    : '<option value="">Nenhuma área cadastrada para este setor</option>';
+    ? '<option value="">Selecione a Ã¡rea...</option>' + areas.map(a=>`<option value="${a.id}">${a.nome}</option>`).join('')
+    : '<option value="">Nenhuma Ã¡rea cadastrada para este setor</option>';
 }
 
 function abrirChamado() {
@@ -1853,7 +1853,7 @@ function abrirChamado() {
   const descricao = document.getElementById('nc-descricao').value.trim();
   const prioridade = document.getElementById('nc-prioridade').value;
   const ramal = document.getElementById('nc-ramal').value.trim();
-  if (!setorId||!areaId||!assunto||!descricao) { toast('Preencha todos os campos obrigatórios!','error'); return; }
+  if (!setorId||!areaId||!assunto||!descricao) { toast('Preencha todos os campos obrigatÃ³rios!','error'); return; }
   const agora = new Date().toISOString();
   const _setList=(window._fbCache&&window._fbCache.setores)||JSON.parse(localStorage.getItem('agro_hd_setores')||'[]');
   const _areaList=(window._fbCache&&window._fbCache.areas)||JSON.parse(localStorage.getItem('agro_hd_areas')||'[]');
@@ -1878,14 +1878,14 @@ function abrirChamado() {
       autorId: usuarioAtual.id,
       autorNome: usuarioAtual.nome,
       tipo: 'sistema',
-      texto: `✅ Chamado aberto por ${usuarioAtual.nome} em ${fmtData(agora)}.\n\n📋 Descrição: ${descricao}${ramal ? '\n\n📞 Ramal/Contato: '+ramal : ''}`,
+      texto: `â Chamado aberto por ${usuarioAtual.nome} em ${fmtData(agora)}.\n\nð DescriÃ§Ã£o: ${descricao}${ramal ? '\n\nð Ramal/Contato: '+ramal : ''}`,
       criadoEm: agora
     }]
   };
   const chamados = getChamados();
   // Auto-assign
   var atAuto=atribuirAtendente(setorId);
-  if(atAuto){chamado.atendenteId=atAuto.id;chamado.mensagens.push({id:uid(),autorId:'sistema',autorNome:'Sistema',tipo:'sistema',texto:'👤 Atribuído para: '+atAuto.nome,criadoEm:new Date().toISOString()});}
+  if(atAuto){chamado.atendenteId=atAuto.id;chamado.mensagens.push({id:uid(),autorId:'sistema',autorNome:'Sistema',tipo:'sistema',texto:'ð¤ AtribuÃ­do para: '+atAuto.nome,criadoEm:new Date().toISOString()});}
   // Ler anexos antes de salvar
   var inputArq=document.getElementById('nc-arquivos');
   var files=inputArq?Array.from(inputArq.files):[];
@@ -1918,19 +1918,19 @@ function abrirChamado() {
   }
   // Email solicitante
   var uSol=getUsuarios().find(function(u){return u.id===chamado.usuarioId;});
-  if(uSol&&uSol.email)enviarEmail(uSol.email,'[HelpDesk] Chamado '+chamado.numero+' aberto - '+chamado.assunto,'Olá '+uSol.nome+',\n\nSeu chamado foi registrado!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nPrioridade: '+chamado.prioridade+'\n'+(atAuto?'Atendente: '+atAuto.nome+'\n':'')+'\nAcompanhe em: https://warleytavares.github.io/agrobrasil-helpdesk/');
+  if(uSol&&uSol.email)enviarEmail(uSol.email,'[HelpDesk] Chamado '+chamado.numero+' aberto - '+chamado.assunto,'OlÃ¡ '+uSol.nome+',\n\nSeu chamado foi registrado!\n\nNÃºmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nPrioridade: '+chamado.prioridade+'\n'+(atAuto?'Atendente: '+atAuto.nome+'\n':'')+'\nAcompanhe em: https://terradobrasil.github.io/agrobrasil-helpdesk/');
   // Email atendente
-  if(atAuto&&atAuto.email)enviarEmail(atAuto.email,'[HelpDesk] Chamado atribuído - '+chamado.numero,'Olá '+atAuto.nome+',\n\nNovo chamado atribuído para você!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nSolicitante: '+usuarioAtual.nome+'\nPrioridade: '+chamado.prioridade+'\n\nAtender em: https://warleytavares.github.io/agrobrasil-helpdesk/');
-  // Simula notificação por e-mail
+  if(atAuto&&atAuto.email)enviarEmail(atAuto.email,'[HelpDesk] Chamado atribuÃ­do - '+chamado.numero,'OlÃ¡ '+atAuto.nome+',\n\nNovo chamado atribuÃ­do para vocÃª!\n\nNÃºmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nSolicitante: '+usuarioAtual.nome+'\nPrioridade: '+chamado.prioridade+'\n\nAtender em: https://terradobrasil.github.io/agrobrasil-helpdesk/');
+  // Simula notificaÃ§Ã£o por e-mail
   const _area = (DB.get('areas')||[]).find(a=>a.id===chamado.areaId);
   if (_area && _area.email) {
-    enviarEmail(_area.email,'[HelpDesk] Novo Chamado #'+chamado.numero+' - '+chamado.assunto,'Área: '+(_area.nome||'')+'\nSolicitante: '+usuarioAtual.nome+'\nDescrição: '+chamado.descricao);
+    enviarEmail(_area.email,'[HelpDesk] Novo Chamado #'+chamado.numero+' - '+chamado.assunto,'Ãrea: '+(_area.nome||'')+'\nSolicitante: '+usuarioAtual.nome+'\nDescriÃ§Ã£o: '+chamado.descricao);
   }
   document.getElementById('nc-assunto').value = '';
   document.getElementById('nc-descricao').value = '';
   document.getElementById('nc-ramal').value = '';
   document.getElementById('nc-setor').value = '';
-  document.getElementById('nc-area').innerHTML = '<option value="">Selecione a área...</option>';
+  document.getElementById('nc-area').innerHTML = '<option value="">Selecione a Ã¡rea...</option>';
   irPara('meus-chamados');
 }
 
@@ -1946,7 +1946,7 @@ function renderTodosChamados() {
   const status = (document.getElementById('filtro-todos-status')||{value:''}).value;
   const setorId = (document.getElementById('filtro-todos-setor')||{value:''}).value;
   const prio = (document.getElementById('filtro-todos-prio')||{value:''}).value;
-  // Filtrar por perfil: admin/atendente veem todos; outros só os seus
+  // Filtrar por perfil: admin/atendente veem todos; outros sÃ³ os seus
   const _todosOsChamados = getChamados();
   const _podeVerTodos = usuarioAtual.perfil==='admin' || usuarioAtual.perfil==='atendente';
   let chamados = (_podeVerTodos ? _todosOsChamados : _todosOsChamados.filter(function(c){
@@ -1968,11 +1968,11 @@ function renderTodosChamados() {
       <td>${badgePrio(c.prioridade)}</td>
       <td>${badgeStatus(c.status)}</td>
       <td>${usuarioNome(c.usuarioId)}</td>
-      <td>${c.atendenteId ? usuarioNome(c.atendenteId) : '<span style="color:var(--cinza3)">Não atribuído</span>'}</td>
+      <td>${c.atendenteId ? usuarioNome(c.atendenteId) : '<span style="color:var(--cinza3)">NÃ£o atribuÃ­do</span>'}</td>
       <td>${fmtDataCurta(c.criadoEm)}</td>
-      <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('${c.id}')">Ver →</button></td>
+      <td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation();abrirTicket('${c.id}')">Ver â</button></td>
     </tr>
-  `).join('') : '<tr><td colspan="10"><div class="empty-state"><div class="icon">🎉</div><h3>Nenhum chamado encontrado</h3></div></td></tr>';
+  `).join('') : '<tr><td colspan="10"><div class="empty-state"><div class="icon">ð</div><h3>Nenhum chamado encontrado</h3></div></td></tr>';
 }
 
 // ===================== TICKET DETALHE =====================
@@ -1989,7 +1989,7 @@ function editarChamado(id) {
     var old=document.getElementById('modal-editar-chamado');
     if(old) old.remove();
 
-    // Criar elementos via DOM (sem strings com onclick problemáticos)
+    // Criar elementos via DOM (sem strings com onclick problemÃ¡ticos)
     var overlay=document.createElement('div');
     overlay.id='modal-editar-chamado';
     overlay.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:10000;display:flex;align-items:center;justify-content:center;';
@@ -1997,7 +1997,7 @@ function editarChamado(id) {
     var box=document.createElement('div');
     box.style.cssText='background:white;border-radius:12px;padding:32px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)';
 
-    // Título
+    // TÃ­tulo
     var titulo=document.createElement('div');
     titulo.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:24px';
     var h3=document.createElement('h3');
@@ -2091,7 +2091,7 @@ function editSalvarChamado(id){
   var areaId=document.getElementById('edit-area').value;
   var prioridade=document.getElementById('edit-prioridade').value;
   var assunto=(document.getElementById('edit-assunto').value||'').trim();
-  if(!assunto){toast('Assunto não pode ficar vazio.','error');return;}
+  if(!assunto){toast('Assunto nÃ£o pode ficar vazio.','error');return;}
   var setores=(window._fbCache&&window._fbCache.setores)||[];
   var areas=(window._fbCache&&window._fbCache.areas)||[];
   var setObj=setores.find(function(s){return s&&s.id===setorId;})||{};
@@ -2100,7 +2100,7 @@ function editSalvarChamado(id){
   DB.ghLoad(function(){
     var chamados=getChamados();
     var idx2=chamados.findIndex(function(c){return c&&c.id===id;});
-    if(idx2<0){toast('Chamado não encontrado.','error');return;}
+    if(idx2<0){toast('Chamado nÃ£o encontrado.','error');return;}
     if(setorId){chamados[idx2].setorId=setorId;chamados[idx2].setorNome=setObj.nome||setorId;}
     if(areaId){chamados[idx2].areaId=areaId;chamados[idx2].areaNome=areaObj.nome||areaId;}
     if(prioridade) chamados[idx2].prioridade=prioridade;
@@ -2118,29 +2118,29 @@ function abrirTicket(id) {
   const chamados = getChamados();
   const c = chamados.find(x=>x.id===id);
   if (!c) return;
-  // Segurança: pode ver se for admin, atendente, quem abriu ou quem foi atribuído
+  // SeguranÃ§a: pode ver se for admin, atendente, quem abriu ou quem foi atribuÃ­do
   // Regras de acesso ao chamado:
-  // admin / atendente puro → veem todos
-  // atendente_colaborador / colaborador → só os que abriram ou foram atribuídos
+  // admin / atendente puro â veem todos
+  // atendente_colaborador / colaborador â sÃ³ os que abriram ou foram atribuÃ­dos
   const isAdminOuAtendente = usuarioAtual.perfil==='admin' || usuarioAtual.perfil==='atendente';
   const isSeuChamado = c.usuarioId === usuarioAtual.id || c.atendenteId === usuarioAtual.id;
   const podeVerTicket = isAdminOuAtendente || isSeuChamado;
   if (!podeVerTicket) {
-    toast('Acesso negado: este chamado não pertence a você.', 'error');
+    toast('Acesso negado: este chamado nÃ£o pertence a vocÃª.', 'error');
     return;
   }
   ticketAtivo = id;
-  document.getElementById('modal-ticket-titulo').textContent = `${c.numero} — ${c.assunto}`;
+  document.getElementById('modal-ticket-titulo').textContent = `${c.numero} â ${c.assunto}`;
   document.getElementById('ticket-info-grid').innerHTML = `
-    <div class="ticket-info-item"><div class="tit">Número</div><div class="val">${c.numero}</div></div>
+    <div class="ticket-info-item"><div class="tit">NÃºmero</div><div class="val">${c.numero}</div></div>
     <div class="ticket-info-item"><div class="tit">Status</div><div class="val">${badgeStatus(c.status)}</div></div>
     <div class="ticket-info-item"><div class="tit">Prioridade</div><div class="val">${badgePrio(c.prioridade)}</div></div>
     <div class="ticket-info-item"><div class="tit">Setor</div><div class="val">${setorNome(c.setorId)}</div></div>
-    <div class="ticket-info-item"><div class="tit">Área / Categoria</div><div class="val">${areaNome(c.areaId)}</div></div>
+    <div class="ticket-info-item"><div class="tit">Ãrea / Categoria</div><div class="val">${areaNome(c.areaId)}</div></div>
     <div class="ticket-info-item"><div class="tit">Solicitante</div><div class="val">${usuarioNome(c.usuarioId)}</div></div>
-    <div class="ticket-info-item"><div class="tit">Atendente</div><div class="val">${c.atendenteId ? usuarioNome(c.atendenteId) : 'Não atribuído'}</div></div>
+    <div class="ticket-info-item"><div class="tit">Atendente</div><div class="val">${c.atendenteId ? usuarioNome(c.atendenteId) : 'NÃ£o atribuÃ­do'}</div></div>
     <div class="ticket-info-item"><div class="tit">Aberto em</div><div class="val">${fmtData(c.criadoEm)}</div></div>
-    <div class="ticket-info-item"><div class="tit">Última atualização</div><div class="val">${fmtData(c.atualizadoEm)}</div></div>
+    <div class="ticket-info-item"><div class="tit">Ãltima atualizaÃ§Ã£o</div><div class="val">${fmtData(c.atualizadoEm)}</div></div>
     ${c.ramal ? `<div class="ticket-info-item"><div class="tit">Contato / Ramal</div><div class="val">${c.ramal}</div></div>` : ''}
   `;
   const isAdminAtend = isAtendente(usuarioAtual);
@@ -2155,7 +2155,7 @@ function abrirTicket(id) {
   const msgs = c.mensagens || [];
   document.getElementById('msg-list').innerHTML = msgs.map(m=>`
     <div class="msg-item ${m.autorId===usuarioAtual.id?'usuario':'atendente'}">
-      <div class="msg-meta">${m.autorNome} · ${fmtData(m.criadoEm)}</div>
+      <div class="msg-meta">${m.autorNome} Â· ${fmtData(m.criadoEm)}</div>
       <div style="white-space:pre-wrap">${m.texto}</div>
       ${(m.anexos&&m.anexos.length>0)?'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">'+m.anexos.map(function(a){
         if(a.tipo&&a.tipo.startsWith('image/')){
@@ -2163,24 +2163,24 @@ function abrirTicket(id) {
         } else if(a.tipo&&a.tipo.startsWith('video/')){
           return '<video src="'+a.data+'" controls style="max-width:200px;max-height:120px;border-radius:6px"></video>';
         } else {
-          return '<a href="'+a.data+'" download="'+a.nome+'" style="display:inline-flex;align-items:center;gap:4px;background:#f0f0f0;padding:4px 8px;border-radius:4px;font-size:12px;text-decoration:none;color:#333">📎 '+a.nome+'</a>';
+          return '<a href="'+a.data+'" download="'+a.nome+'" style="display:inline-flex;align-items:center;gap:4px;background:#f0f0f0;padding:4px 8px;border-radius:4px;font-size:12px;text-decoration:none;color:#333">ð '+a.nome+'</a>';
         }
       }).join('')+'</div>':''}
     </div>
   `).join('') || '<div style="color:var(--cinza3);text-align:center;padding:20px">Nenhuma mensagem</div>';
   document.getElementById('nova-msg').value = '';
-  // Botão excluir — só para admin
+  // BotÃ£o excluir â sÃ³ para admin
   var btnExcluirEl = document.getElementById('btn-excluir-chamado');
   if(!btnExcluirEl){
     btnExcluirEl = document.createElement('button');
     btnExcluirEl.id = 'btn-excluir-chamado';
     btnExcluirEl.className = 'btn btn-sm';
     btnExcluirEl.style.cssText = 'background:#c0392b;color:white;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;margin-left:12px';
-    btnExcluirEl.innerHTML = '🗑️ Excluir Chamado';
+    btnExcluirEl.innerHTML = 'ðï¸ Excluir Chamado';
     btnExcluirEl.onclick = function(){ excluirChamado(ticketAtivo); };
     var statusDiv = document.querySelector('#modal-ticket .status-botoes, #modal-ticket [class*="status"]');
     if(!statusDiv){
-      // fallback: adicionar após botão cancelado
+      // fallback: adicionar apÃ³s botÃ£o cancelado
       var btnCancelar = document.querySelector('#modal-ticket button[onclick*="Cancelado"]');
       if(btnCancelar && btnCancelar.parentNode) btnCancelar.parentNode.appendChild(btnExcluirEl);
     } else {
@@ -2188,7 +2188,7 @@ function abrirTicket(id) {
     }
   }
   btnExcluirEl.style.display = (usuarioAtual&&usuarioAtual.perfil==='admin') ? 'inline-block' : 'none';
-  // Mostrar botão editar só para admin
+  // Mostrar botÃ£o editar sÃ³ para admin
   var btnEditBox=document.getElementById('btn-editar-box');
   if(btnEditBox) btnEditBox.style.display=(usuarioAtual&&usuarioAtual.perfil==='admin')?'block':'none';
   abrirModal('modal-ticket');
@@ -2197,7 +2197,7 @@ function abrirTicket(id) {
   (function(){var ap=document.getElementById('ticket-anexos-panel');if(!ap)return;if(!c.anexos||c.anexos.length===0){ap.style.display='none';return;}ap.style.display='block';ap.innerHTML='<div style="background:#f8f9fa;border:1.5px solid #e9ecef;border-radius:10px;padding:12px;margin-bottom:4px"><div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:8px">Anexos ('+c.anexos.length+')</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+c.anexos.map(function(a){if(a.tipo&&a.tipo.startsWith('image/'))return '<a href="'+a.dados+'" target="_blank"><img src="'+a.dados+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid #dee2e6;cursor:zoom-in" title="'+a.nome+'"></a>';return '<a href="'+a.dados+'" download="'+a.nome+'" style="display:flex;align-items:center;gap:6px;background:white;border:1.5px solid #dee2e6;border-radius:8px;padding:7px 12px;text-decoration:none;color:#333;font-size:13px;font-weight:500;max-width:200px;overflow:hidden">\uD83D\uDCCE <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+a.nome+'</span></a>';}).join('')+'</div></div>';})();
   // Exibir anexos
   (function(){var ap=document.getElementById('ticket-anexos-panel');if(!ap)return;if(!c.anexos||!c.anexos.length){ap.style.display='none';return;}ap.style.display='block';ap.innerHTML='<div style="background:#f8f9fa;border:1.5px solid #e9ecef;border-radius:10px;padding:12px;margin-bottom:4px"><div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:8px">Anexos ('+c.anexos.length+')</div><div style="display:flex;flex-wrap:wrap;gap:8px">'+c.anexos.map(function(a){if(a.tipo&&a.tipo.startsWith('image/'))return '<a href="'+a.dados+'" target="_blank"><img src="'+a.dados+'" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid #dee2e6" title="'+a.nome+'"></a>';return '<a href="'+a.dados+'" download="'+a.nome+'" style="display:flex;align-items:center;gap:6px;background:white;border:1.5px solid #dee2e6;border-radius:8px;padding:7px 12px;text-decoration:none;color:#333;font-size:13px;font-weight:500">\uD83D\uDCCE '+a.nome+'</a>';}).join('')+'</div></div>';})();
-  // Scroll para última mensagem
+  // Scroll para Ãºltima mensagem
   setTimeout(() => {
     const ml = document.getElementById('msg-list');
     ml.scrollTop = ml.scrollHeight;
@@ -2210,11 +2210,11 @@ function alterarPrioridade(novaPrio){
   const idx=chamados.findIndex(c=>c&&c.id===ticketAtivo);
   if(idx<0)return;
   const agora=new Date().toISOString();
-  const prioAnterior=chamados[idx].prioridade||'Média';
+  const prioAnterior=chamados[idx].prioridade||'MÃ©dia';
   chamados[idx].prioridade=novaPrio;
   chamados[idx].atualizadoEm=agora;
   chamados[idx].mensagens=chamados[idx].mensagens||[];
-  chamados[idx].mensagens.push({id:uid(),autorId:usuarioAtual.id,autorNome:usuarioAtual.nome,tipo:'sistema',texto:'🎯 Prioridade alterada de "'+prioAnterior+'" para "'+novaPrio+'" por '+usuarioAtual.nome+'.',criadoEm:agora});
+  chamados[idx].mensagens.push({id:uid(),autorId:usuarioAtual.id,autorNome:usuarioAtual.nome,tipo:'sistema',texto:'ð¯ Prioridade alterada de "'+prioAnterior+'" para "'+novaPrio+'" por '+usuarioAtual.nome+'.',criadoEm:agora});
   DB.set('chamados',chamados);
   fbDB.ref('chamados').set(chamados);
   toast('Prioridade alterada para "'+novaPrio+'"!','success');
@@ -2235,7 +2235,7 @@ function alterarStatus(novoStatus) {
     autorId: usuarioAtual.id,
     autorNome: usuarioAtual.nome,
     tipo: 'sistema',
-    texto: `🔄 Status alterado para "${novoStatus}" por ${usuarioAtual.nome}.`,
+    texto: `ð Status alterado para "${novoStatus}" por ${usuarioAtual.nome}.`,
     criadoEm: agora
   });
   DB.set('chamados', chamados);
@@ -2247,7 +2247,7 @@ function alterarStatus(novoStatus) {
   var _c=chamados[idx];
   var _sol=_usu.find(function(u){return u.id===_c.usuarioId;});
   var _atd=_usu.find(function(u){return u.id===_c.atendenteId;});
-  var _link='https://warleytavares.github.io/agrobrasil-helpdesk/';
+  var _link='https://terradobrasil.github.io/agrobrasil-helpdesk/';
   var _corpo='Chamado: #'+_c.numero+'\nAssunto: '+_c.assunto+'\nNovo status: '+novoStatus+'\nAlterado por: '+usuarioAtual.nome+'\n\nAcesse: '+_link;
   if(_sol&&_sol.email) enviarEmail(_sol.email,'[HelpDesk] Chamado #'+_c.numero+' - Status: '+novoStatus,_corpo);
   if(_atd&&_atd.email&&_atd.id!==_sol.id) enviarEmail(_atd.email,'[HelpDesk] Chamado #'+_c.numero+' - Status: '+novoStatus,_corpo);
@@ -2263,23 +2263,23 @@ function atribuirAtendente() {
   chamados[idx].atendenteId = atendenteId || null;
   chamados[idx].atualizadoEm = agora;
   chamados[idx].mensagens = chamados[idx].mensagens || [];
-  const nomeAtend = atendenteId ? usuarioNome(atendenteId) : 'ninguém';
+  const nomeAtend = atendenteId ? usuarioNome(atendenteId) : 'ninguÃ©m';
   chamados[idx].mensagens.push({
     id: uid(), autorId: usuarioAtual.id, autorNome: usuarioAtual.nome, tipo:'sistema',
-    texto: `👤 Chamado atribuído a ${nomeAtend} por ${usuarioAtual.nome}.`, criadoEm: agora
+    texto: `ð¤ Chamado atribuÃ­do a ${nomeAtend} por ${usuarioAtual.nome}.`, criadoEm: agora
   });
   DB.set('chamados', chamados);
-  // Enviar email ao atendente atribuído
+  // Enviar email ao atendente atribuÃ­do
   if(atendenteId){
     var _usuA=DB.get('usuarios')||[];
     if(!Array.isArray(_usuA)) _usuA=Object.values(_usuA).filter(Boolean);
     var _atd=_usuA.find(function(u){return u&&u.id===atendenteId;});
     var _sol=_usuA.find(function(u){return u&&u.id===chamados[idx].usuarioId;});
-    var _link='https://warleytavares.github.io/agrobrasil-helpdesk/';
-    var _corpo='Olá '+(_atd?_atd.nome:'')+ ',\n\nUm chamado foi atribuído a você!\n\nNúmero: '+chamados[idx].numero+'\nAssunto: '+chamados[idx].assunto+'\nSolicitante: '+ (_sol?_sol.nome:'')+'\n\nAcesse: '+_link;
-    if(_atd&&_atd.email) enviarEmail(_atd.email,'[HelpDesk] Chamado #'+chamados[idx].numero+' atribuído a você',_corpo);
+    var _link='https://terradobrasil.github.io/agrobrasil-helpdesk/';
+    var _corpo='OlÃ¡ '+(_atd?_atd.nome:'')+ ',\n\nUm chamado foi atribuÃ­do a vocÃª!\n\nNÃºmero: '+chamados[idx].numero+'\nAssunto: '+chamados[idx].assunto+'\nSolicitante: '+ (_sol?_sol.nome:'')+'\n\nAcesse: '+_link;
+    if(_atd&&_atd.email) enviarEmail(_atd.email,'[HelpDesk] Chamado #'+chamados[idx].numero+' atribuÃ­do a vocÃª',_corpo);
   }
-  toast('Atendente atribuído!', 'success');
+  toast('Atendente atribuÃ­do!', 'success');
   renderDashboard();
   abrirTicket(ticketAtivo);
 }
@@ -2316,10 +2316,10 @@ function enviarMensagem() {
   var _c2=chamados[idx];
   var _sol2=_usu2.find(function(u){return u.id===_c2.usuarioId;});
   var _atd2=_usu2.find(function(u){return u.id===_c2.atendenteId;});
-  var _link2='https://warleytavares.github.io/agrobrasil-helpdesk/';
+  var _link2='https://terradobrasil.github.io/agrobrasil-helpdesk/';
   var _corpo2='Nova mensagem no chamado #'+_c2.numero+'\nAssunto: '+_c2.assunto+'\n\nMensagem de '+usuarioAtual.nome+':\n'+texto+'\n\nAcesse: '+_link2;
   var _assunto2='[HelpDesk] Nova mensagem - Chamado #'+_c2.numero;
-  // Se quem enviou é o solicitante, notifica o atendente e vice-versa
+  // Se quem enviou Ã© o solicitante, notifica o atendente e vice-versa
   if(usuarioAtual.id===_c2.usuarioId){
     if(_atd2&&_atd2.email) enviarEmail(_atd2.email,_assunto2,_corpo2);
   } else {
@@ -2340,7 +2340,7 @@ function enviarMensagem() {
   });
 }
 
-// ===================== RELATÓRIOS =====================
+// ===================== RELATÃRIOS =====================
 
 function imprimirRelatorio(){
   window.print();
@@ -2359,7 +2359,7 @@ function renderRelatorios() {
   var de=document.getElementById('rel-de')?document.getElementById('rel-de').value:'';
   var ate=document.getElementById('rel-ate')?document.getElementById('rel-ate').value:'';
 
-  // Aplicar filtro de período
+  // Aplicar filtro de perÃ­odo
   var agora=new Date(); var ini=new Date();
   if(periodo==='dia'){ini=new Date(agora.toDateString());}
   else if(periodo==='semana'){ini=new Date(agora);ini.setDate(agora.getDate()-7);}
@@ -2401,17 +2401,17 @@ function renderRelatorios() {
     return Object.entries(obj).sort(function(a,b){return b[1]-a[1];});
   }
   var porSetor=agrupar(filtrados,function(c){return c.setorNome||'Outros';});
-  var porArea=agrupar(filtrados,function(c){return c.areaNome||'Sem área';});
+  var porArea=agrupar(filtrados,function(c){return c.areaNome||'Sem Ã¡rea';});
   var porPrio=agrupar(filtrados,function(c){return c.prioridade||'N/D';});
   var porStatus=agrupar(filtrados,function(c){return c.status||'N/D';});
   var porTecnico=agrupar(filtrados,function(c){
-    if(!c.atendenteId) return 'Não atribuído';
+    if(!c.atendenteId) return 'NÃ£o atribuÃ­do';
     var users=(window._fbCache&&window._fbCache.usuarios)||[];
     var u=users.find(function(x){return x&&x.id===c.atendenteId;});
-    return u?u.nome:'Não atribuído';
+    return u?u.nome:'NÃ£o atribuÃ­do';
   });
 
-  // Evolução diária (últimos 14 dias)
+  // EvoluÃ§Ã£o diÃ¡ria (Ãºltimos 14 dias)
   var diasMap={};
   for(var i=13;i>=0;i--){
     var d=new Date(agora); d.setDate(agora.getDate()-i);
@@ -2424,7 +2424,7 @@ function renderRelatorios() {
   });
   var diasArr=Object.entries(diasMap);
 
-  // Gráfico de barras SVG horizontal
+  // GrÃ¡fico de barras SVG horizontal
   function barrasH(dados,cores,max){
     if(!dados||dados.length===0) return '<p style="color:#999;padding:16px">Sem dados</p>';
     var mval=Math.max.apply(null,dados.map(function(d){return d[1];}),1)||1;
@@ -2441,7 +2441,7 @@ function renderRelatorios() {
     }).join('');
   }
 
-  // Gráfico de pizza SVG
+  // GrÃ¡fico de pizza SVG
   function pizzaSVG(dados,cores){
     if(!dados||dados.length===0) return '<p style="color:#999;padding:16px">Sem dados</p>';
     var tot=dados.reduce(function(s,d){return s+d[1];},0)||1;
@@ -2468,15 +2468,15 @@ function renderRelatorios() {
       '<div>'+legenda+'</div></div>';
   }
 
-  // Opções de cores
+  // OpÃ§Ãµes de cores
   var coresSetor=['#2d7a4f','#3498db','#e67e22','#9b59b6','#e74c3c','#1abc9c','#f39c12','#2ecc71'];
   var coresPrio={Urgente:'#e74c3c',Alta:'#e67e22',Media:'#f39c12',Baixa:'#27ae60','N/D':'#95a5a6'};
   var coresStatus={Aberto:'#3498db','Em andamento':'#f39c12',Resolvido:'#27ae60',Cancelado:'#95a5a6'};
 
-  // Opções do select de setor para filtro
+  // OpÃ§Ãµes do select de setor para filtro
   var setOpts=setores.map(function(s){return '<option value="'+s.id+'"'+(filtroSetor===s.id?' selected':'')+'>'+s.nome+'</option>';}).join('');
 
-  // HTML da página
+  // HTML da pÃ¡gina
   el.innerHTML=
     '<style>'+
     '@media print{.no-print{display:none!important}.print-only{display:block!important}.rel-section{page-break-inside:avoid}}'+
@@ -2501,30 +2501,30 @@ function renderRelatorios() {
     '</style>'+
 
     '<div class="page-header no-print" style="display:flex;justify-content:space-between;align-items:center">'+
-    '<h2>📊 Relatórios</h2>'+
-    '<button onclick="imprimirRelatorio()" style="background:#1a2540;color:white;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px">🖨️ Imprimir / Exportar PDF</button>'+
+    '<h2>ð RelatÃ³rios</h2>'+
+    '<button onclick="imprimirRelatorio()" style="background:#1a2540;color:white;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px">ð¨ï¸ Imprimir / Exportar PDF</button>'+
     '</div>'+
 
-    // Título para impressão
+    // TÃ­tulo para impressÃ£o
     '<div class="print-only" style="text-align:center;margin-bottom:24px">'+
-    '<h2 style="font-size:22px;font-weight:800;color:#1a2540">AgroBrasil HelpDesk — Relatório Gerencial</h2>'+
+    '<h2 style="font-size:22px;font-weight:800;color:#1a2540">AgroBrasil HelpDesk â RelatÃ³rio Gerencial</h2>'+
     '<p style="color:#666;font-size:13px">Gerado em '+new Date().toLocaleString('pt-BR')+'</p>'+
     '</div>'+
 
     // Filtros
     '<div class="rel-filtros no-print">'+
-    '<div><label>Período</label>'+
+    '<div><label>PerÃ­odo</label>'+
     '<select id="rel-periodo" onchange="renderRelatorios()">'+
     '<option value="dia"'+(periodo==='dia'?' selected':'')+'>Hoje</option>'+
     '<option value="semana"'+(periodo==='semana'?' selected':'')+'>Esta semana</option>'+
-    '<option value="mes"'+(periodo==='mes'?' selected':'')+'>Este mês</option>'+
+    '<option value="mes"'+(periodo==='mes'?' selected':'')+'>Este mÃªs</option>'+
     '<option value="ano"'+(periodo==='ano'?' selected':'')+'>Este ano</option>'+
     '<option value="todos"'+(periodo==='todos'?' selected':'')+'>Todos</option>'+
     '<option value="custom"'+(periodo==='custom'?' selected':'')+'>Personalizado</option>'+
     '</select></div>'+
     '<div id="rel-custom-div" style="display:'+(periodo==='custom'?'flex':'none')+';gap:8px">'+
     '<div><label>De</label><input type="date" id="rel-de" value="'+de+'"></div>'+
-    '<div><label>Até</label><input type="date" id="rel-ate" value="'+ate+'"></div>'+
+    '<div><label>AtÃ©</label><input type="date" id="rel-ate" value="'+ate+'"></div>'+
     '<div style="display:flex;align-items:flex-end"><button onclick="renderRelatorios()" style="padding:8px 14px;background:#2d7a4f;color:white;border:none;border-radius:7px;cursor:pointer;font-weight:600">Aplicar</button></div>'+
     '</div>'+
     '<div><label>Setor</label>'+
@@ -2544,25 +2544,25 @@ function renderRelatorios() {
     '<div class="kpi" style="border-left-color:#27ae60"><div class="kpi-val" style="color:#27ae60">'+resolvidos+'</div><div class="kpi-lbl">Resolvidos</div></div>'+
     '<div class="kpi" style="border-left-color:#e74c3c"><div class="kpi-val" style="color:#e74c3c">'+urgentes+'</div><div class="kpi-lbl">Urgentes</div></div>'+
     '<div class="kpi" style="border-left-color:#e74c3c"><div class="kpi-val" style="color:#e74c3c">'+vencidos+'</div><div class="kpi-lbl">Prazo Vencido</div></div>'+
-    '<div class="kpi" style="border-left-color:#2d7a4f"><div class="kpi-val" style="color:#2d7a4f">'+tma+'</div><div class="kpi-lbl">Tempo Médio</div></div>'+
+    '<div class="kpi" style="border-left-color:#2d7a4f"><div class="kpi-val" style="color:#2d7a4f">'+tma+'</div><div class="kpi-lbl">Tempo MÃ©dio</div></div>'+
     '</div>'+
 
-    // Gráficos linha 1: Setor e Área
+    // GrÃ¡ficos linha 1: Setor e Ãrea
     '<div class="charts-grid rel-section">'+
-    '<div class="chart-card"><h3>🏢 Chamados por Setor</h3>'+barrasH(porSetor,coresSetor)+'</div>'+
-    '<div class="chart-card"><h3>🏷️ Chamados por Área</h3>'+barrasH(porArea,['#3498db','#2980b9','#1abc9c','#16a085','#2ecc71'])+'</div>'+
+    '<div class="chart-card"><h3>ð¢ Chamados por Setor</h3>'+barrasH(porSetor,coresSetor)+'</div>'+
+    '<div class="chart-card"><h3>ð·ï¸ Chamados por Ãrea</h3>'+barrasH(porArea,['#3498db','#2980b9','#1abc9c','#16a085','#2ecc71'])+'</div>'+
     '</div>'+
 
-    // Gráficos linha 2: Status (pizza) e Prioridade (barras)
+    // GrÃ¡ficos linha 2: Status (pizza) e Prioridade (barras)
     '<div class="charts-grid rel-section">'+
-    '<div class="chart-card"><h3>📊 Distribuição por Status</h3>'+pizzaSVG(porStatus,['#3498db','#f39c12','#27ae60','#95a5a6'])+'</div>'+
-    '<div class="chart-card"><h3>🎯 Distribuição por Prioridade</h3>'+pizzaSVG(porPrio,['#e74c3c','#e67e22','#f39c12','#27ae60','#95a5a6'])+'</div>'+
+    '<div class="chart-card"><h3>ð DistribuiÃ§Ã£o por Status</h3>'+pizzaSVG(porStatus,['#3498db','#f39c12','#27ae60','#95a5a6'])+'</div>'+
+    '<div class="chart-card"><h3>ð¯ DistribuiÃ§Ã£o por Prioridade</h3>'+pizzaSVG(porPrio,['#e74c3c','#e67e22','#f39c12','#27ae60','#95a5a6'])+'</div>'+
     '</div>'+
 
-    // Técnicos e evolução
+    // TÃ©cnicos e evoluÃ§Ã£o
     '<div class="charts-grid rel-section">'+
-    '<div class="chart-card"><h3>👤 Chamados por Técnico</h3>'+barrasH(porTecnico,['#9b59b6','#8e44ad','#7f3fbf'])+'</div>'+
-    '<div class="chart-card"><h3>📅 Evolução (últimos 14 dias)</h3>'+
+    '<div class="chart-card"><h3>ð¤ Chamados por TÃ©cnico</h3>'+barrasH(porTecnico,['#9b59b6','#8e44ad','#7f3fbf'])+'</div>'+
+    '<div class="chart-card"><h3>ð EvoluÃ§Ã£o (Ãºltimos 14 dias)</h3>'+
     '<div style="display:flex;align-items:flex-end;gap:4px;height:100px;padding-top:8px">'+
     (function(){
       var mx=Math.max.apply(null,diasArr.map(function(d){return d[1];}),1)||1;
@@ -2579,30 +2579,30 @@ function renderRelatorios() {
 
     // Tabela detalhada
     '<div class="chart-full rel-section">'+
-    '<h3>📋 Listagem Detalhada</h3>'+
+    '<h3>ð Listagem Detalhada</h3>'+
     '<table class="rel-table">'+
-    '<thead><tr><th>Nº</th><th>Assunto</th><th>Setor</th><th>Área</th><th>Prioridade</th><th>Status</th><th>Técnico</th><th>Prazo</th><th>Data Abertura</th></tr></thead>'+
+    '<thead><tr><th>NÂº</th><th>Assunto</th><th>Setor</th><th>Ãrea</th><th>Prioridade</th><th>Status</th><th>TÃ©cnico</th><th>Prazo</th><th>Data Abertura</th></tr></thead>'+
     '<tbody>'+
-    (filtrados.length===0?'<tr><td colspan="9" style="text-align:center;color:#999;padding:24px">Nenhum chamado no período</td></tr>':
+    (filtrados.length===0?'<tr><td colspan="9" style="text-align:center;color:#999;padding:24px">Nenhum chamado no perÃ­odo</td></tr>':
     filtrados.slice().reverse().map(function(c){
-      var prazoTxt='—';
+      var prazoTxt='â';
       if(c.prazoVencimento&&c.status!=='Resolvido'&&c.status!=='Cancelado'){
         var dh=Math.floor((new Date(c.prazoVencimento)-agora)/3600000);
         var dd=Math.floor(dh/24);
         var cor2=dh<0?'#e74c3c':dh<=24?'#e74c3c':dh<=48?'#e67e22':'#27ae60';
         prazoTxt='<span style="color:'+cor2+';font-weight:700">'+(dh<0?'VENCIDO':dh<=24?dh+'h':dd+'d')+'</span>';
-      } else if(c.status==='Resolvido'){prazoTxt='<span style="color:#27ae60">✓</span>';}
+      } else if(c.status==='Resolvido'){prazoTxt='<span style="color:#27ae60">â</span>';}
       var users=(window._fbCache&&window._fbCache.usuarios)||[];
-      var tec=c.atendenteId?(users.find(function(x){return x&&x.id===c.atendenteId;})||{nome:'—'}).nome:'—';
+      var tec=c.atendenteId?(users.find(function(x){return x&&x.id===c.atendenteId;})||{nome:'â'}).nome:'â';
       return '<tr><td><b>'+c.numero+'</b></td><td>'+c.assunto+'</td><td>'+
-        (c.setorNome||'—')+'</td><td>'+(c.areaNome||'—')+'</td><td>'+
-        '<span style="font-size:11px;font-weight:700;color:'+(c.prioridade==='Urgente'?'#e74c3c':c.prioridade==='Alta'?'#e67e22':c.prioridade==='Média'?'#f39c12':'#27ae60')+'">'+c.prioridade+'</span></td><td>'+
+        (c.setorNome||'â')+'</td><td>'+(c.areaNome||'â')+'</td><td>'+
+        '<span style="font-size:11px;font-weight:700;color:'+(c.prioridade==='Urgente'?'#e74c3c':c.prioridade==='Alta'?'#e67e22':c.prioridade==='MÃ©dia'?'#f39c12':'#27ae60')+'">'+c.prioridade+'</span></td><td>'+
         '<span style="font-size:11px;font-weight:700;color:'+(c.status==='Resolvido'?'#27ae60':c.status==='Em andamento'?'#f39c12':c.status==='Cancelado'?'#95a5a6':'#3498db')+'">'+c.status+'</span></td><td>'+
         tec+'</td><td>'+prazoTxt+'</td><td>'+fmtDataCurta(c.criadoEm)+'</td></tr>';
     }).join(''))+
     '</tbody></table></div>';
 
-  // Ativar/desativar período customizado
+  // Ativar/desativar perÃ­odo customizado
   var cd=document.getElementById('rel-custom-div');
   var rp=document.getElementById('rel-periodo');
   if(cd&&rp) rp.addEventListener('change',function(){cd.style.display=this.value==='custom'?'flex':'none';});
@@ -2638,11 +2638,11 @@ function renderRelatorio() {
   if (setorFiltro) chamados = chamados.filter(c=>c.setorId===setorFiltro);
   // Cards
   document.getElementById('rel-cards').innerHTML = [
-    {label:'Total no Período', value:chamados.length, sub:'chamados', cls:''},
+    {label:'Total no PerÃ­odo', value:chamados.length, sub:'chamados', cls:''},
     {label:'Abertos', value:chamados.filter(c=>c.status==='Aberto').length, sub:'aguardando atendimento', cls:'amarelo'},
     {label:'Em Andamento', value:chamados.filter(c=>c.status==='Em andamento').length, sub:'sendo atendidos', cls:'azul'},
-    {label:'Resolvidos', value:chamados.filter(c=>c.status==='Resolvido').length, sub:'concluídos', cls:''},
-    {label:'Urgentes', value:chamados.filter(c=>c.prioridade==='Urgente').length, sub:'prioridade máxima', cls:'vermelho'},
+    {label:'Resolvidos', value:chamados.filter(c=>c.status==='Resolvido').length, sub:'concluÃ­dos', cls:''},
+    {label:'Urgentes', value:chamados.filter(c=>c.prioridade==='Urgente').length, sub:'prioridade mÃ¡xima', cls:'vermelho'},
   ].map(c=>`<div class="stat-card ${c.cls}"><div class="label">${c.label}</div><div class="value">${c.value}</div><div class="sub">${c.sub}</div></div>`).join('');
   // Por setor
   const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
@@ -2654,7 +2654,7 @@ function renderRelatorio() {
       <div class="bar-track"><div class="bar-fill" style="width:${(x.count/maxS*100).toFixed(0)}%"><span>${x.count}</span></div></div>
     </div>
   `).join('') : '<div style="color:var(--cinza3);text-align:center;padding:20px">Sem dados</div>';
-  // Por área
+  // Por Ã¡rea
   const areas = (window._fbCache&&window._fbCache.areas)||DB.get('areas')||[];
   const porArea = areas.map(a=>({nome:a.nome, count:chamados.filter(c=>c.areaId===a.id).length})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,8);
   const maxA = Math.max(...porArea.map(x=>x.count),1);
@@ -2675,7 +2675,7 @@ function renderRelatorio() {
     </div>
   `).join('');
   // Por prioridade
-  const prioList = ['Urgente','Alta','Média','Baixa'];
+  const prioList = ['Urgente','Alta','MÃ©dia','Baixa'];
   const porPrio = prioList.map(p=>({nome:p, count:chamados.filter(c=>c.prioridade===p).length}));
   const maxP = Math.max(...porPrio.map(x=>x.count),1);
   document.getElementById('chart-prioridade').innerHTML = porPrio.map(x=>`
@@ -2684,7 +2684,7 @@ function renderRelatorio() {
       <div class="bar-track"><div class="bar-fill amarelo" style="width:${(x.count/maxP*100).toFixed(0)}%"><span>${x.count}</span></div></div>
     </div>
   `).join('');
-  // Evolução diária (últimos 14 dias)
+  // EvoluÃ§Ã£o diÃ¡ria (Ãºltimos 14 dias)
   const dias = [];
   for (let i=13;i>=0;i--) {
     const d = new Date(); d.setDate(d.getDate()-i); d.setHours(0,0,0,0);
@@ -2703,7 +2703,7 @@ function renderRelatorio() {
 // ===================== EXPORT CSV =====================
 function exportarCSV() {
   const chamados = getChamados();
-  const linhas = [['Número','Assunto','Setor','Área','Prioridade','Status','Solicitante','Atendente','Aberto em','Atualizado em']];
+  const linhas = [['NÃºmero','Assunto','Setor','Ãrea','Prioridade','Status','Solicitante','Atendente','Aberto em','Atualizado em']];
   chamados.forEach(c => {
     linhas.push([c.numero, c.assunto, setorNome(c.setorId), areaNome(c.areaId), c.prioridade, c.status, usuarioNome(c.usuarioId), c.atendenteId?usuarioNome(c.atendenteId):'', fmtData(c.criadoEm), fmtData(c.atualizadoEm)]);
   });
@@ -2716,7 +2716,7 @@ function exportarCSV() {
   toast('CSV exportado!', 'success');
 }
 
-// ===================== USUÁRIOS =====================
+// ===================== USUÃRIOS =====================
 function renderUsuarios() {
   const usuarios = getUsuarios();
   const setores = (window._fbCache&&window._fbCache.setores)||DB.get('setores')||[];
@@ -2726,15 +2726,15 @@ function renderUsuarios() {
         <div class="user-avatar" style="width:32px;height:32px;font-size:12px;background:${u.perfil==='admin'?'var(--verde)':u.perfil==='atendente'?'var(--azul)':'var(--cinza3)'}">${u.nome.charAt(0)}</div>
         <div class="info">
           <div class="name">${u.nome} ${u.status==='inativo'?'<span style="color:var(--cinza3);font-size:11px">(Inativo)</span>':''}</div>
-          <div class="sub">${u.email} · ${u.cargo||''} · <strong>${u.perfil}</strong> ${u.setor?'· '+setorNome(u.setor):''}</div>
+          <div class="sub">${u.email} Â· ${u.cargo||''} Â· <strong>${u.perfil}</strong> ${u.setor?'Â· '+setorNome(u.setor):''}</div>
         </div>
       </div>
       <div class="actions">
-        <button class="btn btn-outline btn-sm" onclick="editarUsuario('${u.id}')">✏️ Editar</button>
-        ${u.id!=='u1'?`<button class="btn btn-vermelho btn-sm" onclick="excluirUsuario('${u.id}')">🗑️</button>`:''}
+        <button class="btn btn-outline btn-sm" onclick="editarUsuario('${u.id}')">âï¸ Editar</button>
+        ${u.id!=='u1'?`<button class="btn btn-vermelho btn-sm" onclick="excluirUsuario('${u.id}')">ðï¸</button>`:''}
       </div>
     </div>
-  `).join('') || '<div class="empty-state"><div class="icon">👥</div><h3>Nenhum usuário</h3></div>';
+  `).join('') || '<div class="empty-state"><div class="icon">ð¥</div><h3>Nenhum usuÃ¡rio</h3></div>';
 }
 
 function abrirModalUsuario(id) {
@@ -2748,7 +2748,7 @@ function abrirModalUsuario(id) {
   document.getElementById('usuario-setor').value = '';
   document.getElementById('usuario-cargo').value = '';
   document.getElementById('usuario-status').value = 'ativo';
-  document.getElementById('modal-usuario-titulo').textContent = 'Novo Usuário';
+  document.getElementById('modal-usuario-titulo').textContent = 'Novo UsuÃ¡rio';
   abrirModal('modal-usuario');
 }
 
@@ -2765,12 +2765,12 @@ function editarUsuario(id) {
   document.getElementById('usuario-setor').value = u.setor||'';
   document.getElementById('usuario-cargo').value = u.cargo||'';
   document.getElementById('usuario-status').value = u.status||'ativo';
-  document.getElementById('modal-usuario-titulo').textContent = 'Editar Usuário';
+  document.getElementById('modal-usuario-titulo').textContent = 'Editar UsuÃ¡rio';
   abrirModal('modal-usuario');
 }
 
 function salvarUsuario() {
-  // Após salvar, sincronizar usuários no Firebase
+  // ApÃ³s salvar, sincronizar usuÃ¡rios no Firebase
   setTimeout(function(){
     var usu = DB.get('usuarios')||[];
     fbDB.ref('usuarios').set(usu);
@@ -2784,16 +2784,16 @@ function salvarUsuario() {
   const cargo = document.getElementById('usuario-cargo').value.trim();
   const status = document.getElementById('usuario-status').value;
   if (!nome||!email||!senha) { toast('Preencha nome, e-mail e senha!','error'); return; }
-  if (senha.length < 6) { toast('Senha deve ter mínimo 6 caracteres!','error'); return; }
+  if (senha.length < 6) { toast('Senha deve ter mÃ­nimo 6 caracteres!','error'); return; }
   const usuarios = getUsuarios();
   if (!id) {
-    if (usuarios.find(u=>u.email===email)) { toast('E-mail já cadastrado!','error'); return; }
+    if (usuarios.find(u=>u.email===email)) { toast('E-mail jÃ¡ cadastrado!','error'); return; }
     usuarios.push({ id:uid(), nome, email, senha, perfil, setor, cargo, status, criadoEm:new Date().toISOString() });
-    toast('Usuário criado!', 'success');
+    toast('UsuÃ¡rio criado!', 'success');
   } else {
     const idx = usuarios.findIndex(u=>u.id===id);
     if (idx>=0) { usuarios[idx] = {...usuarios[idx], nome, email, senha, perfil, setor, cargo, status}; }
-    toast('Usuário atualizado!', 'success');
+    toast('UsuÃ¡rio atualizado!', 'success');
   }
   DB.set('usuarios', usuarios);
   fecharModal('modal-usuario');
@@ -2801,14 +2801,14 @@ function salvarUsuario() {
 }
 
 function excluirUsuario(id) {
-  if (!confirm('Excluir este usuário?')) return;
+  if (!confirm('Excluir este usuÃ¡rio?')) return;
   const usuarios = getUsuarios().filter(u=>u.id!==id);
   DB.set('usuarios', usuarios);
-  toast('Usuário excluído.', 'warning');
+  toast('UsuÃ¡rio excluÃ­do.', 'warning');
   renderUsuarios();
 }
 
-// ===================== SETORES & ÁREAS =====================
+// ===================== SETORES & ÃREAS =====================
 function renderSetores() {
   const setores = DB.get('setores') || [];
   const areas = (window._fbCache&&window._fbCache.areas)||DB.get('areas')||[];
@@ -2816,11 +2816,11 @@ function renderSetores() {
     <div class="settings-item">
       <div class="info">
         <div class="name">${s.sigla ? `<span style="background:var(--azul);color:white;padding:1px 8px;border-radius:4px;font-size:11px;margin-right:6px">${s.sigla}</span>`:''} ${s.nome}</div>
-        <div class="sub">${areas.filter(a=>a.setorId===s.id).length} área(s) ${s.responsavel?'· '+s.responsavel:''}</div>
+        <div class="sub">${areas.filter(a=>a.setorId===s.id).length} Ã¡rea(s) ${s.responsavel?'Â· '+s.responsavel:''}</div>
       </div>
       <div class="actions">
-        <button class="btn btn-outline btn-sm" onclick="editarSetor('${s.id}')">✏️</button>
-        <button class="btn btn-vermelho btn-sm" onclick="excluirSetor('${s.id}')">🗑️</button>
+        <button class="btn btn-outline btn-sm" onclick="editarSetor('${s.id}')">âï¸</button>
+        <button class="btn btn-vermelho btn-sm" onclick="excluirSetor('${s.id}')">ðï¸</button>
       </div>
     </div>
   `).join('') || '<div class="empty-state" style="padding:20px"><h3>Nenhum setor</h3></div>';
@@ -2829,14 +2829,14 @@ function renderSetores() {
     <div class="settings-item">
       <div class="info">
         <div class="name">${a.nome}</div>
-        <div class="sub">${setorNome(a.setorId)} ${a.descricao?'· '+a.descricao:''}</div>
+        <div class="sub">${setorNome(a.setorId)} ${a.descricao?'Â· '+a.descricao:''}</div>
       </div>
       <div class="actions">
-        <button class="btn btn-outline btn-sm" onclick="editarArea('${a.id}')">✏️</button>
-        <button class="btn btn-vermelho btn-sm" onclick="excluirArea('${a.id}')">🗑️</button>
+        <button class="btn btn-outline btn-sm" onclick="editarArea('${a.id}')">âï¸</button>
+        <button class="btn btn-vermelho btn-sm" onclick="excluirArea('${a.id}')">ðï¸</button>
       </div>
     </div>
-  `).join('') || '<div class="empty-state" style="padding:20px"><h3>Nenhuma área</h3></div>';
+  `).join('') || '<div class="empty-state" style="padding:20px"><h3>Nenhuma Ã¡rea</h3></div>';
 }
 
 function abrirModalSetor() {
@@ -2857,9 +2857,9 @@ function editarSetor(id) {
 function salvarSetor() {
   const id=document.getElementById('setor-id').value;
   const nome=document.getElementById('setor-nome').value.trim();
-  if(!nome){toast('Nome obrigatório!','error');return;}
+  if(!nome){toast('Nome obrigatÃ³rio!','error');return;}
   const obj={nome,sigla:document.getElementById('setor-sigla').value.trim().toUpperCase(),responsavel:document.getElementById('setor-responsavel').value.trim()};
-  // Usar sempre o Firebase como base para não sobrescrever dados de outros usuários
+  // Usar sempre o Firebase como base para nÃ£o sobrescrever dados de outros usuÃ¡rios
   fbDB.ref('setores').once('value',function(snap){
     var v=snap.val();
     var setores=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
@@ -2890,7 +2890,7 @@ function abrirModalArea() {
   const setores=DB.get('setores')||[];
   document.getElementById('area-setor').innerHTML='<option value="">Selecione o setor...</option>'+setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
   document.getElementById('area-id').value='';document.getElementById('area-nome').value='';document.getElementById('area-email').value='';document.getElementById('area-descricao').value='';
-  document.getElementById('modal-area-titulo').textContent='Nova Área / Categoria';
+  document.getElementById('modal-area-titulo').textContent='Nova Ãrea / Categoria';
   abrirModal('modal-area');
 }
 function editarArea(id) {
@@ -2899,21 +2899,21 @@ function editarArea(id) {
   document.getElementById('area-setor').innerHTML='<option value="">Selecione...</option>'+setores.map(s=>`<option value="${s.id}">${s.nome}</option>`).join('');
   document.getElementById('area-id').value=a.id;document.getElementById('area-setor').value=a.setorId;
   document.getElementById('area-nome').value=a.nome;document.getElementById('area-email').value=a.email||'';document.getElementById('area-descricao').value=a.descricao||'';
-  document.getElementById('modal-area-titulo').textContent='Editar Área';
+  document.getElementById('modal-area-titulo').textContent='Editar Ãrea';
   abrirModal('modal-area');
 }
 function salvarArea() {
   const id=document.getElementById('area-id').value;
   const setorId=document.getElementById('area-setor').value;
   const nome=document.getElementById('area-nome').value.trim();
-  if(!setorId||!nome){toast('Setor e nome são obrigatórios!','error');return;}
+  if(!setorId||!nome){toast('Setor e nome sÃ£o obrigatÃ³rios!','error');return;}
   const obj={setorId,nome,email:document.getElementById('area-email').value.trim(),descricao:document.getElementById('area-descricao').value.trim()};
   // Usar sempre o Firebase como base
   fbDB.ref('areas').once('value',function(snap){
     var v=snap.val();
     var areas=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
-    if(!id){areas.push({id:uid(),...obj,criadoEm:new Date().toISOString()});toast('Área criada!','success');}
-    else{const idx=areas.findIndex(a=>a.id===id);if(idx>=0)areas[idx]={...areas[idx],...obj};toast('Área atualizada!','success');}
+    if(!id){areas.push({id:uid(),...obj,criadoEm:new Date().toISOString()});toast('Ãrea criada!','success');}
+    else{const idx=areas.findIndex(a=>a.id===id);if(idx>=0)areas[idx]={...areas[idx],...obj};toast('Ãrea atualizada!','success');}
     fbDB.ref('areas').set(areas,function(){
       if(window._fbCache) window._fbCache.areas=areas;
       DB.set('areas',areas);
@@ -2923,7 +2923,7 @@ function salvarArea() {
   });
 }
 function excluirArea(id) {
-  if(!confirm('Excluir área?')) return;
+  if(!confirm('Excluir Ã¡rea?')) return;
   fbDB.ref('areas').once('value',function(snap){
     var v=snap.val();
     var areas=Array.isArray(v)?v.filter(Boolean):(v?Object.values(v).filter(Boolean):[]);
@@ -2970,4 +2970,4 @@ function previewAnexosMSG() {
 </script>
 
 
-HTMLEOF<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="document.getElementById('lightbox').classList.remove('open')">✕</button><div id="lightbox-content"></div></div><div style="position:fixed;bottom:10px;right:14px;font-size:11px;color:#bbb;z-index:9999;pointer-events:none;font-family:'DM Sans',sans-serif;letter-spacing:0.2px">Desenvolvedor: Warley Fernandes Tavares</div></body></html>
+HTMLEOF<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="document.getElementById('lightbox').classList.remove('open')">â</button><div id="lightbox-content"></div></div><div style="position:fixed;bottom:10px;right:14px;font-size:11px;color:#bbb;z-index:9999;pointer-events:none;font-family:'DM Sans',sans-serif;letter-spacing:0.2px">Desenvolvedor: Warley Fernandes Tavares</div></body></html>
