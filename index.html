@@ -742,20 +742,29 @@ function enviarEmail(para, assunto, corpo) {
 .lightbox img,.lightbox video{max-width:90vw;max-height:90vh;border-radius:8px}
 .lightbox-close{position:absolute;top:20px;right:24px;color:white;font-size:32px;cursor:pointer;background:none;border:none;font-weight:700}
 </style><!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDfzJr235fmJeMLdwBZLCi6sI3COtX0GDA",
-  authDomain: "agrobrasil-helpdesk.firebaseapp.com",
-  databaseURL: "https://agrobrasil-helpdesk-default-rtdb.firebaseio.com",
-  projectId: "agrobrasil-helpdesk",
-  storageBucket: "agrobrasil-helpdesk.firebasestorage.app",
-  messagingSenderId: "1027008298553",
-  appId: "1:1027008298553:web:d161984344193e888357e8"
+/* ===== Motor de dados: backend Railway (substitui o Firebase) ===== */
+const HD_API = "https://fincontrol-pro-production.up.railway.app/api/helpdesk";
+const fbDB = {
+  ref: function(k){
+    return {
+      set: function(v, cb){
+        fetch(HD_API + "/" + encodeURIComponent(k), {method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify({v: (v===undefined?null:v)})})
+          .then(function(){ if(cb) cb(null); }, function(e){ if(cb) cb(e); });
+        return Promise.resolve();
+      },
+      once: function(ev, cb){
+        return fetch(HD_API + "/" + encodeURIComponent(k)).then(function(r){return r.json();})
+          .then(function(d){ var val = d && d.v; var snap = {val:function(){return val;}}; if(cb) cb(snap); return snap; })
+          .catch(function(){ var snap = {val:function(){return null;}}; if(cb) cb(snap); return snap; });
+      },
+      on: function(ev, cb){
+        var poll = function(){ fetch(HD_API + "/" + encodeURIComponent(k)).then(function(r){return r.json();}).then(function(d){ cb({val:function(){return d && d.v;}}); }).catch(function(){}); };
+        poll(); setInterval(poll, 5000);
+      }
+    };
+  }
 };
-firebase.initializeApp(firebaseConfig);
-const fbDB = firebase.database();
 </script>
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 </head>
