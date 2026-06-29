@@ -702,7 +702,7 @@ function enviarEmail(para, assunto, corpo) {
   if (!para) { console.warn('[Email] Sem destinatário'); return; }
   var _envJS = function() {
     emailjs.send(window._ejsSvcId, window._ejsTplId, {
-      to_email: para, subject: assunto, mensagem: corpo
+      to_email: para, subject: assunto, message: corpo, mensagem: corpo
     }).then(function(r){ console.log('[Email] EmailJS OK:', r.status); })
      .catch(function(e){ console.warn('[Email] EmailJS erro:', e); });
   };
@@ -721,6 +721,71 @@ function enviarEmail(para, assunto, corpo) {
       else { console.warn('[Email] SMTP falhou: ' + msg); _envJS(); }
     }).catch(function(e){ console.warn('[Email] SMTP erro:', e); _envJS(); });
   } else { _envJS(); }
+}
+
+// ===== Montagem de e-mail rico do chamado =====
+function _emailEsc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+// Normaliza o número (evita "##0084": numero já vem como "#0084")
+function _numFmt(numero){ return '#'+String(numero==null?'':numero).replace(/^#+/,''); }
+
+// Monta o corpo HTML completo de um e-mail de chamado.
+// c    = objeto do chamado
+// opts = { titulo, statusAnterior, statusNovo, interacao, autorInteracao, tituloInteracao, mostrarDescricao }
+function montarCorpoChamado(c, opts){
+  opts = opts || {};
+  c = c || {};
+  var verde = '#1A5C2A';
+  function _row(label, val){
+    if(val==null || val==='') return '';
+    return '<tr>'+
+      '<td style="padding:7px 14px;color:#6b7280;font-size:13px;white-space:nowrap;vertical-align:top;border-bottom:1px solid #eef0f2">'+label+'</td>'+
+      '<td style="padding:7px 14px;color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #eef0f2">'+_emailEsc(val)+'</td>'+
+    '</tr>';
+  }
+  var setor  = (c.setorId && typeof setorNome==='function') ? setorNome(c.setorId) : (c.setorNome||'');
+  var area   = c.areaNome || (c.areaId && typeof areaNome==='function' ? areaNome(c.areaId) : '');
+  var sol    = (typeof usuarioNome==='function' && c.usuarioId) ? usuarioNome(c.usuarioId) : '';
+  var atend  = c.atendenteId ? ((typeof usuarioNome==='function') ? usuarioNome(c.atendenteId) : '') : 'Não atribuído';
+  var statusTxt = opts.statusNovo || c.status || '';
+  if(opts.statusAnterior && opts.statusNovo && opts.statusAnterior!==opts.statusNovo){
+    statusTxt = opts.statusAnterior+' → '+opts.statusNovo;
+  }
+
+  var html = '';
+  if(opts.titulo){
+    html += '<p style="margin:0 0 16px;font-size:15px;color:#111827">'+_emailEsc(opts.titulo)+'</p>';
+  }
+  html += '<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">';
+  html += _row('Chamado', _numFmt(c.numero));
+  html += _row('Assunto', c.assunto);
+  html += _row('Status', statusTxt);
+  html += _row('Prioridade', c.prioridade);
+  html += _row('Setor', setor);
+  html += _row('Área', area);
+  html += _row('Solicitante', sol);
+  html += _row('Atendente', atend);
+  html += _row('Aberto em', c.criadoEm ? fmtData(c.criadoEm) : '');
+  html += _row('Atualizado em', c.atualizadoEm ? fmtData(c.atualizadoEm) : '');
+  html += '</table>';
+
+  if(opts.interacao){
+    html += '<div style="margin-top:18px;padding:13px 15px;background:#eef6ef;border-left:4px solid '+verde+';border-radius:4px">'+
+      '<div style="font-size:12px;color:'+verde+';font-weight:700;margin-bottom:5px">💬 '+
+        _emailEsc(opts.tituloInteracao||'Última interação')+
+        (opts.autorInteracao ? ' — '+_emailEsc(opts.autorInteracao) : '')+
+      '</div>'+
+      '<div style="font-size:13px;color:#111827;white-space:pre-wrap;line-height:1.5">'+_emailEsc(opts.interacao)+'</div>'+
+    '</div>';
+  }
+  if(opts.mostrarDescricao && c.descricao){
+    html += '<div style="margin-top:16px">'+
+      '<div style="font-size:12px;color:#6b7280;font-weight:700;margin-bottom:5px">📋 Descrição original</div>'+
+      '<div style="font-size:13px;color:#374151;white-space:pre-wrap;line-height:1.5">'+_emailEsc(c.descricao)+'</div>'+
+    '</div>';
+  }
+  var link = 'https://terradobrasil.github.io/agrobrasil-helpdesk/';
+  html += '<div style="margin-top:22px"><a href="'+link+'" style="display:inline-block;background:'+verde+';color:#ffffff;text-decoration:none;padding:11px 22px;border-radius:6px;font-size:14px;font-weight:600">Acessar o chamado</a></div>';
+  return html;
 }
 </script><script>window._smtpConfig={Host:"smtp.office365.com",Username:"helpdesck@terradobrasil.com.br",Password:"Agrob@2026",Port:587,From:"helpdesck@terradobrasil.com.br"};</script>
 <style>
@@ -1944,13 +2009,22 @@ function abrirChamado() {
   }
   // Email solicitante
   var uSol=getUsuarios().find(function(u){return u.id===chamado.usuarioId;});
-  if(uSol&&uSol.email)enviarEmail(uSol.email,'[HelpDesk] Chamado '+chamado.numero+' aberto - '+chamado.assunto,'Olá '+uSol.nome+',\n\nSeu chamado foi registrado!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nPrioridade: '+chamado.prioridade+'\n'+(atAuto?'Atendente: '+atAuto.nome+'\n':'')+'\nAcompanhe em: https://terradobrasil.github.io/agrobrasil-helpdesk/');
+  if(uSol&&uSol.email)enviarEmail(uSol.email,'[HelpDesk] Chamado '+_numFmt(chamado.numero)+' aberto - '+chamado.assunto,montarCorpoChamado(chamado,{
+    titulo:'Olá '+uSol.nome+', seu chamado foi registrado com sucesso!',
+    mostrarDescricao:true
+  }));
   // Email atendente
-  if(atAuto&&atAuto.email)enviarEmail(atAuto.email,'[HelpDesk] Chamado atribuído - '+chamado.numero,'Olá '+atAuto.nome+',\n\nNovo chamado atribuído para você!\n\nNúmero: '+chamado.numero+'\nAssunto: '+chamado.assunto+'\nSolicitante: '+usuarioAtual.nome+'\nPrioridade: '+chamado.prioridade+'\n\nAtender em: https://terradobrasil.github.io/agrobrasil-helpdesk/');
-  // Simula notificação por e-mail
+  if(atAuto&&atAuto.email)enviarEmail(atAuto.email,'[HelpDesk] Chamado '+_numFmt(chamado.numero)+' atribuído a você',montarCorpoChamado(chamado,{
+    titulo:'Olá '+atAuto.nome+', um novo chamado foi atribuído a você.',
+    mostrarDescricao:true
+  }));
+  // Notificação para a área responsável
   const _area = (DB.get('areas')||[]).find(a=>a.id===chamado.areaId);
   if (_area && _area.email) {
-    enviarEmail(_area.email,'[HelpDesk] Novo Chamado #'+chamado.numero+' - '+chamado.assunto,'Área: '+(_area.nome||'')+'\nSolicitante: '+usuarioAtual.nome+'\nDescrição: '+chamado.descricao);
+    enviarEmail(_area.email,'[HelpDesk] Novo Chamado '+_numFmt(chamado.numero)+' - '+chamado.assunto,montarCorpoChamado(chamado,{
+      titulo:'Um novo chamado foi aberto para a área '+(_area.nome||'')+'.',
+      mostrarDescricao:true
+    }));
   }
   document.getElementById('nc-assunto').value = '';
   document.getElementById('nc-descricao').value = '';
@@ -2253,6 +2327,7 @@ function alterarStatus(novoStatus) {
   const idx = chamados.findIndex(function(c){return c&&c.id===ticketAtivo;});
   if (idx<0) return;
   const agora = new Date().toISOString();
+  const _statusAnterior = chamados[idx].status;
   chamados[idx].status = novoStatus;
   chamados[idx].atualizadoEm = agora;
   chamados[idx].mensagens = chamados[idx].mensagens || [];
@@ -2273,10 +2348,15 @@ function alterarStatus(novoStatus) {
   var _c=chamados[idx];
   var _sol=_usu.find(function(u){return u.id===_c.usuarioId;});
   var _atd=_usu.find(function(u){return u.id===_c.atendenteId;});
-  var _link='https://terradobrasil.github.io/agrobrasil-helpdesk/';
-  var _corpo='Chamado: #'+_c.numero+'\nAssunto: '+_c.assunto+'\nNovo status: '+novoStatus+'\nAlterado por: '+usuarioAtual.nome+'\n\nAcesse: '+_link;
-  if(_sol&&_sol.email) enviarEmail(_sol.email,'[HelpDesk] Chamado #'+_c.numero+' - Status: '+novoStatus,_corpo);
-  if(_atd&&_atd.email&&_atd.id!==_sol.id) enviarEmail(_atd.email,'[HelpDesk] Chamado #'+_c.numero+' - Status: '+novoStatus,_corpo);
+  var _corpo=montarCorpoChamado(_c,{
+    titulo:'O status do chamado '+_numFmt(_c.numero)+' foi atualizado para "'+novoStatus+'" por '+usuarioAtual.nome+'.',
+    statusAnterior:_statusAnterior, statusNovo:novoStatus,
+    interacao:'Status alterado para "'+novoStatus+'" por '+usuarioAtual.nome+'.',
+    tituloInteracao:'Atualização', autorInteracao:usuarioAtual.nome
+  });
+  var _assuntoS='[HelpDesk] Chamado '+_numFmt(_c.numero)+' - Status: '+novoStatus;
+  if(_sol&&_sol.email) enviarEmail(_sol.email,_assuntoS,_corpo);
+  if(_atd&&_atd.email&&_atd.id!==_sol.id) enviarEmail(_atd.email,_assuntoS,_corpo);
 }
 
 function atribuirAtendente() {
@@ -2300,10 +2380,13 @@ function atribuirAtendente() {
     var _usuA=DB.get('usuarios')||[];
     if(!Array.isArray(_usuA)) _usuA=Object.values(_usuA).filter(Boolean);
     var _atd=_usuA.find(function(u){return u&&u.id===atendenteId;});
-    var _sol=_usuA.find(function(u){return u&&u.id===chamados[idx].usuarioId;});
-    var _link='https://terradobrasil.github.io/agrobrasil-helpdesk/';
-    var _corpo='Olá '+(_atd?_atd.nome:'')+ ',\n\nUm chamado foi atribuído a você!\n\nNúmero: '+chamados[idx].numero+'\nAssunto: '+chamados[idx].assunto+'\nSolicitante: '+ (_sol?_sol.nome:'')+'\n\nAcesse: '+_link;
-    if(_atd&&_atd.email) enviarEmail(_atd.email,'[HelpDesk] Chamado #'+chamados[idx].numero+' atribuído a você',_corpo);
+    var _corpo=montarCorpoChamado(chamados[idx],{
+      titulo:'Olá '+(_atd?_atd.nome:'')+', um chamado foi atribuído a você por '+usuarioAtual.nome+'.',
+      interacao:'Chamado atribuído a '+(_atd?_atd.nome:'')+' por '+usuarioAtual.nome+'.',
+      tituloInteracao:'Atribuição', autorInteracao:usuarioAtual.nome,
+      mostrarDescricao:true
+    });
+    if(_atd&&_atd.email) enviarEmail(_atd.email,'[HelpDesk] Chamado '+_numFmt(chamados[idx].numero)+' atribuído a você',_corpo);
   }
   toast('Atendente atribuído!', 'success');
   renderDashboard();
@@ -2342,9 +2425,11 @@ function enviarMensagem() {
   var _c2=chamados[idx];
   var _sol2=_usu2.find(function(u){return u.id===_c2.usuarioId;});
   var _atd2=_usu2.find(function(u){return u.id===_c2.atendenteId;});
-  var _link2='https://terradobrasil.github.io/agrobrasil-helpdesk/';
-  var _corpo2='Nova mensagem no chamado #'+_c2.numero+'\nAssunto: '+_c2.assunto+'\n\nMensagem de '+usuarioAtual.nome+':\n'+texto+'\n\nAcesse: '+_link2;
-  var _assunto2='[HelpDesk] Nova mensagem - Chamado #'+_c2.numero;
+  var _corpo2=montarCorpoChamado(_c2,{
+    titulo:'Há uma nova mensagem no chamado '+_numFmt(_c2.numero)+'.',
+    interacao:texto, tituloInteracao:'Nova mensagem', autorInteracao:usuarioAtual.nome
+  });
+  var _assunto2='[HelpDesk] Nova mensagem - Chamado '+_numFmt(_c2.numero);
   // Se quem enviou é o solicitante, notifica o atendente e vice-versa
   if(usuarioAtual.id===_c2.usuarioId){
     if(_atd2&&_atd2.email) enviarEmail(_atd2.email,_assunto2,_corpo2);
