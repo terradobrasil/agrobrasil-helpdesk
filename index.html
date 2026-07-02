@@ -2464,7 +2464,7 @@ function renderRelatorios() {
   var areas=(window._fbCache&&window._fbCache.areas)||[];
 
   // Filtros
-  var periodo=document.getElementById('rel-periodo')?document.getElementById('rel-periodo').value:'mes';
+  var periodo=document.getElementById('rel-periodo')?document.getElementById('rel-periodo').value:'todos';
   var filtroSetor=document.getElementById('rel-setor')?document.getElementById('rel-setor').value:'';
   var filtroStatus=document.getElementById('rel-status-f')?document.getElementById('rel-status-f').value:'';
   var de=document.getElementById('rel-de')?document.getElementById('rel-de').value:'';
@@ -2476,6 +2476,7 @@ function renderRelatorios() {
   else if(periodo==='semana'){ini=new Date(agora);ini.setDate(agora.getDate()-7);}
   else if(periodo==='mes'){ini=new Date(agora.getFullYear(),agora.getMonth(),1);}
   else if(periodo==='ano'){ini=new Date(agora.getFullYear(),0,1);}
+  else if(periodo==='todos'){ini=new Date(0);}
   else if(periodo==='custom'&&de){ini=new Date(de);}
   var fimCustom=periodo==='custom'&&ate?new Date(ate+'T23:59:59'):null;
 
