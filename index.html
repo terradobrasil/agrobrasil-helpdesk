@@ -961,9 +961,17 @@ const fbDB = {
       <div class="sub">2026-05-04</div>
     </div>
   </div>
+        <style>
+          .dash-f-wrap{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;background:white;padding:12px 14px;border-radius:10px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+          .dash-f label{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px}
+          .dash-f select{padding:7px 9px;border:1.5px solid #ddd;border-radius:7px;font-size:13px;outline:none;min-width:140px;background:white}
+          .dash-f-clear{padding:8px 12px;background:#f1f2f6;border:none;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;color:#555;align-self:flex-end}
+          .stat-card{transition:transform .1s} .stat-card:hover{transform:translateY(-2px)}
+        </style>
+        <div id="dash-filtros"></div>
         <div class="table-card">
           <div class="table-header">
-            <h3>🎫 Chamados Recentes</h3>
+            <h3 id="dash-tab-titulo">🎫 Chamados Recentes</h3>
             <span id="btn-ver-todos"><button class="btn btn-outline btn-sm" onclick="irPara('todos-chamados')">Ver todos →</button></span>
           </div>
           <table>
@@ -1854,30 +1862,75 @@ function renderDashboard() {
 
   const isAdmin = usuarioAtual.perfil==='admin'||usuarioAtual.perfil==='atendente';
   const cards = isAdmin ? [
-    {label:'Total de Chamados', value:total, sub:'No sistema', cls:''},
-    {label:'Abertos', value:abertos, sub:'Aguardando atendimento', cls:'amarelo'},
-    {label:'Em Andamento', value:andamento, sub:'Sendo atendidos', cls:'azul'},
-    {label:'Resolvidos', value:resolvidos, sub:'Concluídos', cls:''},
-    {label:'🔴 Urgentes', value:urgentes, sub:'Requerem atenção imediata', cls:'vermelho'},
-    {label:'Abertos Hoje', value:hojeCount, sub:hojeStr, cls:''},
+    {label:'Total de Chamados', value:total, sub:'No sistema', cls:'', filt:{}},
+    {label:'Abertos', value:abertos, sub:'Aguardando atendimento', cls:'amarelo', filt:{status:'Aberto'}},
+    {label:'Em Andamento', value:andamento, sub:'Sendo atendidos', cls:'azul', filt:{status:'Em andamento'}},
+    {label:'Resolvidos', value:resolvidos, sub:'Concluídos', cls:'', filt:{status:'Resolvido'}},
+    {label:'🔴 Urgentes', value:urgentes, sub:'Requerem atenção imediata', cls:'vermelho', filt:{prio:'Urgente'}},
+    {label:'Abertos Hoje', value:hojeCount, sub:hojeStr, cls:'', filt:{data:'hoje'}},
   ] : [
-    {label:'Meus Chamados', value:meusCh.length, sub:'Total', cls:''},
-    {label:'Abertos', value:meusCh.filter(c=>c.status==='Aberto').length, sub:'Aguardando', cls:'amarelo'},
-    {label:'Em Andamento', value:meusCh.filter(c=>c.status==='Em andamento').length, sub:'Em atendimento', cls:'azul'},
-    {label:'Resolvidos', value:meusCh.filter(c=>c.status==='Resolvido').length, sub:'Concluídos', cls:''},
+    {label:'Meus Chamados', value:meusCh.length, sub:'Total', cls:'', filt:{}},
+    {label:'Abertos', value:meusCh.filter(c=>c.status==='Aberto').length, sub:'Aguardando', cls:'amarelo', filt:{status:'Aberto'}},
+    {label:'Em Andamento', value:meusCh.filter(c=>c.status==='Em andamento').length, sub:'Em atendimento', cls:'azul', filt:{status:'Em andamento'}},
+    {label:'Resolvidos', value:meusCh.filter(c=>c.status==='Resolvido').length, sub:'Concluídos', cls:'', filt:{status:'Resolvido'}},
   ];
 
   document.getElementById('dash-cards').innerHTML = cards.map(c=>`
-    <div class="stat-card ${c.cls}">
+    <div class="stat-card ${c.cls}" style="cursor:pointer" title="Clique para filtrar" onclick='dashAplicarCard(${JSON.stringify(c.filt||{})})'>
       <div class="label">${c.label}</div>
       <div class="value">${c.value}</div>
       <div class="sub">${c.sub}</div>
     </div>
   `).join('');
 
-  const lista = isAdmin ? chamados : meusCh; // Usuário só vê os seus
-  const recentes = [...lista].sort((a,b)=>new Date(b.criadoEm)-new Date(a.criadoEm)).slice(0,8);
-  document.getElementById('dash-tabela').innerHTML = recentes.length ? recentes.map(c=>`
+  // ===== Filtros do Dashboard (status / prioridade / setor / área / data) =====
+  var f = window._dashFilt || (window._dashFilt={status:'',prio:'',setor:'',area:'',data:''});
+  var setores=(window._fbCache&&window._fbCache.setores)||[];
+  var areas=(window._fbCache&&window._fbCache.areas)||[];
+  var base = isAdmin ? chamados : meusCh;
+  var agora2 = new Date();
+  function _passaData(c){
+    if(!f.data) return true;
+    if(f.data==='hoje') return c.criadoEm && c.criadoEm.startsWith(hojeStr);
+    var d=new Date(c.criadoEm); if(isNaN(d)) return false;
+    if(f.data==='semana'){ var i=new Date(agora2); i.setDate(agora2.getDate()-7); return d>=i; }
+    if(f.data==='mes') return d>=new Date(agora2.getFullYear(),agora2.getMonth(),1);
+    if(f.data==='ano') return d>=new Date(agora2.getFullYear(),0,1);
+    return true;
+  }
+  var filtrada = base.filter(function(c){
+    if(!c) return false;
+    if(f.status && c.status!==f.status) return false;
+    if(f.prio && c.prioridade!==f.prio) return false;
+    if(f.setor && c.setorId!==f.setor) return false;
+    if(f.area && c.areaId!==f.area) return false;
+    if(!_passaData(c)) return false;
+    return true;
+  }).sort((a,b)=>new Date(b.criadoEm)-new Date(a.criadoEm));
+  var temFiltro = !!(f.status||f.prio||f.setor||f.area||f.data);
+  var mostrar = temFiltro ? filtrada.slice(0,100) : filtrada.slice(0,8);
+
+  // Monta a barra de filtros
+  function _opt(v,txt,sel){ return '<option value="'+v+'"'+(sel===v?' selected':'')+'>'+txt+'</option>'; }
+  var statusOpts=['Aberto','Em andamento','Resolvido','Cancelado'];
+  var prioOpts=['Urgente','Alta','Média','Baixa'];
+  var areasF = areas.filter(function(a){return a && (!f.setor || a.setorId===f.setor);});
+  var fb=document.getElementById('dash-filtros');
+  if(fb){
+    fb.innerHTML=
+      '<div class="dash-f-wrap">'+
+      '<div class="dash-f"><label>Status</label><select onchange="dashSet(\'status\',this.value)"><option value="">Todos</option>'+statusOpts.map(function(s){return _opt(s,s,f.status);}).join('')+'</select></div>'+
+      '<div class="dash-f"><label>Prioridade</label><select onchange="dashSet(\'prio\',this.value)"><option value="">Todas</option>'+prioOpts.map(function(s){return _opt(s,s,f.prio);}).join('')+'</select></div>'+
+      '<div class="dash-f"><label>Setor</label><select onchange="dashSet(\'setor\',this.value)"><option value="">Todos</option>'+setores.map(function(s){return _opt(s.id,s.nome,f.setor);}).join('')+'</select></div>'+
+      '<div class="dash-f"><label>Área</label><select onchange="dashSet(\'area\',this.value)"><option value="">Todas</option>'+areasF.map(function(a){return _opt(a.id,a.nome,f.area);}).join('')+'</select></div>'+
+      '<div class="dash-f"><label>Data</label><select onchange="dashSet(\'data\',this.value)"><option value="">Todas</option>'+_opt('hoje','Hoje',f.data)+_opt('semana','Últimos 7 dias',f.data)+_opt('mes','Este mês',f.data)+_opt('ano','Este ano',f.data)+'</select></div>'+
+      (temFiltro?('<button class="dash-f-clear" onclick="dashLimpar()">✕ Limpar filtros</button>'):'')+
+      '</div>';
+  }
+  var th=document.getElementById('dash-tab-titulo');
+  if(th) th.textContent = temFiltro ? ('🎫 Chamados filtrados ('+filtrada.length+')') : '🎫 Chamados Recentes';
+
+  document.getElementById('dash-tabela').innerHTML = mostrar.length ? mostrar.map(c=>`
     <tr onclick="abrirTicket('${c.id}')">
       <td><span class="ticket-num">${c.numero}</span></td>
       <td>${c.assunto}</td>
@@ -1888,8 +1941,13 @@ function renderDashboard() {
       <td>${usuarioNome(c.usuarioId)}</td>
       <td>${fmtDataCurta(c.criadoEm)}</td>
     </tr>
-  `).join('') : '<tr><td colspan="8"><div class="empty-state"><div class="icon">🎫</div><h3>Nenhum chamado ainda</h3><p>Clique em "Novo Chamado" para abrir o primeiro.</p></div></td></tr>';
+  `).join('') : ('<tr><td colspan="8"><div class="empty-state"><div class="icon">🎫</div><h3>'+(temFiltro?'Nenhum chamado com esse filtro':'Nenhum chamado ainda')+'</h3><p>'+(temFiltro?'Ajuste ou limpe os filtros acima.':'Clique em "Novo Chamado" para abrir o primeiro.')+'</p></div></td></tr>');
 }
+
+// Setters dos filtros do Dashboard
+function dashSet(k,v){ if(!window._dashFilt) window._dashFilt={status:'',prio:'',setor:'',area:'',data:''}; window._dashFilt[k]=v; if(k==='setor') window._dashFilt.area=''; renderDashboard(); }
+function dashLimpar(){ window._dashFilt={status:'',prio:'',setor:'',area:'',data:''}; renderDashboard(); }
+function dashAplicarCard(filt){ window._dashFilt={status:'',prio:'',setor:'',area:'',data:''}; if(filt&&typeof filt==='object'){ if(filt.status)window._dashFilt.status=filt.status; if(filt.prio)window._dashFilt.prio=filt.prio; if(filt.data)window._dashFilt.data=filt.data; if(filt.setor)window._dashFilt.setor=filt.setor; if(filt.area)window._dashFilt.area=filt.area; } renderDashboard(); var el=document.getElementById('dash-filtros'); if(el&&el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
 
 // ===================== MEUS CHAMADOS =====================
 function renderMeusChamados() {
